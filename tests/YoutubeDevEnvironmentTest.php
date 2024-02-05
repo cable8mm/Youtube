@@ -7,23 +7,23 @@ use PHPUnit\Framework\TestCase;
 
 class YoutubeDevEnvironmentTest extends TestCase
 {
-    private array $dotenv;
+    private static array $dotenv;
 
-    public function setUp(): void
+    public static function setUpBeforeClass(): void
     {
-        $this->dotenv = Dotenv::createImmutable(__DIR__.'/../')->load();
+        self::$dotenv = Dotenv::createImmutable(__DIR__.'/../')->load();
     }
 
     public function test_is_exist_youtube_api_key(): void
     {
-        $this->assertNotEmpty($this->dotenv['YOUTUBE_API_KEY']);
+        $this->assertNotEmpty(self::$dotenv['YOUTUBE_API_KEY']);
     }
 
-    public function test_env(): void
+    public function test_is_exist_youtube_channel_id(): void
     {
         $expected = 'UCNgEhs22fJzCTvl99AHlg7A';
 
-        $actual = $this->dotenv['YOUTUBE_CHANNEL_ID'];
+        $actual = self::$dotenv['YOUTUBE_CHANNEL_ID'];
 
         $this->assertEquals($expected, $actual);
     }
