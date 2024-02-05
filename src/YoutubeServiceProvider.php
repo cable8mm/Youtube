@@ -13,7 +13,7 @@ class YoutubeServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $source = realpath(__DIR__ . '/config/youtube.php');
+        $source = realpath(__DIR__.'/config/youtube.php');
 
         $this->publishes([$source => config_path('youtube.php')]);
 
