@@ -2,6 +2,8 @@
 
 namespace Cable8mm\Youtube;
 
+use Carbon\Carbon;
+
 class Youtube
 {
     /**
@@ -320,6 +322,23 @@ class Youtube
         }
 
         return $this->searchAdvanced($params, $pageInfo);
+    }
+
+    public function getChannelVideos($channelId, $maxResults, ?string $publishedBefore = null): array
+    {
+        $params = [
+            'type' => 'video',
+            'channelId' => $channelId,
+            'part' => 'id,snippet',
+            'maxResults' => $maxResults,
+            'order' => 'date',
+        ];
+
+        if ($publishedBefore !== null) {
+            $params['publishedBefore'] = Carbon::create($publishedBefore)->subSecond()->toRfc3339String();
+        }
+
+        return $this->searchAdvanced($params);
     }
 
     /**
