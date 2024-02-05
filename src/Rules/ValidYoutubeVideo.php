@@ -2,6 +2,7 @@
 
 namespace Cable8mm\Youtube\Rules;
 
+use Cable8mm\Youtube\Facades\Youtube;
 use Illuminate\Contracts\Validation\Rule;
 
 class ValidYoutubeVideo implements Rule
