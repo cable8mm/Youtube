@@ -1,8 +1,8 @@
-Youtube
-=========
+# Youtube
 
 [![Youtube Tests](https://github.com/cable8mm/Youtube/actions/workflows/tests.yml/badge.svg)](https://github.com/cable8mm/Youtube/actions/workflows/tests.yml)
 [![PHP Linting (Pint)](https://github.com/cable8mm/Youtube/actions/workflows/lint.yml/badge.svg)](https://github.com/cable8mm/Youtube/actions/workflows/lint.yml)
+[![Static Badge](https://img.shields.io/badge/Laravel-^8.0|^9.0|^10.0-orange)](https://laravel.com/)
 [![Packagist Version](https://img.shields.io/packagist/v/cable8mm/Youtube)](https://packagist.org/packages/cable8mm/youtube)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/cable8mm/Youtube)](https://packagist.org/packages/cable8mm/youtube)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/cable8mm/Youtube)](https://github.com/cable8mm/Youtube/pulls)
