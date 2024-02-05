@@ -3,12 +3,12 @@ Youtube
 
 [![Youtube Tests](https://github.com/cable8mm/Youtube/actions/workflows/tests.yml/badge.svg)](https://github.com/cable8mm/Youtube/actions/workflows/tests.yml)
 [![PHP Linting (Pint)](https://github.com/cable8mm/Youtube/actions/workflows/lint.yml/badge.svg)](https://github.com/cable8mm/Youtube/actions/workflows/lint.yml)
-![Packagist Version](https://img.shields.io/packagist/v/cable8mm/Youtube)
-![Packagist Downloads](https://img.shields.io/packagist/dt/cable8mm/Youtube)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/cable8mm/Youtube)
-![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/cable8mm/Youtube)
-![GitHub License](https://img.shields.io/github/license/cable8mm/Youtube)
-![Packagist Dependency Version](https://img.shields.io/packagist/dependency-v/cable8mm/Youtube/php)
+[![Packagist Version](https://img.shields.io/packagist/v/cable8mm/Youtube)](https://packagist.org/packages/cable8mm/youtube)
+[![Packagist Downloads](https://img.shields.io/packagist/dt/cable8mm/Youtube)](https://packagist.org/packages/cable8mm/youtube)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/cable8mm/Youtube)](https://github.com/cable8mm/Youtube/pulls)
+[![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/cable8mm/Youtube)](https://github.com/cable8mm/Youtube/pulls?q=is%3Apr+is%3Aclosed)
+[![GitHub License](https://img.shields.io/github/license/cable8mm/Youtube)](https://github.com/cable8mm/Youtube?tab=MIT-1-ov-file)
+[![Packagist Dependency Version](https://img.shields.io/packagist/dependency-v/cable8mm/Youtube/php)](https://packagist.org/packages/cable8mm/youtube)
 
 Renew Laravel PHP Facade/Wrapper for the Youtube Data API v3 ( Non-OAuth )
 
