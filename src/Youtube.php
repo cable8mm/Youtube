@@ -324,7 +324,14 @@ class Youtube
         return $this->searchAdvanced($params, $pageInfo);
     }
 
-    public function getChannelVideos($channelId, $maxResults, ?string $publishedBefore = null): array
+    /**
+     * Get videos from the channel.
+     *
+     * @param  string  $channelId  Channel Id
+     * @param  int  $maxResults  Video count at once
+     * @param  string  $publishedBefore  Which video has been getten from
+     */
+    public function getChannelVideos($channelId, $maxResults, ?string $publishedBefore = null): array|bool
     {
         $params = [
             'type' => 'video',
