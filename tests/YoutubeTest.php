@@ -1,8 +1,8 @@
 <?php
 
-namespace Alaouy\Youtube\Tests;
+namespace Cable8mm\Youtube\Tests;
 
-use Alaouy\Youtube\Youtube;
+use Cable8mm\Youtube\Youtube;
 use PHPUnit\Framework\TestCase;
 
 class YoutubeTest extends TestCase

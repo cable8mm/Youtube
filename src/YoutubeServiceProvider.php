@@ -1,6 +1,6 @@
 <?php
 
-namespace Alaouy\Youtube;
+namespace Cable8mm\Youtube;
 
 use Illuminate\Support\ServiceProvider;
 

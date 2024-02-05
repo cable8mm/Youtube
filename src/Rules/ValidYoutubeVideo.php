@@ -1,9 +1,9 @@
 <?php
 
-namespace Alaouy\Youtube\Rules;
+namespace Cable8mm\Youtube\Rules;
 
+use Cable8mm\Youtube\Facades\SimpleYoutubeApi;
 use Illuminate\Contracts\Validation\Rule;
-use Alaouy\Youtube\Facades\Youtube;
 
 class ValidYoutubeVideo implements Rule
 {

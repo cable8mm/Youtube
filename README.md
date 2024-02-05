@@ -1,40 +1,28 @@
 Youtube
 =========
 
-[![Youtube Tests](https://github.com/alaouy/Youtube/actions/workflows/tests.yml/badge.svg)](https://github.com/alaouy/Youtube/actions/workflows/tests.yml) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/alaouym)
+[![Youtube Tests](https://github.com/cable8mm/Youtube/actions/workflows/tests.yml/badge.svg)](https://github.com/cable8mm/Youtube/actions/workflows/tests.yml)
 
-Laravel PHP Facade/Wrapper for the Youtube Data API v3 ( Non-OAuth )
+Renew Laravel PHP Facade/Wrapper for the Youtube Data API v3 ( Non-OAuth )
 
 ## Requirements
 
-- PHP 7.0 or higher
-- Laravel 5.1 or higher
+- PHP 8.0 or higher
+- Laravel 8 or higher
 - API key from [Google Console](https://console.developers.google.com)
-
-Looking for Youtube Package for either of these: PHP 5, Laravel 5.0, Laravel 4? Visit the [`php5-branch`](https://github.com/alaouy/Youtube/tree/php5)
 
 ## Installation
 
 Run in console below command to download package to your project:
 ```bash
-composer require alaouy/youtube
+composer require cable8mm/youtube
 ```
 
 ## Configuration
 
-In `/config/app.php` add YoutubeServiceProvider (Laravel < 5.5):
-```php
-Alaouy\Youtube\YoutubeServiceProvider::class,
-```
-
-Do not forget to add also Youtube facade there (Laravel < 5.5):
-```php
-'Youtube' => Alaouy\Youtube\Facades\Youtube::class,
-```
-
 Publish config settings:
 ```bach
-$ php artisan vendor:publish --provider="Alaouy\Youtube\YoutubeServiceProvider"
+$ php artisan vendor:publish --provider="Cable8mm\Youtube\YoutubeServiceProvider"
 ```
 
 Set your Youtube API key in the file:
@@ -56,7 +44,7 @@ Youtube::setApiKey('KEY');
 ## Usage
 
 ```php
-// use Alaouy\Youtube\Facades\Youtube;
+// use Cable8mm\Youtube\Facades\Youtube;
 
 
 // Return an STD PHP object
@@ -117,7 +105,7 @@ $videoId = Youtube::parseVidFromURL('https://www.youtube.com/watch?v=moSFlvxnbgk
 ## Validation Rules
 
 ```php
-// use Alaouy\Youtube\Rules\ValidYoutubeVideo;
+// use Cable8mm\Youtube\Rules\ValidYoutubeVideo;
 
 
 // Validate a YouTube Video URL
@@ -232,9 +220,5 @@ Please read the ["Reference" section](https://developers.google.com/youtube/v3/d
 - [Youtube Data API v3 Doc](https://developers.google.com/youtube/v3/)
 - [Obtain API key from Google API Console](https://console.developers.google.com)
 
-## Donation
-If you find this project to be of use to you please consider buying me a cup of tea :)
-
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/alaouym)
 ## Credits
-Built on code from Madcoda's [php-youtube-api](https://github.com/madcoda/php-youtube-api).
+Built on code from Alaouy's [alaouy/youtube](https://github.com/alaouy/youtube).
