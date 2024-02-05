@@ -2,6 +2,12 @@ Youtube
 =========
 
 [![Youtube Tests](https://github.com/cable8mm/Youtube/actions/workflows/tests.yml/badge.svg)](https://github.com/cable8mm/Youtube/actions/workflows/tests.yml)
+[![PHP Linting (Pint)](https://github.com/cable8mm/Youtube/actions/workflows/lint.yml/badge.svg)](https://github.com/cable8mm/Youtube/actions/workflows/lint.yml)
+[![Latest Stable Version](http://poser.pugx.org/cable8mm/youtube/v)](https://packagist.org/packages/cable8mm/youtube)
+[![Total Downloads](http://poser.pugx.org/cable8mm/youtube/downloads)](https://packagist.org/packages/cable8mm/youtube)
+[![Latest Unstable Version](http://poser.pugx.org/cable8mm/youtube/v/unstable)](https://packagist.org/packages/cable8mm/youtube)
+[![License](http://poser.pugx.org/cable8mm/youtube/license)](https://packagist.org/packages/cable8mm/Youtube)
+[![PHP Version Require](http://poser.pugx.org/cable8mm/youtube/require/php)](https://packagist.org/packages/cable8mm/youtube)
 
 Renew Laravel PHP Facade/Wrapper for the Youtube Data API v3 ( Non-OAuth )
 
