@@ -9,23 +9,23 @@ use PHPUnit\Framework\TestCase;
 
 class YoutubeTest extends TestCase
 {
-    private array $dotenv;
+    private static array $dotenv;
 
-    private bool $youtubeEnabled;
+    private static bool $youtubeEnabled;
 
-    public function setUp(): void
+    public static function setUpBeforeClass(): void
     {
-        $this->dotenv = Dotenv::createImmutable(__DIR__.'/../')->load();
+        self::$dotenv = Dotenv::createImmutable(__DIR__.'/../')->load();
 
-        $this->youtubeEnabled = isset($this->dotenv['YOUTUBE_ENABLED']) && $this->dotenv['YOUTUBE_ENABLED'] == 'true' ? true : false;
+        self::$youtubeEnabled = isset(self::$dotenv['YOUTUBE_ENABLED']) && self::$dotenv['YOUTUBE_ENABLED'] == 'true' ? true : false;
     }
 
     public function test_getChannelVideos(): void
     {
-        if ($this->youtubeEnabled) {
-            $apiKey = $this->dotenv['YOUTUBE_API_KEY'];
+        if (self::$youtubeEnabled) {
+            $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
 
-            $channelId = $this->dotenv['YOUTUBE_CHANNEL_ID'];
+            $channelId = self::$dotenv['YOUTUBE_CHANNEL_ID'];
 
             $publishedBefore = Carbon::now()->toRfc3339String();
 
@@ -39,11 +39,11 @@ class YoutubeTest extends TestCase
 
     public function test_getChannelVideos_at_second(): void
     {
-        if ($this->youtubeEnabled) {
+        if (self::$youtubeEnabled) {
 
-            $apiKey = $this->dotenv['YOUTUBE_API_KEY'];
+            $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
 
-            $channelId = $this->dotenv['YOUTUBE_CHANNEL_ID'];
+            $channelId = self::$dotenv['YOUTUBE_CHANNEL_ID'];
 
             $publishedBefore = Carbon::now()->toRfc3339String();
 
