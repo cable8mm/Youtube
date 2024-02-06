@@ -56,4 +56,21 @@ class YoutubeTest extends TestCase
             $this->assertTrue(true);
         }
     }
+
+    public function test_getChannelVideos_in_future()
+    {
+        if (self::$youtubeEnabled) {
+            $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
+
+            $channelId = self::$dotenv['YOUTUBE_CHANNEL_ID'];
+
+            $publishedAfter = Carbon::now()->toRfc3339String();
+
+            $videos = (new Youtube($apiKey))->getChannelVideos($channelId, 1, $publishedAfter, true);
+
+            $this->assertEmpty($videos);
+        } else {
+            $this->assertTrue(true);
+        }
+    }
 }
