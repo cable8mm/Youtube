@@ -28,6 +28,7 @@ composer require cable8mm/youtube
 ## Configuration
 
 Publish config settings:
+
 ```bach
 $ php artisan vendor:publish --provider="Cable8mm\Youtube\YoutubeServiceProvider"
 ```
@@ -40,13 +41,18 @@ Set your Youtube API key in the file:
 
 Or in the .env file
 ```shell
-YOUTUBE_API_KEY = KEY
+YOUTUBE_API_KEY = <YOUR KEY>
 ```
 
-Or you can set the key programmatically at run time :
-```php
-Youtube::setApiKey('KEY');
+## Package Development
+
+If you are going to contribute,
+
+```sh
+composer update
 ```
+
+And you can use `.env` in the package.
 
 ## Usage
 
@@ -204,18 +210,10 @@ $youtube = new Youtube(config('YOUTUBE_API_KEY'), ['use-http-host' => false]);
 $youtube->useHttpHost(false);
 ```
 
-## Run Unit Test
-If you have PHPUnit installed in your environment, run:
+## Test
 
-```bash
-$ phpunit
-```
-
-If you don't have PHPUnit installed, you can run the following:
-
-```bash
-$ composer update
-$ ./vendor/bin/phpunit
+```sh
+composer test
 ```
 
 ## Format of returned data
