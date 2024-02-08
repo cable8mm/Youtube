@@ -331,7 +331,7 @@ class Youtube
      * @param  int  $maxResults  Video count at once
      * @param  string  $publishedBefore  Which video has been getten from
      */
-    public function getChannelVideos($channelId, $maxResults, ?string $publishedBefore = null, ?bool $isFuture = false): array|bool
+    public function getChannelVideos(string $channelId, int $maxResults, ?string $publishedBefore = null, ?bool $isFuture = false): array|bool
     {
         $params = [
             'type' => 'video',
@@ -343,7 +343,7 @@ class Youtube
 
         if ($publishedBefore !== null) {
             if ($isFuture) {
-                $params['publishedAfter'] = Carbon::create($publishedBefore)->subSecond()->toRfc3339String();
+                $params['publishedAfter'] = Carbon::create($publishedBefore)->addSecond()->toRfc3339String();
             } else {
                 $params['publishedBefore'] = Carbon::create($publishedBefore)->subSecond()->toRfc3339String();
             }
