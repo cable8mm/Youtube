@@ -331,7 +331,7 @@ class Youtube
      * @param  int  $maxResults  Video count at once
      * @param  string  $publishedBefore  Which video has been getten from
      */
-    public function getChannelVideos(string $channelId, int $maxResults, ?string $publishedBefore = null, ?bool $isFuture = false): array|bool
+    public function getChannelVideos(string $channelId, int $maxResults, ?string $publishedBefore, ?bool $isFuture = false, ?string $pageToken = ''): array|bool
     {
         $params = [
             'type' => 'video',
@@ -348,6 +348,12 @@ class Youtube
                 $params['publishedBefore'] = Carbon::create($publishedBefore)->subSecond()->toRfc3339String();
             }
         }
+
+        if (! empty($pageToken)) {
+            $params['pageToken'] = $pageToken;
+        }
+
+        print_r($params);
 
         return $this->searchAdvanced($params, true);
     }
