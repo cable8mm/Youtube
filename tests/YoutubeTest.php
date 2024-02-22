@@ -29,7 +29,7 @@ class YoutubeTest extends TestCase
 
             $publishedBefore = Carbon::now()->toRfc3339String();
 
-            $videos = (new Youtube($apiKey))->getChannelVideos($channelId, 1, $publishedBefore);
+            $videos = (new Youtube($apiKey))->getChannelVideos($channelId, 1, $publishedBefore)['results'];
 
             $this->assertNotEmpty($videos);
         } else {
@@ -47,9 +47,9 @@ class YoutubeTest extends TestCase
 
             $publishedBefore = Carbon::now()->toRfc3339String();
 
-            $video = (new Youtube($apiKey))->getChannelVideos($channelId, 1, $publishedBefore)[0];
+            $video = (new Youtube($apiKey))->getChannelVideos($channelId, 1, $publishedBefore)['results'][0];
 
-            $secondVideo = (new Youtube($apiKey))->getChannelVideos($channelId, 1, $video->snippet->publishedAt)[0];
+            $secondVideo = (new Youtube($apiKey))->getChannelVideos($channelId, 1, $video->snippet->publishedAt)['results'][0];
 
             $this->assertNotEquals($video->id->videoId, $secondVideo->id->videoId);
         } else {
@@ -66,7 +66,7 @@ class YoutubeTest extends TestCase
 
             $publishedAfter = Carbon::now()->toRfc3339String();
 
-            $videos = (new Youtube($apiKey))->getChannelVideos($channelId, 1, $publishedAfter, true);
+            $videos = (new Youtube($apiKey))->getChannelVideos($channelId, 1, $publishedAfter, true)['results'];
 
             $this->assertEmpty($videos);
         } else {

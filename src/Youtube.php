@@ -349,7 +349,7 @@ class Youtube
             }
         }
 
-        return $this->searchAdvanced($params);
+        return $this->searchAdvanced($params, true);
     }
 
     /**
