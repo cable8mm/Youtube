@@ -1,5 +1,13 @@
 # Release Notes
 
+## v4.1.0 - 2024-02-22
+
+### What's Changed
+
+* Add pageToken parameter by [@cable8mm](https://github.com/cable8mm) in https://github.com/cable8mm/Youtube/pull/13
+
+**Full Changelog**: https://github.com/cable8mm/Youtube/compare/v4.0.0...v4.1.0
+
 ## v4.0.0 - 2024-02-22
 
 ### What's Changed
