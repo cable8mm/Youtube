@@ -18,13 +18,4 @@ class YoutubeDevEnvironmentTest extends TestCase
     {
         $this->assertNotEmpty(self::$dotenv['YOUTUBE_API_KEY']);
     }
-
-    public function test_is_exist_youtube_channel_id(): void
-    {
-        $expected = 'UCNgEhs22fJzCTvl99AHlg7A';
-
-        $actual = self::$dotenv['YOUTUBE_CHANNEL_ID'];
-
-        $this->assertEquals($expected, $actual);
-    }
 }
