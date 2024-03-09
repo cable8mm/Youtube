@@ -1,14 +1,13 @@
 # Youtube
 
-[![Youtube Tests](https://github.com/cable8mm/Youtube/actions/workflows/tests.yml/badge.svg)](https://github.com/cable8mm/Youtube/actions/workflows/tests.yml)
-[![PHP Linting (Pint)](https://github.com/cable8mm/Youtube/actions/workflows/lint.yml/badge.svg)](https://github.com/cable8mm/Youtube/actions/workflows/lint.yml)
-[![Static Badge](https://img.shields.io/badge/Laravel-^8.0|^9.0|^10.0-orange)](https://laravel.com/)
-[![Packagist Version](https://img.shields.io/packagist/v/cable8mm/Youtube)](https://packagist.org/packages/cable8mm/youtube)
-[![Packagist Downloads](https://img.shields.io/packagist/dt/cable8mm/Youtube)](https://packagist.org/packages/cable8mm/youtube)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/cable8mm/Youtube)](https://github.com/cable8mm/Youtube/pulls)
-[![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/cable8mm/Youtube)](https://github.com/cable8mm/Youtube/pulls?q=is%3Apr+is%3Aclosed)
-[![GitHub License](https://img.shields.io/github/license/cable8mm/Youtube)](https://github.com/cable8mm/Youtube?tab=MIT-1-ov-file)
-[![Packagist Dependency Version](https://img.shields.io/packagist/dependency-v/cable8mm/Youtube/php)](https://packagist.org/packages/cable8mm/youtube)
+[![code-style](https://github.com/cable8mm/Youtube/actions/workflows/code-style.yml/badge.svg)](https://github.com/cable8mm/Youtube/actions/workflows/code-style.yml)
+[![run-tests](https://github.com/cable8mm/Youtube/actions/workflows/run-tests.yml/badge.svg)](https://github.com/cable8mm/Youtube/actions/workflows/run-tests.yml)
+![Packagist Dependency Version](https://img.shields.io/packagist/dependency-v/cable8mm/Youtube/illuminate%2Fsupport)
+![Packagist Version](https://img.shields.io/packagist/v/cable8mm/Youtube)
+![Packagist Downloads](https://img.shields.io/packagist/dt/cable8mm/Youtube)
+![Packagist Dependency Version](https://img.shields.io/packagist/dependency-v/cable8mm/Youtube/php)
+![Packagist Stars](https://img.shields.io/packagist/stars/cable8mm/Youtube)
+![Packagist License](https://img.shields.io/packagist/l/cable8mm/Youtube)
 
 Renew Laravel PHP Facade/Wrapper for the Youtube Data API v3 ( Non-OAuth )
 
@@ -21,6 +20,7 @@ Renew Laravel PHP Facade/Wrapper for the Youtube Data API v3 ( Non-OAuth )
 ## Installation
 
 Run in console below command to download package to your project:
+
 ```bash
 composer require cable8mm/youtube
 ```
@@ -40,6 +40,7 @@ Set your Youtube API key in the file:
 ```
 
 Or in the .env file
+
 ```shell
 YOUTUBE_API_KEY = <YOUR KEY>
 ```
@@ -217,13 +218,15 @@ composer test
 ```
 
 ## Format of returned data
+
 The returned JSON is decoded as PHP objects (not Array).
 Please read the ["Reference" section](https://developers.google.com/youtube/v3/docs/) of the Official API doc.
 
-
 ## Youtube Data API v3
+
 - [Youtube Data API v3 Doc](https://developers.google.com/youtube/v3/)
 - [Obtain API key from Google API Console](https://console.developers.google.com)
 
 ## Credits
+
 Built on code from Alaouy's [alaouy/youtube](https://github.com/alaouy/youtube).

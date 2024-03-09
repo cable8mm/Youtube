@@ -66,9 +66,11 @@ class YoutubeTest extends TestCase
 
             $publishedAfter = Carbon::now()->toRfc3339String();
 
-            $videos = (new Youtube($apiKey))->getChannelVideos($channelId, 1, $publishedAfter, true)['results'];
+            $response = (new Youtube($apiKey))->getChannelVideos($channelId, 1, null, false, 'CAMQAA');
 
-            $this->assertEmpty($videos);
+            $videos = $response['results'];
+
+            $this->assertNotEmpty($videos);
         } else {
             $this->assertTrue(true);
         }
