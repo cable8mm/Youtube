@@ -11,6 +11,8 @@
 
 Renew Laravel PHP Facade/Wrapper for the Youtube Data API v3 ( Non-OAuth )
 
+We have provided the API Documentation on the web. For more information, please visit https://www.palgle.com/Youtube/ ❤️
+
 ## Requirements
 
 - PHP 8.0 or higher
