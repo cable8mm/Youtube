@@ -1,5 +1,14 @@
 # Release Notes
 
+## v4.2.0 - 2024-03-09
+
+### What's Changed
+
+* Organizing some files by [@cable8mm](https://github.com/cable8mm) in https://github.com/cable8mm/Youtube/pull/14
+* Add deployment to github pages and fix class comment errors by [@cable8mm](https://github.com/cable8mm) in https://github.com/cable8mm/Youtube/pull/15
+
+**Full Changelog**: https://github.com/cable8mm/Youtube/compare/v4.1.0...v4.2.0
+
 ## v4.1.0 - 2024-02-22
 
 ### What's Changed
