@@ -70,7 +70,7 @@ class Youtube
      *
      * @throws \Exception
      */
-    public function __construct($key, $config = [])
+    public function __construct($key, array $config = [])
     {
         if (is_string($key) && ! empty($key)) {
             $this->youtube_key = $key;
@@ -186,7 +186,7 @@ class Youtube
      *
      * @throws \Exception
      */
-    public function getVideoInfo($vId, $part = ['id', 'snippet', 'contentDetails', 'player', 'statistics', 'status'])
+    public function getVideoInfo(array|string $vId, $part = ['id', 'snippet', 'contentDetails', 'player', 'statistics', 'status'])
     {
         $API_URL = $this->getApi('videos.list');
         $params = [
@@ -213,7 +213,7 @@ class Youtube
      *
      * @throws \Exception
      */
-    public function getLocalizedVideoInfo($vId, $language, $part = ['id', 'snippet', 'contentDetails', 'player', 'statistics', 'status'])
+    public function getLocalizedVideoInfo(mixed $vId, string $language, $part = ['id', 'snippet', 'contentDetails', 'player', 'statistics', 'status'])
     {
 
         $API_URL = $this->getApi('videos.list');
@@ -240,7 +240,7 @@ class Youtube
      * @param  array  $part
      * @return array
      */
-    public function getPopularVideos($regionCode, $maxResults = 10, $part = ['id', 'snippet', 'contentDetails', 'player', 'statistics', 'status'])
+    public function getPopularVideos(string $regionCode, $maxResults = 10, $part = ['id', 'snippet', 'contentDetails', 'player', 'statistics', 'status'])
     {
         $API_URL = $this->getApi('videos.list');
         $params = [
@@ -263,7 +263,7 @@ class Youtube
      * @param  array  $part
      * @return array
      */
-    public function search($q, $maxResults = 10, $part = ['id', 'snippet'])
+    public function search(string $q, $maxResults = 10, $part = ['id', 'snippet'])
     {
         $params = [
             'q' => $q,
@@ -308,7 +308,7 @@ class Youtube
      * @param  array  $part
      * @return array
      */
-    public function searchChannelVideos($q, $channelId, $maxResults = 10, $order = null, $part = ['id', 'snippet'], $pageInfo = false)
+    public function searchChannelVideos($q, $channelId, $maxResults = 10, $order = null, $part = ['id', 'snippet'], mixed $pageInfo = false)
     {
         $params = [
             'q' => $q,
@@ -367,7 +367,7 @@ class Youtube
      * @param  array  $part
      * @return array
      */
-    public function listChannelVideos($channelId, $maxResults = 10, $order = null, $part = ['id', 'snippet'], $pageInfo = false)
+    public function listChannelVideos($channelId, $maxResults = 10, $order = null, $part = ['id', 'snippet'], mixed $pageInfo = false)
     {
         $params = [
             'type' => 'video',
@@ -433,7 +433,7 @@ class Youtube
      *
      * @throws \Exception
      */
-    public function getChannelByName($username, $optionalParams = [], $part = ['id', 'snippet', 'contentDetails', 'statistics'])
+    public function getChannelByName(string $username, $optionalParams = [], $part = ['id', 'snippet', 'contentDetails', 'statistics'])
     {
         $API_URL = $this->getApi('channels.list');
         $params = [
@@ -478,7 +478,7 @@ class Youtube
      *
      * @throws \Exception
      */
-    public function getChannelById($id, $optionalParams = [], $part = ['id', 'snippet', 'contentDetails', 'statistics'])
+    public function getChannelById(mixed $id, $optionalParams = [], $part = ['id', 'snippet', 'contentDetails', 'statistics'])
     {
         $API_URL = $this->getApi('channels.list');
         $params = [
@@ -583,7 +583,7 @@ class Youtube
      *
      * @throws \Exception
      */
-    public function getActivitiesByChannelId($channelId, $part = ['id', 'snippet', 'contentDetails'], $maxResults = 5, $pageInfo = false, $pageToken = '')
+    public function getActivitiesByChannelId(?string $channelId, $part = ['id', 'snippet', 'contentDetails'], $maxResults = 5, mixed $pageInfo = false, mixed $pageToken = '')
     {
         if (empty($channelId)) {
             throw new \InvalidArgumentException('ChannelId must be supplied');
