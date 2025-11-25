@@ -821,10 +821,10 @@ class Youtube
      */
     public function api_get($url, $params)
     {
-        //set the youtube key
+        // set the youtube key
         $params['key'] = $this->youtube_key;
 
-        //boilerplates for CURL
+        // boilerplates for CURL
         $tuCurl = curl_init();
 
         if (isset($_SERVER['HTTP_HOST']) && $this->config['use-http-host']) {

@@ -20,7 +20,7 @@ class YoutubeTest extends TestCase
         self::$youtubeEnabled = isset(self::$dotenv['YOUTUBE_ENABLED']) && self::$dotenv['YOUTUBE_ENABLED'] == 'true' ? true : false;
     }
 
-    public function test_getChannelVideos(): void
+    public function test_get_channel_videos(): void
     {
         if (self::$youtubeEnabled) {
             $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
@@ -37,7 +37,7 @@ class YoutubeTest extends TestCase
         }
     }
 
-    public function test_getChannelVideos_at_second(): void
+    public function test_get_channel_videos_at_second(): void
     {
         if (self::$youtubeEnabled) {
 
@@ -57,7 +57,7 @@ class YoutubeTest extends TestCase
         }
     }
 
-    public function test_getChannelVideos_in_future()
+    public function test_get_channel_videos_in_future()
     {
         if (self::$youtubeEnabled) {
             $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
