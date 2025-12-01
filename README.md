@@ -11,11 +11,11 @@
 
 Renew Laravel PHP Facade/Wrapper for the Youtube Data API v3 ( Non-OAuth )
 
-We have provided the API Documentation on the web. For more information, please visit https://www.palgle.com/Youtube/ ❤️
+We have provided the API Documentation on the web. For more information, please visit <https://www.palgle.com/Youtube/> ❤️
 
 ## Requirements
 
-- PHP 8.0 or higher
+- PHP 8.2 or higher
 - Laravel 8 or higher
 - API key from [Google Console](https://console.developers.google.com)
 
@@ -32,7 +32,7 @@ composer require cable8mm/youtube
 Publish config settings:
 
 ```bach
-$ php artisan vendor:publish --provider="Cable8mm\Youtube\YoutubeServiceProvider"
+php artisan vendor:publish --provider="Cable8mm\Youtube\YoutubeServiceProvider"
 ```
 
 Set your Youtube API key in the file:
