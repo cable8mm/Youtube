@@ -1,5 +1,14 @@
 # Release Notes
 
+## v5.0.0 - 2025-12-01
+
+### What's Changed
+
+* Let me show a api link in the README by [@cable8mm](https://github.com/cable8mm) in https://github.com/cable8mm/Youtube/pull/16
+* Add laravel 12 required by [@cable8mm](https://github.com/cable8mm) in https://github.com/cable8mm/Youtube/pull/17
+
+**Full Changelog**: https://github.com/cable8mm/Youtube/compare/v4.2.0...v5.0.0
+
 ## v4.2.0 - 2024-03-09
 
 ### What's Changed
