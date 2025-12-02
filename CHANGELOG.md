@@ -1,5 +1,14 @@
 # Release Notes
 
+## v5.0.1 - 2025-12-02
+
+### What's Changed
+
+* Add php84 for testing by [@cable8mm](https://github.com/cable8mm) in https://github.com/cable8mm/Youtube/pull/18
+* Update `nesbot/carbon` to 3.x by [@cable8mm](https://github.com/cable8mm) in https://github.com/cable8mm/Youtube/pull/19
+
+**Full Changelog**: https://github.com/cable8mm/Youtube/compare/v5.0.0...v5.0.1
+
 ## v5.0.0 - 2025-12-01
 
 ### What's Changed
