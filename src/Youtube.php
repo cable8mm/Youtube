@@ -353,8 +353,6 @@ class Youtube
             $params['pageToken'] = $pageToken;
         }
 
-        print_r($params);
-
         return $this->searchAdvanced($params, true);
     }
 
@@ -618,8 +616,8 @@ class Youtube
      */
     public static function parseVidFromURL($youtube_url)
     {
-        if (strpos($youtube_url, 'youtube.com')) {
-            if (strpos($youtube_url, 'embed')) {
+        if (strpos($youtube_url, 'youtube.com') !== false) {
+            if (strpos($youtube_url, 'embed') !== false) {
                 $path = static::_parse_url_path($youtube_url);
                 $vid = substr($path, 7);
 
@@ -629,7 +627,7 @@ class Youtube
 
                 return $params['v'];
             }
-        } elseif (strpos($youtube_url, 'youtu.be')) {
+        } elseif (strpos($youtube_url, 'youtu.be') !== false) {
             $path = static::_parse_url_path($youtube_url);
             $vid = substr($path, 1);
 
@@ -650,6 +648,10 @@ class Youtube
     public function getChannelFromURL($youtube_url)
     {
         if (strpos($youtube_url, 'youtube.com') === false) {
+            throw new \Exception('The supplied URL does not look like a Youtube URL');
+        }
+
+        if (strpos($youtube_url, 'youtube.com') !== false && strpos($youtube_url, 'youtu.be') !== false) {
             throw new \Exception('The supplied URL does not look like a Youtube URL');
         }
 
@@ -828,7 +830,9 @@ class Youtube
         $tuCurl = curl_init();
 
         if (isset($_SERVER['HTTP_HOST']) && $this->config['use-http-host']) {
-            curl_setopt($tuCurl, CURLOPT_HEADER, ['Referer' => $_SERVER['HTTP_HOST']]);
+            curl_setopt($tuCurl, CURLOPT_HTTPHEADER, [
+                'Referer: '.$_SERVER['HTTP_HOST'],
+            ]);
         }
 
         curl_setopt($tuCurl, CURLOPT_URL, $url.(strpos($url, '?') === false ? '?' : '').http_build_query($params));

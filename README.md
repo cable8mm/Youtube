@@ -31,7 +31,7 @@ composer require cable8mm/youtube
 
 Publish config settings:
 
-```bach
+```bash
 php artisan vendor:publish --provider="Cable8mm\Youtube\YoutubeServiceProvider"
 ```
 
