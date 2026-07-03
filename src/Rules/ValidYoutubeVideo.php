@@ -38,11 +38,9 @@ class ValidYoutubeVideo implements Rule
 
     /**
      * Get the validation error message.
-     *
-     * @return string
      */
-    public function message()
+    public function message(): string
     {
-        return __('The supplied URL does not look like a Youtube URL.');
+        return 'The supplied URL does not look like a Youtube URL.';
     }
 }
