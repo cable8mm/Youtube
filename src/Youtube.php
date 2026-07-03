@@ -182,7 +182,7 @@ class Youtube
 
     /**
      * @param  array  $part
-     * @return \StdClass
+     * @return \StdClass|array|null
      *
      * @throws \Exception
      */
@@ -208,8 +208,9 @@ class Youtube
      * Gets localized video info by language (f.ex. de) by adding this parameter after video id
      * Youtube::getLocalizedVideoInfo($video->url, 'de')
      *
+     * @param  array|string  $vId
      * @param  array  $part
-     * @return \StdClass
+     * @return \StdClass|array|null
      *
      * @throws \Exception
      */
@@ -253,25 +254,6 @@ class Youtube
         $apiData = $this->api_get($API_URL, $params);
 
         return $this->decodeList($apiData);
-    }
-
-    /**
-     * Simple search interface, this search all stuffs
-     * and order by relevance
-     *
-     * @param  int  $maxResults
-     * @param  array  $part
-     * @return array
-     */
-    public function search(string $q, $maxResults = 10, $part = ['id', 'snippet'])
-    {
-        $params = [
-            'q' => $q,
-            'part' => implode(',', $part),
-            'maxResults' => $maxResults,
-        ];
-
-        return $this->searchAdvanced($params);
     }
 
     /**
@@ -427,7 +409,7 @@ class Youtube
     /**
      * @param  array  $optionalParams
      * @param  array  $part
-     * @return \StdClass
+     * @return \StdClass|null
      *
      * @throws \Exception
      */
@@ -447,7 +429,10 @@ class Youtube
     }
 
     /**
-     * @return false|\StdClass
+     * @param  string  $username
+     * @param  int  $maxResults
+     * @param  array  $part
+     * @return \StdClass|null
      *
      * @throws \Exception
      */
@@ -467,12 +452,15 @@ class Youtube
 
             return $this->getChannelById($channelId);
         }
+
+        return null;
     }
 
     /**
+     * @param  array|string  $id
      * @param  array  $optionalParams
      * @param  array  $part
-     * @return \StdClass
+     * @return \StdClass|array|null
      *
      * @throws \Exception
      */
@@ -524,7 +512,9 @@ class Youtube
     }
 
     /**
-     * @return \StdClass
+     * @param  array|string  $id
+     * @param  array  $part
+     * @return \StdClass|array|null
      *
      * @throws \Exception
      */
@@ -701,7 +691,7 @@ class Youtube
      * (Don't use this to decode the response containing list of objects)
      *
      * @param  string  $apiData  the api response from youtube
-     * @return \StdClass an Youtube resource object
+     * @return \StdClass|null an Youtube resource object or null if not found
      *
      * @throws \Exception
      */
@@ -726,7 +716,7 @@ class Youtube
      * Decode the response from youtube, extract the multiple resource object.
      *
      * @param  string  $apiData  the api response from youtube
-     * @return \StdClass an Youtube resource object
+     * @return array|null Array of Youtube resource objects or null if not found
      *
      * @throws \Exception
      */
@@ -751,7 +741,7 @@ class Youtube
      * Decode the response from youtube, extract the list of resource objects
      *
      * @param  string  $apiData  response string from youtube
-     * @return array Array of StdClass objects
+     * @return array|false Array of StdClass objects or false if not found
      *
      * @throws \Exception
      */

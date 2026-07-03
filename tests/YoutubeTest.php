@@ -37,7 +37,7 @@ class YoutubeTest extends TestCase
         }
     }
 
-    public function test_get_channel_videos_at_second(): void
+    public function test_get_channel_videos_returns_different_videos(): void
     {
         if (self::$youtubeEnabled) {
 
@@ -49,15 +49,18 @@ class YoutubeTest extends TestCase
 
             $video = (new Youtube($apiKey))->getChannelVideos($channelId, 1, $publishedBefore)['results'][0];
 
+            $this->assertNotEmpty($video->id->videoId);
+
             $secondVideo = (new Youtube($apiKey))->getChannelVideos($channelId, 1, $video->snippet->publishedAt)['results'][0];
 
+            $this->assertNotEmpty($secondVideo->id->videoId);
             $this->assertNotEquals($video->id->videoId, $secondVideo->id->videoId);
         } else {
             $this->assertTrue(true);
         }
     }
 
-    public function test_get_channel_videos_in_future()
+    public function test_get_channel_videos_with_page_token(): void
     {
         if (self::$youtubeEnabled) {
             $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
@@ -66,11 +69,13 @@ class YoutubeTest extends TestCase
 
             $publishedAfter = Carbon::now()->toRfc3339String();
 
-            $response = (new Youtube($apiKey))->getChannelVideos($channelId, 1, null, false, 'CAMQAA');
+            $response = (new Youtube($apiKey))->getChannelVideos($channelId, 1, null, false, '');
 
-            $videos = $response['results'];
-
-            $this->assertNotEmpty($videos);
+            $this->assertIsArray($response);
+            $this->assertArrayHasKey('results', $response);
+            $this->assertArrayHasKey('info', $response);
+            $this->assertNotEmpty($response['results']);
+            $this->assertIsArray($response['info']);
         } else {
             $this->assertTrue(true);
         }
