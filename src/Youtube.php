@@ -14,7 +14,7 @@ class Youtube
     /**
      * @var array
      */
-    public $APIs = [
+    protected $APIs = [
         'categories.list' => 'https://www.googleapis.com/youtube/v3/videoCategories',
         'videos.list' => 'https://www.googleapis.com/youtube/v3/videos',
         'search.list' => 'https://www.googleapis.com/youtube/v3/search',
@@ -28,7 +28,7 @@ class Youtube
     /**
      * @var array
      */
-    public $youtube_reserved_urls = [
+    protected $youtube_reserved_urls = [
         '\/about\b',
         '\/account\b',
         '\/account_(.*)',
@@ -55,7 +55,7 @@ class Youtube
     /**
      * @var array
      */
-    public $page_info = [];
+    protected $page_info = [];
 
     /**
      * @var array
@@ -708,25 +708,18 @@ class Youtube
     public function decodeSingle(&$apiData)
     {
         $resObj = json_decode($apiData);
-        if (isset($resObj->error)) {
-            $msg = 'Error '.$resObj->error->code.' '.$resObj->error->message;
-            if (isset($resObj->error->errors[0])) {
-                $msg .= ' : '.$resObj->error->errors[0]->reason;
-            }
+        $this->handleApiError($resObj);
 
-            throw new \Exception($msg);
-        } else {
-            if (isset($resObj->items)) {
-                $itemsArray = $resObj->items;
-                if (! is_array($itemsArray) || count($itemsArray) == 0) {
-                    return false;
-                } else {
-                    return $itemsArray[0];
-                }
+        if (isset($resObj->items)) {
+            $itemsArray = $resObj->items;
+            if (! is_array($itemsArray) || count($itemsArray) == 0) {
+                return false;
+            } else {
+                return $itemsArray[0];
             }
-
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -740,26 +733,18 @@ class Youtube
     public function decodeMultiple(&$apiData)
     {
         $resObj = json_decode($apiData);
-        if (isset($resObj->error)) {
-            $msg = 'Error '.$resObj->error->code.' '.$resObj->error->message;
-            if (isset($resObj->error->errors[0])) {
-                $msg .= ' : '.$resObj->error->errors[0]->reason;
+        $this->handleApiError($resObj);
+
+        if (isset($resObj->items)) {
+            $itemsArray = $resObj->items;
+            if (! is_array($itemsArray) || count($itemsArray) == 0) {
+                return false;
+            } else {
+                return $itemsArray;
             }
-
-            throw new \Exception($msg);
-        } else {
-
-            if (isset($resObj->items)) {
-                $itemsArray = $resObj->items;
-                if (! is_array($itemsArray) || count($itemsArray) == 0) {
-                    return false;
-                } else {
-                    return $itemsArray;
-                }
-            }
-
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -773,6 +758,49 @@ class Youtube
     public function decodeList(&$apiData)
     {
         $resObj = json_decode($apiData);
+        $this->handleApiError($resObj);
+
+        $this->page_info = [
+            'kind' => $resObj->kind,
+            'etag' => $resObj->etag,
+            'prevPageToken' => null,
+            'nextPageToken' => null,
+        ];
+
+        if (isset($resObj->pageInfo)) {
+            $this->page_info['resultsPerPage'] = $resObj->pageInfo->resultsPerPage;
+            $this->page_info['totalResults'] = $resObj->pageInfo->totalResults;
+        }
+
+        if (isset($resObj->prevPageToken)) {
+            $this->page_info['prevPageToken'] = $resObj->prevPageToken;
+        }
+
+        if (isset($resObj->nextPageToken)) {
+            $this->page_info['nextPageToken'] = $resObj->nextPageToken;
+        }
+
+        if (isset($resObj->items)) {
+            $itemsArray = $resObj->items;
+            if (! is_array($itemsArray) || count($itemsArray) == 0) {
+                return false;
+            } else {
+                return $itemsArray;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Handle API error response from YouTube
+     *
+     * @param  object  $resObj
+     *
+     * @throws \Exception
+     */
+    private function handleApiError($resObj): void
+    {
         if (isset($resObj->error)) {
             $msg = 'Error '.$resObj->error->code.' '.$resObj->error->message;
             if (isset($resObj->error->errors[0])) {
@@ -780,37 +808,6 @@ class Youtube
             }
 
             throw new \Exception($msg);
-        } else {
-            $this->page_info = [
-                'kind' => $resObj->kind,
-                'etag' => $resObj->etag,
-                'prevPageToken' => null,
-                'nextPageToken' => null,
-            ];
-
-            if (isset($resObj->pageInfo)) {
-                $this->page_info['resultsPerPage'] = $resObj->pageInfo->resultsPerPage;
-                $this->page_info['totalResults'] = $resObj->pageInfo->totalResults;
-            }
-
-            if (isset($resObj->prevPageToken)) {
-                $this->page_info['prevPageToken'] = $resObj->prevPageToken;
-            }
-
-            if (isset($resObj->nextPageToken)) {
-                $this->page_info['nextPageToken'] = $resObj->nextPageToken;
-            }
-
-            if (isset($resObj->items)) {
-                $itemsArray = $resObj->items;
-                if (! is_array($itemsArray) || count($itemsArray) == 0) {
-                    return false;
-                } else {
-                    return $itemsArray;
-                }
-            }
-
-            return false;
         }
     }
 
