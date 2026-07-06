@@ -20,16 +20,16 @@ A beautifully crafted Laravel package that provides a simple, fluent interface t
 - 🔒 **Type-Safe** - Full type hints and strict typing for PHP 8.2+
 - 🎨 **Laravel Native** - Seamless integration with Laravel ecosystem
 - 🚀 **High Performance** - Built-in response caching to reduce API calls
-- ✅ **Well Tested** - 64 comprehensive tests with 100% pass rate
+- ✅ **Well Tested** - 73 comprehensive tests with 100% pass rate
 - 🛡️ **Custom Exceptions** - Domain-specific error handling
-- 📝 **Validation Rules** - Built-in validation for YouTube URLs
+- 📝 **Validation Rules** - Built-in validation for YouTube URLs (Laravel 10+)
 - 🔄 **Auto-Discovery** - Automatic service provider registration
 - 📚 **Extensive Documentation** - Clear examples and usage guides
 
 ## 📋 Requirements
 
 - PHP 8.2 or higher
-- Laravel 8.x, 9.x, 10.x, 11.x, or 12.x
+- Laravel 10.x, 11.x, 12.x, or 13.x
 - YouTube Data API v3 Key ([Get one here](https://console.developers.google.com))
 
 ## 🚀 Installation
@@ -273,6 +273,8 @@ $request->validate([
 - `https://youtu.be/VIDEO_ID`
 - `https://www.youtube.com/embed/VIDEO_ID`
 
+**Note:** Uses Laravel 10+ `ValidationRule` interface with closure-based error messages.
+
 ## 🧪 Testing
 
 Run the test suite:
@@ -287,9 +289,9 @@ YOUTUBE_ENABLED=true composer test
 
 **Test Coverage:**
 
-- ✅ 64 comprehensive tests
+- ✅ 73 comprehensive tests
 - ✅ Unit tests (no API key required)
-- ✅ Integration tests (requires API key)
+- ✅ Integration tests with Orchestra Testbench (requires API key)
 - ✅ 100% pass rate
 
 ## 📁 Package Structure
@@ -326,7 +328,6 @@ See [CHANGELOG.md](CHANGELOG.md) for recent changes.
 
 ## 🔗 Links
 
-- 📚 [API Documentation](https://www.palgle.com/Youtube/)
 - 📦 [Packagist](https://packagist.org/packages/cable8mm/youtube)
 - 🐛 [Issue Tracker](https://github.com/cable8mm/Youtube/issues)
 - 💻 [GitHub Repository](https://github.com/cable8mm/Youtube)
