@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Cable8mm\Youtube\Facades\Youtube | API</title>
+    <title>Cable8mm\Youtube\Exceptions\YoutubeApiException | API</title>
 
             <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
@@ -19,7 +19,7 @@
 
     </head>
 
-    <body id="class" data-name="class:Cable8mm_Youtube_Facades_Youtube" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
+    <body id="class" data-name="class:Cable8mm_Youtube_Exceptions_YoutubeApiException" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -75,18 +75,18 @@
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
                 <li><span class="label label-default">class</span></li>
-                        <li><a href="../../../Cable8mm.html">Cable8mm</a></li><li class="backslash">\</li><li><a href="../../../Cable8mm/Youtube.html">Youtube</a></li><li class="backslash">\</li><li><a href="../../../Cable8mm/Youtube/Facades.html">Facades</a></li><li class="backslash">\</li><li>Youtube</li>
+                        <li><a href="../../../Cable8mm.html">Cable8mm</a></li><li class="backslash">\</li><li><a href="../../../Cable8mm/Youtube.html">Youtube</a></li><li class="backslash">\</li><li><a href="../../../Cable8mm/Youtube/Exceptions.html">Exceptions</a></li><li class="backslash">\</li><li>YoutubeApiException</li>
             </ol>
         </div>
                 <div id="page-content">
     <div class="page-header">
-        <h1>Youtube    
+        <h1>YoutubeApiException    
             </h1>
     </div>
 
     
     <p>        class
-    <strong>Youtube</strong>        extends <abbr title="Illuminate\Support\Facades\Facade">Facade</abbr>
+    <strong>YoutubeApiException</strong>        extends <a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a>
 </p>
 
         
@@ -103,12 +103,22 @@
             <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-2 type">
-                    static&nbsp;string
+                    
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getFacadeAccessor">getFacadeAccessor</a>()
+                    <a href="#method___construct">__construct</a>(string $message = &#039;&#039;, int $code = 0, <abbr title="Cable8mm\Youtube\Exceptions\Throwable">Throwable</abbr>|null $previous = null)
         
-                                            <p><p>Get the registered name of the component.</p></p>                </div>
+                                            <p><p>Create a new YouTube API exception instance.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;<a href="../../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_fromApiError">fromApiError</a>(object $errorObj)
+        
+                                            <p><p>Create an exception from YouTube API error response.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -118,10 +128,10 @@
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method_getFacadeAccessor">
-        <div class="location">at line 14</div>
-        <code>        static    protected        string
-    <strong>getFacadeAccessor</strong>()
+                    <h3 id="method___construct">
+        <div class="location">at line 12</div>
+        <code>                    
+    <strong>__construct</strong>(string $message = &#039;&#039;, int $code = 0, <abbr title="Cable8mm\Youtube\Exceptions\Throwable">Throwable</abbr>|null $previous = null)
         </code>
     </h3>
     <div class="details">    
@@ -130,15 +140,69 @@
             
 
         <div class="method-description">
-                            <p><p>Get the registered name of the component.</p></p>                        
+                            <p><p>Create a new YouTube API exception instance.</p></p>                        
         </div>
         <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$message</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$code</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><abbr title="Cable8mm\Youtube\Exceptions\Throwable">Throwable</abbr>|null</td>
+                <td>$previous</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_fromApiError">
+        <div class="location">at line 20</div>
+        <code>        static            <a href="../../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a>
+    <strong>fromApiError</strong>(object $errorObj)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Create an exception from YouTube API error response.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>object</td>
+                <td>$errorObj</td>
+                <td></td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td>string</td>
+            <td><a href="../../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
             <td></td>
         </tr>
     </table>

@@ -1,5 +1,5 @@
 var Doctum = {
-    treeJson: {"tree":{"l":0,"n":"","p":"","c":[{"l":1,"n":"Cable8mm","p":"Cable8mm","c":[{"l":2,"n":"Youtube","p":"Cable8mm/Youtube","c":[{"l":3,"n":"Facades","p":"Cable8mm/Youtube/Facades","c":[{"l":4,"n":"Youtube","p":"Cable8mm/Youtube/Facades/Youtube"}]},{"l":3,"n":"Rules","p":"Cable8mm/Youtube/Rules","c":[{"l":4,"n":"ValidYoutubeVideo","p":"Cable8mm/Youtube/Rules/ValidYoutubeVideo"}]},{"l":3,"n":"Youtube","p":"Cable8mm/Youtube/Youtube"},{"l":3,"n":"YoutubeServiceProvider","p":"Cable8mm/Youtube/YoutubeServiceProvider"}]}]}]},"treeOpenLevel":2},
+    treeJson: {"tree":{"l":0,"n":"","p":"","c":[{"l":1,"n":"Cable8mm","p":"Cable8mm","c":[{"l":2,"n":"Youtube","p":"Cable8mm/Youtube","c":[{"l":3,"n":"Cache","p":"Cable8mm/Youtube/Cache","c":[{"l":4,"n":"YoutubeCache","p":"Cable8mm/Youtube/Cache/YoutubeCache"}]},{"l":3,"n":"Exceptions","p":"Cable8mm/Youtube/Exceptions","c":[{"l":4,"n":"YoutubeApiException","p":"Cable8mm/Youtube/Exceptions/YoutubeApiException"}]},{"l":3,"n":"Facades","p":"Cable8mm/Youtube/Facades","c":[{"l":4,"n":"Youtube","p":"Cable8mm/Youtube/Facades/Youtube"}]},{"l":3,"n":"Rules","p":"Cable8mm/Youtube/Rules","c":[{"l":4,"n":"ValidYoutubeVideo","p":"Cable8mm/Youtube/Rules/ValidYoutubeVideo"}]},{"l":3,"n":"Youtube","p":"Cable8mm/Youtube/Youtube"},{"l":3,"n":"YoutubeServiceProvider","p":"Cable8mm/Youtube/YoutubeServiceProvider"}]}]}]},"treeOpenLevel":2},
     /** @var boolean */
     treeLoaded: false,
     /** @var boolean */
@@ -261,10 +261,13 @@ var Doctum = {
     /**
      * Clean the search query
      *
-     * @param string query
+     * @param string|null query
      * @return string
      */
     cleanSearchQuery: function (query) {
+        if (typeof query !== 'string') {
+            return '';
+        }
         // replace any chars that could lead to injecting code in our regex
         // remove start or end spaces
         // replace backslashes by an escaped version, use case in search: \myRootFunction

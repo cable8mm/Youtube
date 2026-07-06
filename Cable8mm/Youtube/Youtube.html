@@ -90,6 +90,7 @@
 </p>
 
         
+        
     
         
 
@@ -100,17 +101,8 @@
 
             <table class="table table-condensed">
                     <tr>
-                <td class="type" id="property_youtube_key">
-                                        protected                                        string
-                                                                                
-                                    </td>
-                <td>$youtube_key</td>
-                <td class="last"></td>
-                <td></td>
-            </tr>
-                    <tr>
                 <td class="type" id="property_APIs">
-                                                                                array
+                                        protected                                        array
                                                                                 
                                     </td>
                 <td>$APIs</td>
@@ -119,7 +111,7 @@
             </tr>
                     <tr>
                 <td class="type" id="property_youtube_reserved_urls">
-                                                                                array
+                                        protected                                        array
                                                                                 
                                     </td>
                 <td>$youtube_reserved_urls</td>
@@ -128,7 +120,7 @@
             </tr>
                     <tr>
                 <td class="type" id="property_page_info">
-                                                                                array
+                                        protected                                        array
                                                                                 
                                     </td>
                 <td>$page_info</td>
@@ -144,6 +136,24 @@
                 <td class="last"></td>
                 <td></td>
             </tr>
+                    <tr>
+                <td class="type" id="property_cacheEnabled">
+                                        protected                                        bool
+                                                                                
+                                    </td>
+                <td>$cacheEnabled</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_cacheTtl">
+                                        protected                                        int
+                                                                                
+                                    </td>
+                <td>$cacheTtl</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
             </table>
 
     
@@ -155,10 +165,9 @@
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(string $key, array $config = [])
+                    <a href="#method___construct">__construct</a>(string $youtube_key, array $config = [])
         
-                                            <p><p>Constructor
-$youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>                </div>
+                                            <p>Constructor</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -166,7 +175,7 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>                </div>
                     <a href="../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_useHttpHost">useHttpHost</a>($setting)
+                    <a href="#method_useHttpHost">useHttpHost</a>(bool $setting)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -177,7 +186,7 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>                </div>
                     <a href="../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_setApiKey">setApiKey</a>($key)
+                    <a href="#method_setApiKey">setApiKey</a>(string $key)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -196,10 +205,30 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>                </div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
+                    <a href="../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getCategories">getCategories</a>($regionCode = &#039;US&#039;, $part = [&#039;snippet&#039;])
+                    <a href="#method_cache">cache</a>(bool $enabled = true)
+        
+                                            <p><p>Enable or disable caching.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setCacheTtl">setCacheTtl</a>(int $ttl)
+        
+                                            <p><p>Set cache TTL.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getCategories">getCategories</a>(string $regionCode = &#039;US&#039;, array $part = [&#039;snippet&#039;])
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -210,7 +239,7 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>                </div>
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getCommentThreadsByVideoId">getCommentThreadsByVideoId</a>(string $videoId = null, int $maxResults = 20, string $order = null, array $part = [&#039;id&#039;, &#039;replies&#039;, &#039;snippet&#039;], bool $pageInfo = false)
+                    <a href="#method_getCommentThreadsByVideoId">getCommentThreadsByVideoId</a>(string|null $videoId = null, int $maxResults = 20, string|null $order = null, array $part = [&#039;id&#039;, &#039;replies&#039;, &#039;snippet&#039;], bool $pageInfo = false)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -221,7 +250,7 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>                </div>
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getCommentThreads">getCommentThreads</a>(string $channelId = null, string $id = null, string $videoId = null, int $maxResults = 20, string $order = null, array $part = [&#039;id&#039;, &#039;replies&#039;, &#039;snippet&#039;], bool $pageInfo = false)
+                    <a href="#method_getCommentThreads">getCommentThreads</a>(string|null $channelId = null, string|null $id = null, string|null $videoId = null, int $maxResults = 20, string|null $order = null, array $part = [&#039;id&#039;, &#039;replies&#039;, &#039;snippet&#039;], bool $pageInfo = false)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -229,10 +258,10 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>                </div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
+                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getVideoInfo">getVideoInfo</a>(<abbr title="Cable8mm\Youtube\array|string">array|string</abbr> $vId, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;player&#039;, &#039;statistics&#039;, &#039;status&#039;])
+                    <a href="#method_getVideoInfo">getVideoInfo</a>(array|string $vId, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;player&#039;, &#039;statistics&#039;, &#039;status&#039;])
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -240,44 +269,46 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>                </div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
+                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getLocalizedVideoInfo">getLocalizedVideoInfo</a>(mixed $vId, string $language, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;player&#039;, &#039;statistics&#039;, &#039;status&#039;])
         
-                                            <p><p>Gets localized video info by language (f.ex. de) by adding this parameter after video id
-Youtube::getLocalizedVideoInfo($video-&gt;url, 'de')</p></p>                </div>
+                                            <p class="no-description">No description</p>
+                                    </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    array
+                    array|false
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getPopularVideos">getPopularVideos</a>(string $regionCode, int $maxResults = 10, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;player&#039;, &#039;statistics&#039;, &#039;status&#039;])
         
-                                            <p><p>Gets popular videos for a specific region (ISO 3166-1 alpha-2)</p></p>                </div>
+                                            <p class="no-description">No description</p>
+                                    </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    array
+                    array|false
                 </div>
                 <div class="col-md-8">
                     <a href="#method_search">search</a>(string $q, int $maxResults = 10, array $part = [&#039;id&#039;, &#039;snippet&#039;])
         
-                                            <p><p>Simple search interface, this search all stuffs
-and order by relevance</p></p>                </div>
+                                            <p class="no-description">No description</p>
+                                    </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
+                    array|false
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_searchVideos">searchVideos</a>(string $q, int $maxResults = 10, string $order = null, array $part = [&#039;id&#039;])
+                    <a href="#method_searchVideos">searchVideos</a>(string $q, int $maxResults = 10, string|null $order = null, array $part = [&#039;id&#039;])
         
-                                            <p><p>Search only videos</p></p>                </div>
+                                            <p class="no-description">No description</p>
+                                    </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -285,19 +316,10 @@ and order by relevance</p></p>                </div>
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_searchChannelVideos">searchChannelVideos</a>(string $q, string $channelId, int $maxResults = 10, string $order = null, array $part = [&#039;id&#039;, &#039;snippet&#039;], mixed $pageInfo = false)
+                    <a href="#method_searchChannelVideos">searchChannelVideos</a>(string $q, string $channelId, int $maxResults = 10, string|null $order = null, array $part = [&#039;id&#039;, &#039;snippet&#039;], bool $pageInfo = false)
         
-                                            <p><p>Search only videos in the channel</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <abbr title="Cable8mm\Youtube\array|bool">array|bool</abbr>
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_getChannelVideos">getChannelVideos</a>(string $channelId, int $maxResults, string|null $publishedBefore, bool|null $isFuture = false, string|null $pageToken = &#039;&#039;)
-        
-                                            <p><p>Get videos from the channel.</p></p>                </div>
+                                            <p class="no-description">No description</p>
+                                    </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -305,9 +327,10 @@ and order by relevance</p></p>                </div>
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_listChannelVideos">listChannelVideos</a>(string $channelId, int $maxResults = 10, string $order = null, array $part = [&#039;id&#039;, &#039;snippet&#039;], mixed $pageInfo = false)
+                    <a href="#method_getChannelVideos">getChannelVideos</a>(string $channelId, int $maxResults, string|null $publishedBefore, bool $isFuture = false, string $pageToken = &#039;&#039;)
         
-                                            <p><p>List videos in the channel</p></p>                </div>
+                                            <p class="no-description">No description</p>
+                                    </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -315,10 +338,21 @@ and order by relevance</p></p>                </div>
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_searchAdvanced">searchAdvanced</a>($params, $pageInfo = false)
+                    <a href="#method_listChannelVideos">listChannelVideos</a>(string $channelId, int $maxResults = 10, string|null $order = null, array $part = [&#039;id&#039;, &#039;snippet&#039;], bool $pageInfo = false)
         
-                                            <p><p>Generic Search interface, use any parameters specified in
-the API reference</p></p>                </div>
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|false
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_searchAdvanced">searchAdvanced</a>(array $params, bool $pageInfo = false)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -326,15 +360,15 @@ the API reference</p></p>                </div>
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_paginateResults">paginateResults</a>($params, $token = null)
+                    <a href="#method_paginateResults">paginateResults</a>(array $params, string|null $token = null)
         
-                                            <p><p>Generic Search Paginator, use any parameters specified in
-the API reference and pass through nextPageToken as $token if set.</p></p>                </div>
+                                            <p class="no-description">No description</p>
+                                    </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
+                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getChannelByName">getChannelByName</a>(string $username, array $optionalParams = [], array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;statistics&#039;])
@@ -345,10 +379,10 @@ the API reference and pass through nextPageToken as $token if set.</p></p>      
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    false|<a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
+                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_searchChannelByName">searchChannelByName</a>($username, $maxResults = 1, $part = [&#039;id&#039;, &#039;snippet&#039;])
+                    <a href="#method_searchChannelByName">searchChannelByName</a>(string $username, int $maxResults = 1, array $part = [&#039;id&#039;, &#039;snippet&#039;])
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -356,7 +390,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>      
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
+                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getChannelById">getChannelById</a>(mixed $id, array $optionalParams = [], array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;statistics&#039;])
@@ -378,10 +412,10 @@ the API reference and pass through nextPageToken as $token if set.</p></p>      
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
+                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getPlaylistById">getPlaylistById</a>($id, $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;status&#039;])
+                    <a href="#method_getPlaylistById">getPlaylistById</a>(mixed $id, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;status&#039;])
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -403,7 +437,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>      
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getActivitiesByChannelId">getActivitiesByChannelId</a>(string|null $channelId, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;], int $maxResults = 5, mixed $pageInfo = false, mixed $pageToken = &#039;&#039;)
+                    <a href="#method_getActivitiesByChannelId">getActivitiesByChannelId</a>(string $channelId, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;], int $maxResults = 5, bool $pageInfo = false, string $pageToken = &#039;&#039;)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -421,7 +455,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>      
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    object
+                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getChannelFromURL">getChannelFromURL</a>(string $youtube_url)
@@ -434,7 +468,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>      
                     mixed
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getApi">getApi</a>($name)
+                    <a href="#method_getApi">getApi</a>(string $name)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -442,7 +476,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>      
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
+                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null
                 </div>
                 <div class="col-md-8">
                     <a href="#method_decodeSingle">decodeSingle</a>(string $apiData)
@@ -452,17 +486,17 @@ the API reference and pass through nextPageToken as $token if set.</p></p>      
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
+                    array|null
                 </div>
                 <div class="col-md-8">
                     <a href="#method_decodeMultiple">decodeMultiple</a>(string $apiData)
         
-                                            <p><p>Decode the response from youtube, extract the multiple resource object.</p></p>                </div>
+                                            <p><p>Decode the response from youtube, extract the multiple resource objects.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    array
+                    array|false
                 </div>
                 <div class="col-md-8">
                     <a href="#method_decodeList">decodeList</a>(string $apiData)
@@ -472,12 +506,12 @@ the API reference and pass through nextPageToken as $token if set.</p></p>      
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    mixed
+                    string
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_api_get">api_get</a>($url, $params)
+                    <a href="#method_api_get">api_get</a>(string $url, array $params)
         
-                                            <p><p>Using CURL to issue a GET request</p></p>                </div>
+                                            <p><p>Using CURL to issue a GET request.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -508,18 +542,18 @@ the API reference and pass through nextPageToken as $token if set.</p></p>      
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location">at line 73</div>
+        <div class="location">at line 72</div>
         <code>                    
-    <strong>__construct</strong>(string $key, array $config = [])
+    <strong>__construct</strong>(string $youtube_key, array $config = [])
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
         <div class="method-description">
-                            <p><p>Constructor
-$youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>                        
+                            <p>Constructor</p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -527,7 +561,7 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
                     <table class="table table-condensed">
                     <tr>
                 <td>string</td>
-                <td>$key</td>
+                <td>$youtube_key</td>
                 <td></td>
             </tr>
                     <tr>
@@ -543,7 +577,7 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/InvalidArgumentException">InvalidArgumentException</a></td>
                 <td></td>
             </tr>
             </table>
@@ -556,12 +590,13 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_useHttpHost">
-        <div class="location">at line 86</div>
+        <div class="location">at line 82</div>
         <code>                    <a href="../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a>
-    <strong>useHttpHost</strong>($setting)
+    <strong>useHttpHost</strong>(bool $setting)
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -574,7 +609,7 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>bool</td>
                 <td>$setting</td>
                 <td></td>
             </tr>
@@ -599,12 +634,13 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_setApiKey">
-        <div class="location">at line 96</div>
+        <div class="location">at line 89</div>
         <code>                    <a href="../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a>
-    <strong>setApiKey</strong>($key)
+    <strong>setApiKey</strong>(string $key)
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -617,7 +653,7 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>string</td>
                 <td>$key</td>
                 <td></td>
             </tr>
@@ -642,12 +678,13 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getApiKey">
-        <div class="location">at line 106</div>
+        <div class="location">at line 96</div>
         <code>                    string
     <strong>getApiKey</strong>()
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -674,13 +711,100 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getCategories">
-        <div class="location">at line 116</div>
-        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
-    <strong>getCategories</strong>($regionCode = &#039;US&#039;, $part = [&#039;snippet&#039;])
+                    <h3 id="method_cache">
+        <div class="location">at line 104</div>
+        <code>                    <a href="../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a>
+    <strong>cache</strong>(bool $enabled = true)
         </code>
     </h3>
     <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Enable or disable caching.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>bool</td>
+                <td>$enabled</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setCacheTtl">
+        <div class="location">at line 114</div>
+        <code>                    <a href="../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a>
+    <strong>setCacheTtl</strong>(int $ttl)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set cache TTL.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$ttl</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getCategories">
+        <div class="location">at line 126</div>
+        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null
+    <strong>getCategories</strong>(string $regionCode = &#039;US&#039;, array $part = [&#039;snippet&#039;])
+        </code>
+    </h3>
+    <div class="details">    
+            
     
             
 
@@ -693,12 +817,12 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>string</td>
                 <td>$regionCode</td>
                 <td></td>
             </tr>
                     <tr>
-                <td></td>
+                <td>array</td>
                 <td>$part</td>
                 <td></td>
             </tr>
@@ -709,7 +833,7 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a></td>
+            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null</td>
             <td></td>
         </tr>
     </table>
@@ -719,7 +843,7 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
             </table>
@@ -732,12 +856,13 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getCommentThreadsByVideoId">
-        <div class="location">at line 140</div>
+        <div class="location">at line 145</div>
         <code>                    array
-    <strong>getCommentThreadsByVideoId</strong>(string $videoId = null, int $maxResults = 20, string $order = null, array $part = [&#039;id&#039;, &#039;replies&#039;, &#039;snippet&#039;], bool $pageInfo = false)
+    <strong>getCommentThreadsByVideoId</strong>(string|null $videoId = null, int $maxResults = 20, string|null $order = null, array $part = [&#039;id&#039;, &#039;replies&#039;, &#039;snippet&#039;], bool $pageInfo = false)
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -750,29 +875,29 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>string</td>
+                <td>string|null</td>
                 <td>$videoId</td>
-                <td><p>Instructs the API to return comment threads containing comments about the specified channel. (The response will not include comments left on videos that the channel uploaded.)</p></td>
+                <td></td>
             </tr>
                     <tr>
                 <td>int</td>
                 <td>$maxResults</td>
-                <td><p>Specifies the maximum number of items that should be returned in the result set. Acceptable values are 1 to 100, inclusive. The default value is 20.</p></td>
+                <td></td>
             </tr>
                     <tr>
-                <td>string</td>
+                <td>string|null</td>
                 <td>$order</td>
-                <td><p>Specifies the order in which the API response should list comment threads. Valid values are: time, relevance.</p></td>
+                <td></td>
             </tr>
                     <tr>
                 <td>array</td>
                 <td>$part</td>
-                <td><p>Specifies a list of one or more commentThread resource properties that the API response will include.</p></td>
+                <td></td>
             </tr>
                     <tr>
                 <td>bool</td>
                 <td>$pageInfo</td>
-                <td><p>Add page info to returned array.</p></td>
+                <td></td>
             </tr>
             </table>
 
@@ -791,7 +916,7 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
             </table>
@@ -804,12 +929,13 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getCommentThreads">
-        <div class="location">at line 158</div>
+        <div class="location">at line 155</div>
         <code>                    array
-    <strong>getCommentThreads</strong>(string $channelId = null, string $id = null, string $videoId = null, int $maxResults = 20, string $order = null, array $part = [&#039;id&#039;, &#039;replies&#039;, &#039;snippet&#039;], bool $pageInfo = false)
+    <strong>getCommentThreads</strong>(string|null $channelId = null, string|null $id = null, string|null $videoId = null, int $maxResults = 20, string|null $order = null, array $part = [&#039;id&#039;, &#039;replies&#039;, &#039;snippet&#039;], bool $pageInfo = false)
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -822,39 +948,39 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>string</td>
+                <td>string|null</td>
                 <td>$channelId</td>
-                <td><p>Instructs the API to return comment threads containing comments about the specified channel. (The response will not include comments left on videos that the channel uploaded.)</p></td>
+                <td></td>
             </tr>
                     <tr>
-                <td>string</td>
+                <td>string|null</td>
                 <td>$id</td>
-                <td><p>Specifies a comma-separated list of comment thread IDs for the resources that should be retrieved.</p></td>
+                <td></td>
             </tr>
                     <tr>
-                <td>string</td>
+                <td>string|null</td>
                 <td>$videoId</td>
-                <td><p>Instructs the API to return comment threads containing comments about the specified channel. (The response will not include comments left on videos that the channel uploaded.)</p></td>
+                <td></td>
             </tr>
                     <tr>
                 <td>int</td>
                 <td>$maxResults</td>
-                <td><p>Specifies the maximum number of items that should be returned in the result set. Acceptable values are 1 to 100, inclusive. The default value is 20.</p></td>
+                <td></td>
             </tr>
                     <tr>
-                <td>string</td>
+                <td>string|null</td>
                 <td>$order</td>
-                <td><p>Specifies the order in which the API response should list comment threads. Valid values are: time, relevance.</p></td>
+                <td></td>
             </tr>
                     <tr>
                 <td>array</td>
                 <td>$part</td>
-                <td><p>Specifies a list of one or more commentThread resource properties that the API response will include.</p></td>
+                <td></td>
             </tr>
                     <tr>
                 <td>bool</td>
                 <td>$pageInfo</td>
-                <td><p>Add page info to returned array.</p></td>
+                <td></td>
             </tr>
             </table>
 
@@ -873,7 +999,7 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
             </table>
@@ -886,12 +1012,13 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getVideoInfo">
-        <div class="location">at line 189</div>
-        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
-    <strong>getVideoInfo</strong>(<abbr title="Cable8mm\Youtube\array|string">array|string</abbr> $vId, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;player&#039;, &#039;statistics&#039;, &#039;status&#039;])
+        <div class="location">at line 185</div>
+        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null
+    <strong>getVideoInfo</strong>(array|string $vId, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;player&#039;, &#039;statistics&#039;, &#039;status&#039;])
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -904,7 +1031,7 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><abbr title="Cable8mm\Youtube\array|string">array|string</abbr></td>
+                <td>array|string</td>
                 <td>$vId</td>
                 <td></td>
             </tr>
@@ -920,7 +1047,7 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a></td>
+            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null</td>
             <td></td>
         </tr>
     </table>
@@ -930,7 +1057,7 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
             </table>
@@ -943,18 +1070,19 @@ $youtube = new Youtube(['key' =&gt; 'KEY HERE'])</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getLocalizedVideoInfo">
-        <div class="location">at line 216</div>
-        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
+        <div class="location">at line 209</div>
+        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null
     <strong>getLocalizedVideoInfo</strong>(mixed $vId, string $language, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;player&#039;, &#039;statistics&#039;, &#039;status&#039;])
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
         <div class="method-description">
-                            <p><p>Gets localized video info by language (f.ex. de) by adding this parameter after video id
-Youtube::getLocalizedVideoInfo($video-&gt;url, 'de')</p></p>                        
+                            <p class="no-description">No description</p>
+                    
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -982,7 +1110,7 @@ Youtube::getLocalizedVideoInfo($video-&gt;url, 'de')</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a></td>
+            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null</td>
             <td></td>
         </tr>
     </table>
@@ -992,7 +1120,7 @@ Youtube::getLocalizedVideoInfo($video-&gt;url, 'de')</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
             </table>
@@ -1005,17 +1133,19 @@ Youtube::getLocalizedVideoInfo($video-&gt;url, 'de')</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getPopularVideos">
-        <div class="location">at line 243</div>
-        <code>                    array
+        <div class="location">at line 233</div>
+        <code>                    array|false
     <strong>getPopularVideos</strong>(string $regionCode, int $maxResults = 10, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;player&#039;, &#039;statistics&#039;, &#039;status&#039;])
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
         <div class="method-description">
-                            <p><p>Gets popular videos for a specific region (ISO 3166-1 alpha-2)</p></p>                        
+                            <p class="no-description">No description</p>
+                    
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -1043,12 +1173,21 @@ Youtube::getLocalizedVideoInfo($video-&gt;url, 'de')</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td>array</td>
+            <td>array|false</td>
             <td></td>
         </tr>
     </table>
 
             
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
             
             
                     </div>
@@ -1057,18 +1196,19 @@ Youtube::getLocalizedVideoInfo($video-&gt;url, 'de')</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_search">
-        <div class="location">at line 266</div>
-        <code>                    array
+        <div class="location">at line 253</div>
+        <code>                    array|false
     <strong>search</strong>(string $q, int $maxResults = 10, array $part = [&#039;id&#039;, &#039;snippet&#039;])
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
         <div class="method-description">
-                            <p><p>Simple search interface, this search all stuffs
-and order by relevance</p></p>                        
+                            <p class="no-description">No description</p>
+                    
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -1096,12 +1236,21 @@ and order by relevance</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td>array</td>
+            <td>array|false</td>
             <td></td>
         </tr>
     </table>
 
             
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
             
             
                     </div>
@@ -1110,17 +1259,19 @@ and order by relevance</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_searchVideos">
-        <div class="location">at line 286</div>
-        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
-    <strong>searchVideos</strong>(string $q, int $maxResults = 10, string $order = null, array $part = [&#039;id&#039;])
+        <div class="location">at line 269</div>
+        <code>                    array|false
+    <strong>searchVideos</strong>(string $q, int $maxResults = 10, string|null $order = null, array $part = [&#039;id&#039;])
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
         <div class="method-description">
-                            <p><p>Search only videos</p></p>                        
+                            <p class="no-description">No description</p>
+                    
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -1129,17 +1280,17 @@ and order by relevance</p></p>
                     <tr>
                 <td>string</td>
                 <td>$q</td>
-                <td>Query</td>
+                <td></td>
             </tr>
                     <tr>
                 <td>int</td>
                 <td>$maxResults</td>
-                <td><p>number of results to return</p></td>
+                <td></td>
             </tr>
                     <tr>
-                <td>string</td>
+                <td>string|null</td>
                 <td>$order</td>
-                <td><p>Order by</p></td>
+                <td></td>
             </tr>
                     <tr>
                 <td>array</td>
@@ -1153,12 +1304,21 @@ and order by relevance</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a></td>
-            <td><p>API results</p></td>
+            <td>array|false</td>
+            <td></td>
         </tr>
     </table>
 
             
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
             
             
                     </div>
@@ -1167,17 +1327,19 @@ and order by relevance</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_searchChannelVideos">
-        <div class="location">at line 311</div>
+        <div class="location">at line 290</div>
         <code>                    array
-    <strong>searchChannelVideos</strong>(string $q, string $channelId, int $maxResults = 10, string $order = null, array $part = [&#039;id&#039;, &#039;snippet&#039;], mixed $pageInfo = false)
+    <strong>searchChannelVideos</strong>(string $q, string $channelId, int $maxResults = 10, string|null $order = null, array $part = [&#039;id&#039;, &#039;snippet&#039;], bool $pageInfo = false)
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
         <div class="method-description">
-                            <p><p>Search only videos in the channel</p></p>                        
+                            <p class="no-description">No description</p>
+                    
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -1199,7 +1361,7 @@ and order by relevance</p></p>
                 <td></td>
             </tr>
                     <tr>
-                <td>string</td>
+                <td>string|null</td>
                 <td>$order</td>
                 <td></td>
             </tr>
@@ -1209,179 +1371,7 @@ and order by relevance</p></p>
                 <td></td>
             </tr>
                     <tr>
-                <td>mixed</td>
-                <td>$pageInfo</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>array</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_getChannelVideos">
-        <div class="location">at line 334</div>
-        <code>                    <abbr title="Cable8mm\Youtube\array|bool">array|bool</abbr>
-    <strong>getChannelVideos</strong>(string $channelId, int $maxResults, string|null $publishedBefore, bool|null $isFuture = false, string|null $pageToken = &#039;&#039;)
-        </code>
-    </h3>
-    <div class="details">    
-    
-            
-
-        <div class="method-description">
-                            <p><p>Get videos from the channel.</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$channelId</td>
-                <td><p>Channel Id</p></td>
-            </tr>
-                    <tr>
-                <td>int</td>
-                <td>$maxResults</td>
-                <td><p>Video count at once</p></td>
-            </tr>
-                    <tr>
-                <td>string|null</td>
-                <td>$publishedBefore</td>
-                <td><p>Which video has been getten from</p></td>
-            </tr>
-                    <tr>
-                <td>bool|null</td>
-                <td>$isFuture</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>string|null</td>
-                <td>$pageToken</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><abbr title="Cable8mm\Youtube\array|bool">array|bool</abbr></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_listChannelVideos">
-        <div class="location">at line 370</div>
-        <code>                    array
-    <strong>listChannelVideos</strong>(string $channelId, int $maxResults = 10, string $order = null, array $part = [&#039;id&#039;, &#039;snippet&#039;], mixed $pageInfo = false)
-        </code>
-    </h3>
-    <div class="details">    
-    
-            
-
-        <div class="method-description">
-                            <p><p>List videos in the channel</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$channelId</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>int</td>
-                <td>$maxResults</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>string</td>
-                <td>$order</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>array</td>
-                <td>$part</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>mixed</td>
-                <td>$pageInfo</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>array</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_searchAdvanced">
-        <div class="location">at line 393</div>
-        <code>                    array
-    <strong>searchAdvanced</strong>($params, $pageInfo = false)
-        </code>
-    </h3>
-    <div class="details">    
-    
-            
-
-        <div class="method-description">
-                            <p><p>Generic Search interface, use any parameters specified in
-the API reference</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td></td>
-                <td>$params</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td></td>
+                <td>bool</td>
                 <td>$pageInfo</td>
                 <td></td>
             </tr>
@@ -1402,7 +1392,211 @@ the API reference</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getChannelVideos">
+        <div class="location">at line 310</div>
+        <code>                    array
+    <strong>getChannelVideos</strong>(string $channelId, int $maxResults, string|null $publishedBefore, bool $isFuture = false, string $pageToken = &#039;&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$channelId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$maxResults</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$publishedBefore</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$isFuture</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$pageToken</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_listChannelVideos">
+        <div class="location">at line 340</div>
+        <code>                    array
+    <strong>listChannelVideos</strong>(string $channelId, int $maxResults = 10, string|null $order = null, array $part = [&#039;id&#039;, &#039;snippet&#039;], bool $pageInfo = false)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$channelId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$maxResults</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$order</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$part</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$pageInfo</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_searchAdvanced">
+        <div class="location">at line 361</div>
+        <code>                    array|false
+    <strong>searchAdvanced</strong>(array $params, bool $pageInfo = false)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$params</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$pageInfo</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array|false</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
             </table>
@@ -1415,30 +1609,31 @@ the API reference</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_paginateResults">
-        <div class="location">at line 418</div>
+        <div class="location">at line 383</div>
         <code>                    array
-    <strong>paginateResults</strong>($params, $token = null)
+    <strong>paginateResults</strong>(array $params, string|null $token = null)
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
         <div class="method-description">
-                            <p><p>Generic Search Paginator, use any parameters specified in
-the API reference and pass through nextPageToken as $token if set.</p></p>                        
+                            <p class="no-description">No description</p>
+                    
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>array</td>
                 <td>$params</td>
                 <td></td>
             </tr>
                     <tr>
-                <td></td>
+                <td>string|null</td>
                 <td>$token</td>
                 <td></td>
             </tr>
@@ -1455,6 +1650,15 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
     </table>
 
             
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
             
             
                     </div>
@@ -1463,12 +1667,13 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getChannelByName">
-        <div class="location">at line 436</div>
-        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
+        <div class="location">at line 397</div>
+        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null
     <strong>getChannelByName</strong>(string $username, array $optionalParams = [], array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;statistics&#039;])
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -1502,7 +1707,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a></td>
+            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null</td>
             <td></td>
         </tr>
     </table>
@@ -1512,7 +1717,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
             </table>
@@ -1525,12 +1730,13 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_searchChannelByName">
-        <div class="location">at line 456</div>
-        <code>                    false|<a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
-    <strong>searchChannelByName</strong>($username, $maxResults = 1, $part = [&#039;id&#039;, &#039;snippet&#039;])
+        <div class="location">at line 417</div>
+        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null
+    <strong>searchChannelByName</strong>(string $username, int $maxResults = 1, array $part = [&#039;id&#039;, &#039;snippet&#039;])
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -1543,17 +1749,17 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>string</td>
                 <td>$username</td>
                 <td></td>
             </tr>
                     <tr>
-                <td></td>
+                <td>int</td>
                 <td>$maxResults</td>
                 <td></td>
             </tr>
                     <tr>
-                <td></td>
+                <td>array</td>
                 <td>$part</td>
                 <td></td>
             </tr>
@@ -1564,7 +1770,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td>false|<a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a></td>
+            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null</td>
             <td></td>
         </tr>
     </table>
@@ -1574,7 +1780,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
             </table>
@@ -1587,12 +1793,13 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getChannelById">
-        <div class="location">at line 481</div>
-        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
+        <div class="location">at line 443</div>
+        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null
     <strong>getChannelById</strong>(mixed $id, array $optionalParams = [], array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;statistics&#039;])
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -1626,7 +1833,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a></td>
+            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null</td>
             <td></td>
         </tr>
     </table>
@@ -1636,7 +1843,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
             </table>
@@ -1649,12 +1856,13 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getPlaylistsByChannelId">
-        <div class="location">at line 508</div>
+        <div class="location">at line 467</div>
         <code>                    array
     <strong>getPlaylistsByChannelId</strong>(string $channelId, array $optionalParams = [], array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;status&#039;])
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -1698,7 +1906,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
             </table>
@@ -1711,12 +1919,13 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getPlaylistById">
-        <div class="location">at line 533</div>
-        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
-    <strong>getPlaylistById</strong>($id, $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;status&#039;])
+        <div class="location">at line 493</div>
+        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null
+    <strong>getPlaylistById</strong>(mixed $id, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;status&#039;])
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -1729,12 +1938,12 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>mixed</td>
                 <td>$id</td>
                 <td></td>
             </tr>
                     <tr>
-                <td></td>
+                <td>array</td>
                 <td>$part</td>
                 <td></td>
             </tr>
@@ -1745,7 +1954,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a></td>
+            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null</td>
             <td></td>
         </tr>
     </table>
@@ -1755,7 +1964,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
             </table>
@@ -1768,12 +1977,13 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getPlaylistItemsByPlaylistId">
-        <div class="location">at line 558</div>
+        <div class="location">at line 515</div>
         <code>                    array
     <strong>getPlaylistItemsByPlaylistId</strong>(string $playlistId, string $pageToken = &#039;&#039;, int $maxResults = 50, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;status&#039;])
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -1822,7 +2032,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
             </table>
@@ -1835,12 +2045,13 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getActivitiesByChannelId">
-        <div class="location">at line 586</div>
+        <div class="location">at line 540</div>
         <code>                    array
-    <strong>getActivitiesByChannelId</strong>(string|null $channelId, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;], int $maxResults = 5, mixed $pageInfo = false, mixed $pageToken = &#039;&#039;)
+    <strong>getActivitiesByChannelId</strong>(string $channelId, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;], int $maxResults = 5, bool $pageInfo = false, string $pageToken = &#039;&#039;)
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -1853,7 +2064,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>string|null</td>
+                <td>string</td>
                 <td>$channelId</td>
                 <td></td>
             </tr>
@@ -1868,12 +2079,12 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
                 <td></td>
             </tr>
                     <tr>
-                <td>mixed</td>
+                <td>bool</td>
                 <td>$pageInfo</td>
                 <td></td>
             </tr>
                     <tr>
-                <td>mixed</td>
+                <td>string</td>
                 <td>$pageToken</td>
                 <td></td>
             </tr>
@@ -1894,7 +2105,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
             </table>
@@ -1907,12 +2118,13 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_parseVidFromURL">
-        <div class="location">at line 619</div>
+        <div class="location">at line 573</div>
         <code>        static            string
     <strong>parseVidFromURL</strong>(string $youtube_url)
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -1936,7 +2148,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
                     <table class="table table-condensed">
         <tr>
             <td>string</td>
-            <td><p>Video Id</p></td>
+            <td></td>
         </tr>
     </table>
 
@@ -1945,7 +2157,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/InvalidArgumentException">InvalidArgumentException</a></td>
                 <td></td>
             </tr>
             </table>
@@ -1958,12 +2170,13 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getChannelFromURL">
-        <div class="location">at line 650</div>
-        <code>                    object
+        <div class="location">at line 609</div>
+        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null
     <strong>getChannelFromURL</strong>(string $youtube_url)
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -1986,8 +2199,8 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td>object</td>
-            <td><p>Channel object</p></td>
+            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null</td>
+            <td></td>
         </tr>
     </table>
 
@@ -1996,7 +2209,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/InvalidArgumentException">InvalidArgumentException</a></td>
                 <td></td>
             </tr>
             </table>
@@ -2009,12 +2222,13 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getApi">
-        <div class="location">at line 692</div>
+        <div class="location">at line 653</div>
         <code>                    mixed
-    <strong>getApi</strong>($name)
+    <strong>getApi</strong>(string $name)
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -2027,7 +2241,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>string</td>
                 <td>$name</td>
                 <td></td>
             </tr>
@@ -2052,17 +2266,18 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_decodeSingle">
-        <div class="location">at line 706</div>
-        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
+        <div class="location">at line 665</div>
+        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null
     <strong>decodeSingle</strong>(string $apiData)
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
         <div class="method-description">
-                            <p><p>Decode the response from youtube, extract the single resource object.</p></p>                <p><p>(Don't use this to decode the response containing list of objects)</p></p>        
+                            <p><p>Decode the response from youtube, extract the single resource object.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -2071,7 +2286,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
                     <tr>
                 <td>string</td>
                 <td>$apiData</td>
-                <td><p>the api response from youtube</p></td>
+                <td></td>
             </tr>
             </table>
 
@@ -2080,8 +2295,8 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a></td>
-            <td><p>an Youtube resource object</p></td>
+            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null</td>
+            <td></td>
         </tr>
     </table>
 
@@ -2090,7 +2305,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
             </table>
@@ -2103,17 +2318,18 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_decodeMultiple">
-        <div class="location">at line 738</div>
-        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>
+        <div class="location">at line 684</div>
+        <code>                    array|null
     <strong>decodeMultiple</strong>(string $apiData)
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
         <div class="method-description">
-                            <p><p>Decode the response from youtube, extract the multiple resource object.</p></p>                        
+                            <p><p>Decode the response from youtube, extract the multiple resource objects.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -2122,7 +2338,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
                     <tr>
                 <td>string</td>
                 <td>$apiData</td>
-                <td><p>the api response from youtube</p></td>
+                <td></td>
             </tr>
             </table>
 
@@ -2131,8 +2347,8 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a></td>
-            <td><p>an Youtube resource object</p></td>
+            <td>array|null</td>
+            <td></td>
         </tr>
     </table>
 
@@ -2141,7 +2357,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
             </table>
@@ -2154,12 +2370,13 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_decodeList">
-        <div class="location">at line 771</div>
-        <code>                    array
+        <div class="location">at line 703</div>
+        <code>                    array|false
     <strong>decodeList</strong>(string $apiData)
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -2173,7 +2390,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
                     <tr>
                 <td>string</td>
                 <td>$apiData</td>
-                <td><p>response string from youtube</p></td>
+                <td></td>
             </tr>
             </table>
 
@@ -2182,8 +2399,8 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td>array</td>
-            <td><p>Array of StdClass objects</p></td>
+            <td>array|false</td>
+            <td></td>
         </tr>
     </table>
 
@@ -2192,7 +2409,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
             </table>
@@ -2205,29 +2422,30 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_api_get">
-        <div class="location">at line 822</div>
-        <code>                    mixed
-    <strong>api_get</strong>($url, $params)
+        <div class="location">at line 753</div>
+        <code>                    string
+    <strong>api_get</strong>(string $url, array $params)
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
         <div class="method-description">
-                            <p><p>Using CURL to issue a GET request</p></p>                        
+                            <p><p>Using CURL to issue a GET request.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>string</td>
                 <td>$url</td>
                 <td></td>
             </tr>
                     <tr>
-                <td></td>
+                <td>array</td>
                 <td>$params</td>
                 <td></td>
             </tr>
@@ -2238,7 +2456,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td>mixed</td>
+            <td>string</td>
             <td></td>
         </tr>
     </table>
@@ -2248,7 +2466,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
             </table>
@@ -2261,12 +2479,13 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method__parse_url_path">
-        <div class="location">at line 856</div>
+        <div class="location">at line 804</div>
         <code>        static            string
     <strong>_parse_url_path</strong>(string $url)
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -2280,7 +2499,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
                     <tr>
                 <td>string</td>
                 <td>$url</td>
-                <td><p>the URL</p></td>
+                <td></td>
             </tr>
             </table>
 
@@ -2290,7 +2509,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
                     <table class="table table-condensed">
         <tr>
             <td>string</td>
-            <td><p>the path string</p></td>
+            <td></td>
         </tr>
     </table>
 
@@ -2303,12 +2522,13 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method__parse_url_query">
-        <div class="location">at line 869</div>
+        <div class="location">at line 814</div>
         <code>        static            array
     <strong>_parse_url_query</strong>(string $url)
         </code>
     </h3>
     <div class="details">    
+            
     
             
 
@@ -2322,7 +2542,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
                     <tr>
                 <td>string</td>
                 <td>$url</td>
-                <td><p>the URL</p></td>
+                <td></td>
             </tr>
             </table>
 
@@ -2332,7 +2552,7 @@ the API reference and pass through nextPageToken as $token if set.</p></p>
                     <table class="table table-condensed">
         <tr>
             <td>array</td>
-            <td><p>array of query params</p></td>
+            <td></td>
         </tr>
     </table>
 
