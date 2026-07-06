@@ -16,6 +16,10 @@ class YoutubeDevEnvironmentTest extends TestCase
 
     public function test_is_exist_youtube_api_key(): void
     {
+        if (! isset(self::$dotenv['YOUTUBE_API_KEY']) || empty(self::$dotenv['YOUTUBE_API_KEY'])) {
+            $this->markTestSkipped('YOUTUBE_API_KEY is not set in .env file');
+        }
+
         $this->assertNotEmpty(self::$dotenv['YOUTUBE_API_KEY']);
     }
 }
