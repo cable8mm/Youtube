@@ -1,5 +1,13 @@
 # Release Notes
 
+## v5.1.0 - 2026-07-06
+
+### What's Changed
+
+* feat: improvements by [@cable8mm](https://github.com/cable8mm) in https://github.com/cable8mm/Youtube/pull/20
+
+**Full Changelog**: https://github.com/cable8mm/Youtube/compare/v5.0.1...v5.1.0
+
 ## v5.0.1 - 2025-12-02
 
 ### What's Changed
