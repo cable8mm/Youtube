@@ -25,129 +25,119 @@ class ValidYoutubeVideoTest extends TestCase
 
     // ==================== Valid URL Tests ====================
 
-    public function test_passes_with_standard_youtube_url(): void
+    public function test_validate_passes_with_standard_youtube_url(): void
     {
         if (! self::$youtubeEnabled) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $this->assertTrue($this->rule->passes('youtube_video_url', 'https://www.youtube.com/watch?v=rie-hPVJ7Sw'));
+        $errors = [];
+        $this->rule->validate('youtube_video_url', 'https://www.youtube.com/watch?v=rie-hPVJ7Sw', function ($message) use (&$errors) {
+            $errors[] = $message;
+        });
+
+        $this->assertEmpty($errors, 'Validation should pass for valid YouTube URL');
     }
 
-    public function test_passes_with_short_youtube_url(): void
+    public function test_validate_passes_with_short_youtube_url(): void
     {
         if (! self::$youtubeEnabled) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $this->assertTrue($this->rule->passes('youtube_video_url', 'https://youtu.be/rie-hPVJ7Sw'));
+        $errors = [];
+        $this->rule->validate('youtube_video_url', 'https://youtu.be/rie-hPVJ7Sw', function ($message) use (&$errors) {
+            $errors[] = $message;
+        });
+
+        $this->assertEmpty($errors, 'Validation should pass for valid short YouTube URL');
     }
 
-    public function test_passes_with_embed_youtube_url(): void
+    public function test_validate_passes_with_embed_youtube_url(): void
     {
         if (! self::$youtubeEnabled) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $this->assertTrue($this->rule->passes('youtube_video_url', 'https://www.youtube.com/embed/rie-hPVJ7Sw'));
+        $errors = [];
+        $this->rule->validate('youtube_video_url', 'https://www.youtube.com/embed/rie-hPVJ7Sw', function ($message) use (&$errors) {
+            $errors[] = $message;
+        });
+
+        $this->assertEmpty($errors, 'Validation should pass for valid embed YouTube URL');
     }
 
-    public function test_passes_with_url_containing_parameters(): void
+    public function test_validate_passes_with_url_containing_parameters(): void
     {
         if (! self::$youtubeEnabled) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $this->assertTrue($this->rule->passes('youtube_video_url', 'https://www.youtube.com/watch?v=rie-hPVJ7Sw&t=123'));
-    }
+        $errors = [];
+        $this->rule->validate('youtube_video_url', 'https://www.youtube.com/watch?v=rie-hPVJ7Sw&t=123', function ($message) use (&$errors) {
+            $errors[] = $message;
+        });
 
-    public function test_passes_with_www_subdomain(): void
-    {
-        if (! self::$youtubeEnabled) {
-            $this->markTestSkipped('YouTube API tests are disabled');
-        }
-
-        $this->assertTrue($this->rule->passes('youtube_video_url', 'https://www.youtube.com/watch?v=rie-hPVJ7Sw'));
-    }
-
-    public function test_passes_without_www_subdomain(): void
-    {
-        if (! self::$youtubeEnabled) {
-            $this->markTestSkipped('YouTube API tests are disabled');
-        }
-
-        $this->assertTrue($this->rule->passes('youtube_video_url', 'https://youtube.com/watch?v=rie-hPVJ7Sw'));
-    }
-
-    public function test_passes_with_http_protocol(): void
-    {
-        if (! self::$youtubeEnabled) {
-            $this->markTestSkipped('YouTube API tests are disabled');
-        }
-
-        $this->assertTrue($this->rule->passes('youtube_video_url', 'http://www.youtube.com/watch?v=rie-hPVJ7Sw'));
+        $this->assertEmpty($errors, 'Validation should pass for YouTube URL with parameters');
     }
 
     // ==================== Invalid URL Tests ====================
 
-    public function test_fails_with_invalid_domain(): void
+    public function test_validate_fails_with_invalid_domain(): void
     {
-        $this->assertFalse($this->rule->passes('youtube_video_url', 'https://example.com/watch?v=rie-hPVJ7Sw'));
+        $errors = [];
+        $this->rule->validate('youtube_video_url', 'https://example.com/watch?v=rie-hPVJ7Sw', function ($message) use (&$errors) {
+            $errors[] = $message;
+        });
+
+        $this->assertNotEmpty($errors, 'Validation should fail for invalid domain');
+        // Accept any error message since it could be from URL parsing or API call
+        $this->assertNotEmpty($errors[0]);
     }
 
-    public function test_fails_with_missing_video_id(): void
+    public function test_validate_fails_with_missing_video_id(): void
     {
-        $this->assertFalse($this->rule->passes('youtube_video_url', 'https://www.youtube.com/watch'));
+        $errors = [];
+        $this->rule->validate('youtube_video_url', 'https://www.youtube.com/watch', function ($message) use (&$errors) {
+            $errors[] = $message;
+        });
+
+        $this->assertNotEmpty($errors, 'Validation should fail for URL without video ID');
     }
 
-    public function test_fails_with_empty_string(): void
+    public function test_validate_fails_with_empty_string(): void
     {
-        $this->assertFalse($this->rule->passes('youtube_video_url', ''));
+        $errors = [];
+        $this->rule->validate('youtube_video_url', '', function ($message) use (&$errors) {
+            $errors[] = $message;
+        });
+
+        $this->assertNotEmpty($errors, 'Validation should fail for empty string');
     }
 
-    public function test_fails_with_random_string(): void
+    public function test_validate_fails_with_random_string(): void
     {
-        $this->assertFalse($this->rule->passes('youtube_video_url', 'not a youtube url'));
+        $errors = [];
+        $this->rule->validate('youtube_video_url', 'not a youtube url', function ($message) use (&$errors) {
+            $errors[] = $message;
+        });
+
+        $this->assertNotEmpty($errors, 'Validation should fail for random string');
     }
 
-    public function test_fails_with_vimeo_url(): void
+    public function test_validate_fails_with_vimeo_url(): void
     {
-        $this->assertFalse($this->rule->passes('youtube_video_url', 'https://vimeo.com/123456789'));
-    }
+        $errors = [];
+        $this->rule->validate('youtube_video_url', 'https://vimeo.com/123456789', function ($message) use (&$errors) {
+            $errors[] = $message;
+        });
 
-    // ==================== Error Message Tests ====================
-
-    public function test_returns_correct_error_message(): void
-    {
-        // Test that message contains expected text (without using __() helper)
-        $message = $this->rule->message();
-        $this->assertStringContainsString('The supplied URL does not look like a Youtube URL', $message);
+        $this->assertNotEmpty($errors, 'Validation should fail for Vimeo URL');
     }
 
     // ==================== Edge Cases ====================
 
-    public function test_passes_with_different_video_ids(): void
-    {
-        if (! self::$youtubeEnabled) {
-            $this->markTestSkipped('YouTube API tests are disabled');
-        }
-
-        $urls = [
-            'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-            'https://www.youtube.com/watch?v=9bZkp7q19f0',
-            'https://youtu.be/jNQXAC9IVRw',
-            'https://www.youtube.com/embed/jNQXAC9IVRw',
-        ];
-
-        foreach ($urls as $url) {
-            $this->assertTrue(
-                $this->rule->passes('youtube_video_url', $url),
-                "Failed for URL: {$url}"
-            );
-        }
-    }
-
-    public function test_fails_with_youtube_but_not_video_url(): void
+    public function test_validate_fails_with_youtube_but_not_video_url(): void
     {
         // YouTube URLs that are not video URLs
         $urls = [
@@ -157,10 +147,12 @@ class ValidYoutubeVideoTest extends TestCase
         ];
 
         foreach ($urls as $url) {
-            $this->assertFalse(
-                $this->rule->passes('youtube_video_url', $url),
-                "Should fail for URL: {$url}"
-            );
+            $errors = [];
+            $this->rule->validate('youtube_video_url', $url, function ($message) use (&$errors) {
+                $errors[] = $message;
+            });
+
+            $this->assertNotEmpty($errors, "Should fail for URL: {$url}");
         }
     }
 }

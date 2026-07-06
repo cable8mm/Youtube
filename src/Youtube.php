@@ -582,6 +582,10 @@ class Youtube
 
             $params = static::_parse_url_query($youtube_url);
 
+            if (! isset($params['v'])) {
+                throw new \InvalidArgumentException('The supplied URL does not look like a Youtube URL');
+            }
+
             return $params['v'];
         }
 
