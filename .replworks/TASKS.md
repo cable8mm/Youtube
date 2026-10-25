@@ -323,7 +323,7 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - README lists the Failure Reasons, the Quota Block, and the three events.
     - README shows one Filament resource and one Nova resource example reading `YoutubeChannel` and `YoutubeSyncError`.
 
-- [ ] T-028 E2E tests run separately from unit tests and never in CI
+- [x] T-028 E2E tests run separately from unit tests and never in CI
   - Satisfies: TS §4; TS §5; TS §7
   - External boundary: yes
   - Acceptance criteria:
