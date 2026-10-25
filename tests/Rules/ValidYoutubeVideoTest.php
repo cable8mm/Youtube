@@ -4,32 +4,25 @@ namespace Cable8mm\Youtube\Tests\Rules;
 
 use Cable8mm\Youtube\Resources\Videos;
 use Cable8mm\Youtube\Rules\ValidYoutubeVideo;
+use Cable8mm\Youtube\Tests\Env;
 use Cable8mm\Youtube\Youtube;
-use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
 
 class ValidYoutubeVideoTest extends TestCase
 {
     private ValidYoutubeVideo $rule;
 
-    private static bool $youtubeEnabled;
-
-    public static function setUpBeforeClass(): void
-    {
-        $dotenv = Dotenv::createImmutable(__DIR__.'/../../')->load();
-        self::$youtubeEnabled = isset($dotenv['YOUTUBE_ENABLED']) && $dotenv['YOUTUBE_ENABLED'] == 'true';
-    }
-
     protected function setUp(): void
     {
-        $this->rule = new ValidYoutubeVideo;
+        // Plain PHPUnit has no container, so hand the rule a client directly.
+        $this->rule = new ValidYoutubeVideo(new Youtube(Env::get('YOUTUBE_API_KEY') ?? 'test_key'));
     }
 
     // ==================== Valid URL Tests ====================
 
     public function test_validate_passes_with_standard_youtube_url(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
@@ -43,7 +36,7 @@ class ValidYoutubeVideoTest extends TestCase
 
     public function test_validate_passes_with_short_youtube_url(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
@@ -57,7 +50,7 @@ class ValidYoutubeVideoTest extends TestCase
 
     public function test_validate_passes_with_embed_youtube_url(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
@@ -71,7 +64,7 @@ class ValidYoutubeVideoTest extends TestCase
 
     public function test_validate_passes_with_url_containing_parameters(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 

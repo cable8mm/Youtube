@@ -26,4 +26,18 @@ abstract class TestCase extends OrchestraTestCase
     {
         $app['config']->set('youtube.key', 'test_api_key');
     }
+
+    /**
+     * Skip unless live API tests are enabled, then rebind the client with the real key.
+     */
+    protected function useLiveApiKey(): void
+    {
+        if (! Env::youtubeEnabled()) {
+            $this->markTestSkipped('YouTube API tests are disabled');
+        }
+
+        $this->app['config']->set('youtube.key', Env::get('YOUTUBE_API_KEY'));
+        $this->app->forgetInstance(\Cable8mm\Youtube\Youtube::class);
+        Youtube::clearResolvedInstance('youtube');
+    }
 }
