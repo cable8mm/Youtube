@@ -43,13 +43,7 @@ class YoutubeTest extends TestCase
         $youtube = new Youtube('test_key');
         $youtube->useHttpHost(true);
 
-        // Use reflection to check private property
-        $reflection = new \ReflectionClass($youtube);
-        $property = $reflection->getProperty('config');
-        $property->setAccessible(true);
-        $config = $property->getValue($youtube);
-
-        $this->assertTrue($config['use-http-host']);
+        $this->assertTrue($youtube->getClient()->isUsingHttpHost());
     }
 
     public function test_set_api_key_updates_key(): void
@@ -105,11 +99,7 @@ class YoutubeTest extends TestCase
         $youtube = new Youtube('test_key', ['cache_enabled' => false]);
         $youtube->cache(true);
 
-        $reflection = new \ReflectionClass($youtube);
-        $property = $reflection->getProperty('cacheEnabled');
-        $property->setAccessible(true);
-
-        $this->assertTrue($property->getValue($youtube));
+        $this->assertTrue($youtube->getClient()->isCacheEnabled());
     }
 
     public function test_set_cache_ttl_sets_ttl_correctly(): void
@@ -117,11 +107,7 @@ class YoutubeTest extends TestCase
         $youtube = new Youtube('test_key');
         $youtube->setCacheTtl(1800);
 
-        $reflection = new \ReflectionClass($youtube);
-        $property = $reflection->getProperty('cacheTtl');
-        $property->setAccessible(true);
-
-        $this->assertEquals(1800, $property->getValue($youtube));
+        $this->assertEquals(1800, $youtube->getClient()->getCacheTtl());
     }
 
     public function test_search_advanced_throws_exception_without_params(): void

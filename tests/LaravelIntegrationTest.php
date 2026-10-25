@@ -5,6 +5,7 @@ namespace Cable8mm\Youtube\Tests;
 use Cable8mm\Youtube\Exceptions\YoutubeApiException;
 use Cable8mm\Youtube\Facades\Youtube;
 use Cable8mm\Youtube\Rules\ValidYoutubeVideo;
+use Cable8mm\Youtube\Tests\Resources\FakeApiClient;
 use Dotenv\Dotenv;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
@@ -84,6 +85,17 @@ class LaravelIntegrationTest extends TestCase
         $this->assertNotEmpty($videos1);
         $this->assertNotEmpty($videos2);
         $this->assertEquals(count($videos1), count($videos2));
+    }
+
+    public function test_api_client_serves_repeat_requests_from_laravel_cache(): void
+    {
+        Cache::flush();
+
+        $client = (new FakeApiClient(['first', 'second']))->cache();
+
+        $this->assertSame('first', $client->call('videos.list', ['id' => 'abc']));
+        $this->assertSame('first', $client->call('videos.list', ['id' => 'abc']));
+        $this->assertCount(1, $client->requests);
     }
 
     // ==================== Validation Rule Tests ====================
