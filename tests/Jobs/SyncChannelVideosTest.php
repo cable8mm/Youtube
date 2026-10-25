@@ -366,6 +366,55 @@ class SyncChannelVideosTest extends TestCase
         $this->assertSame('unknown', $channel->syncErrors()->sole()->reason);
     }
 
+    public function test_videos_not_returned_are_flagged_and_never_deleted(): void
+    {
+        $channel = $this->channel();
+        $gone = $channel->videos()->create(['video_id' => 'gone', 'title' => 'Gone', 'published_at' => '2026-01-01 00:00:00']);
+        $flagged = $channel->videos()->create(['video_id' => 'flagged', 'title' => 'Flagged', 'published_at' => '2026-01-01 00:00:00', 'unavailable_at' => '2026-09-01 00:00:00']);
+        $back = $channel->videos()->create(['video_id' => 'back', 'title' => 'Back', 'published_at' => '2026-01-01 00:00:00', 'unavailable_at' => '2026-09-01 00:00:00']);
+        array_push(
+            $this->fake->responses,
+            self::playlistPage(['v1', 'gone']),
+            self::videoList([self::video('v1'), self::video('back')]),
+        );
+
+        $this->sync($channel);
+
+        $this->assertNotNull($gone->refresh()->unavailable_at);
+        $this->assertSame('2026-09-01 00:00:00', $flagged->refresh()->unavailable_at->format('Y-m-d H:i:s'));
+        $this->assertNull($back->refresh()->unavailable_at);
+        $this->assertNull(YoutubeVideo::where('video_id', 'v1')->sole()->unavailable_at);
+        $this->assertSame(4, YoutubeVideo::count());
+        Event::assertDispatched(ChannelSynced::class, fn ($e) => $e->created === 1 && $e->updated === 1 && $e->unavailable === 1);
+    }
+
+    public function test_an_already_flagged_video_is_not_counted_again(): void
+    {
+        $channel = $this->channel();
+        $channel->videos()->create(['video_id' => 'gone', 'title' => 'Gone', 'published_at' => '2026-01-01 00:00:00']);
+        array_push(
+            $this->fake->responses,
+            self::playlistPage(['v1']),
+            self::videoList([self::video('v1')]),
+            self::playlistPage(['v1']),
+            self::videoList([self::video('v1')]),
+        );
+
+        $this->sync($channel);
+        $first = YoutubeVideo::where('video_id', 'gone')->sole()->unavailable_at;
+        $this->travel(1)->hours();
+        $this->sync($channel);
+
+        $this->assertTrue($first->equalTo(YoutubeVideo::where('video_id', 'gone')->sole()->unavailable_at));
+        $unavailable = [];
+        Event::assertDispatched(ChannelSynced::class, function ($e) use (&$unavailable) {
+            $unavailable[] = $e->unavailable;
+
+            return true;
+        });
+        $this->assertSame([1, 0], $unavailable);
+    }
+
     public function test_quota_block_stops_the_job_before_any_request(): void
     {
         $channel = $this->channel();
