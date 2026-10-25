@@ -225,7 +225,7 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - `config('youtube.sync.queue')` is `null` and `config('youtube.sync.max_pages')` is `1` by default; `YOUTUBE_SYNC_QUEUE` sets the queue.
     - Unit tests passing.
 
-- [ ] T-020 Sync failures are classified into Failure Reasons
+- [x] T-020 Sync failures are classified into Failure Reasons
   - Satisfies: PS §19.1; C16
   - External boundary: no
   - Acceptance criteria:
