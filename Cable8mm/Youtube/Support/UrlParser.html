@@ -106,6 +106,33 @@
                     <p></p>
                 </td>
             </tr>
+                    <tr>
+                <td>
+                                                                                                                        VIDEO_HOSTS
+                                    </td>
+                <td class="last">
+                    <p><em><p>Hosts whose URLs carry a Video ID in <code>v</code> or after <code>/embed/</code>.</p></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>
+                                                                                                                        CHANNEL_HOSTS
+                                    </td>
+                <td class="last">
+                    <p><em><p>Hosts whose URLs can be channel pages.</p></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>
+                                                                                                                        CHANNEL_PREFIXES
+                                    </td>
+                <td class="last">
+                    <p><em><p>First path segments that take the channel value from the second segment, and their lookup type.</p></em></p>
+                    <p></p>
+                </td>
+            </tr>
             </table>
 
     
@@ -138,6 +165,36 @@
                     static&nbsp;string
                 </div>
                 <div class="col-md-8">
+                    <a href="#method_withScheme">withScheme</a>(string $url)
+        
+                                            <p><p>Prefix https:// to a URL that has no scheme, so parse_url finds its host</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_host">host</a>(string $url)
+        
+                                            <p><p>Parse the input url string and return its lowercased host</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_segments">segments</a>(string $url)
+        
+                                            <p><p>Parse the input url string and return the non-empty segments of its path</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8">
                     <a href="#method_path">path</a>(string $url)
         
                                             <p><p>Parse the input url string and return just the path part</p></p>                </div>
@@ -161,7 +218,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_videoId">
-        <div class="location">at line 40</div>
+        <div class="location">at line 70</div>
         <code>        static            string
     <strong>videoId</strong>(string $youtube_url)
         </code>
@@ -172,7 +229,7 @@
             
 
         <div class="method-description">
-                            <p><p>Parse a youtube URL to get the youtube Vid.</p></p>                <p><p>Support both full URL (www.youtube.com) and short URL (youtu.be)</p></p>        
+                            <p><p>Parse a youtube URL to get the youtube Vid.</p></p>                <p><p>Support full URLs (www.youtube.com), embed URLs, and short URLs (youtu.be)</p></p>        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -213,7 +270,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_channel">
-        <div class="location">at line 66</div>
+        <div class="location">at line 99</div>
         <code>        static            array
     <strong>channel</strong>(string $youtube_url)
         </code>
@@ -264,8 +321,137 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_withScheme">
+        <div class="location">at line 139</div>
+        <code>        static            string
+    <strong>withScheme</strong>(string $url)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Prefix https:// to a URL that has no scheme, so parse_url finds its host</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$url</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_host">
+        <div class="location">at line 147</div>
+        <code>        static            string
+    <strong>host</strong>(string $url)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Parse the input url string and return its lowercased host</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$url</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_segments">
+        <div class="location">at line 157</div>
+        <code>        static            array
+    <strong>segments</strong>(string $url)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Parse the input url string and return the non-empty segments of its path</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$url</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_path">
-        <div class="location">at line 108</div>
+        <div class="location">at line 165</div>
         <code>        static            string
     <strong>path</strong>(string $url)
         </code>
@@ -308,7 +494,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_query">
-        <div class="location">at line 116</div>
+        <div class="location">at line 173</div>
         <code>        static            array
     <strong>query</strong>(string $url)
         </code>

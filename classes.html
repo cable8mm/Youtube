@@ -85,6 +85,36 @@
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Cable8mm/Youtube/Concerns/HasYoutubeChannels.html"><abbr title="Cable8mm\Youtube\Concerns\HasYoutubeChannels">HasYoutubeChannels</abbr></a>    </div>
+                <div class="col-md-6"><p>Use on a host model that owns YouTube channels.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Cable8mm/Youtube/Console/ImportChannelsCommand.html"><abbr title="Cable8mm\Youtube\Console\ImportChannelsCommand">ImportChannelsCommand</abbr></a>    </div>
+                <div class="col-md-6"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Cable8mm/Youtube/Console/SyncChannelsCommand.html"><abbr title="Cable8mm\Youtube\Console\SyncChannelsCommand">SyncChannelsCommand</abbr></a>    </div>
+                <div class="col-md-6"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Cable8mm/Youtube/Events/ChannelSyncFailed.html"><abbr title="Cable8mm\Youtube\Events\ChannelSyncFailed">ChannelSyncFailed</abbr></a>    </div>
+                <div class="col-md-6"><p>A Sync of a channel failed and was recorded.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Cable8mm/Youtube/Events/ChannelSynced.html"><abbr title="Cable8mm\Youtube\Events\ChannelSynced">ChannelSynced</abbr></a>    </div>
+                <div class="col-md-6"><p>A Sync of a channel finished.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Cable8mm/Youtube/Events/QuotaExceeded.html"><abbr title="Cable8mm\Youtube\Events\QuotaExceeded">QuotaExceeded</abbr></a>    </div>
+                <div class="col-md-6"><p>A Sync hit the API quota and a Quota Block started.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a>    </div>
                 <div class="col-md-6"></div>
             </div>
@@ -102,6 +132,31 @@
                 <div class="col-md-6">
                     <a href="Cable8mm/Youtube/Http/ResponseDecoder.html"><abbr title="Cable8mm\Youtube\Http\ResponseDecoder">ResponseDecoder</abbr></a>    </div>
                 <div class="col-md-6"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Cable8mm/Youtube/Imports/YoutubeChannelsImport.html"><abbr title="Cable8mm\Youtube\Imports\YoutubeChannelsImport">YoutubeChannelsImport</abbr></a>    </div>
+                <div class="col-md-6"><p>Imports channels from the <code>channel</code> column of a CSV or Excel file (PRODUCT_SPEC.md §17).</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Cable8mm/Youtube/Jobs/SyncChannelVideos.html"><abbr title="Cable8mm\Youtube\Jobs\SyncChannelVideos">SyncChannelVideos</abbr></a>    </div>
+                <div class="col-md-6"><p>One Sync of one Channel Record (PRODUCT_SPEC.md §18.2).</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Cable8mm/Youtube/Models/YoutubeChannel.html"><abbr title="Cable8mm\Youtube\Models\YoutubeChannel">YoutubeChannel</abbr></a>    </div>
+                <div class="col-md-6"><p>A YouTube channel stored in the host application (Channel Record).</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Cable8mm/Youtube/Models/YoutubeSyncError.html"><abbr title="Cable8mm\Youtube\Models\YoutubeSyncError">YoutubeSyncError</abbr></a>    </div>
+                <div class="col-md-6"><p>One failed Sync of a channel (Sync Error Record).</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Cable8mm/Youtube/Models/YoutubeVideo.html"><abbr title="Cable8mm\Youtube\Models\YoutubeVideo">YoutubeVideo</abbr></a>    </div>
+                <div class="col-md-6"><p>A video of a stored channel (Video Record).</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -157,6 +212,22 @@
                 <div class="col-md-6">
                     <a href="Cable8mm/Youtube/Support/UrlParser.html"><abbr title="Cable8mm\Youtube\Support\UrlParser">UrlParser</abbr></a>    </div>
                 <div class="col-md-6"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Cable8mm/Youtube/Sync/ChannelInputResolver.html"><abbr title="Cable8mm\Youtube\Sync\ChannelInputResolver">ChannelInputResolver</abbr></a>    </div>
+                <div class="col-md-6"><p>Resolves one import cell to a channels Resource Object (PRODUCT_SPEC.md §17.2).</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Cable8mm/Youtube/Sync/FailureReason.html"><abbr title="Cable8mm\Youtube\Sync\FailureReason">FailureReason</abbr></a>    </div>
+                <div class="col-md-6"><p>Maps a sync exception to a Failure Reason (PRODUCT_SPEC.md §19.1).</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Cable8mm/Youtube/Sync/QuotaBlock.html"><abbr title="Cable8mm\Youtube\Sync\QuotaBlock">QuotaBlock</abbr></a>    </div>
+                <div class="col-md-6"><p>Stops every Sync from sending requests until the daily API quota resets
+(PRODUCT_SPEC.md §19.3).</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">

@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Cable8mm\Youtube\Jobs\SyncChannelVideos | API</title>
+
+            <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../../../fonts/doctum-font.css">
+        <script src="../../../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../../../doctum.js"></script>
+        <script async defer src="../../../js/bootstrap.min.js"></script>
+        <script async defer src="../../../js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    </head>
+
+    <body id="class" data-name="class:Cable8mm_Youtube_Jobs_SyncChannelVideos" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../../../search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../index.html">API</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../classes.html">Classes</a></li>
+                    <li><a href="../../../namespaces.html">Namespaces</a></li>
+                    <li><a href="../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../traits.html">Traits</a></li>
+                    <li><a href="../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../../Cable8mm.html">Cable8mm</a></li><li class="backslash">\</li><li><a href="../../../Cable8mm/Youtube.html">Youtube</a></li><li class="backslash">\</li><li><a href="../../../Cable8mm/Youtube/Jobs.html">Jobs</a></li><li class="backslash">\</li><li>SyncChannelVideos</li>
+            </ol>
+        </div>
+                <div id="page-content">
+    <div class="page-header">
+        <h1>SyncChannelVideos    
+            </h1>
+    </div>
+
+    
+    <p>        class
+    <strong>SyncChannelVideos</strong>        implements        <abbr title="Illuminate\Contracts\Queue\ShouldQueue">ShouldQueue</abbr>
+</p>
+
+        
+        
+    
+        
+
+            <div class="description">
+            <p><p>One Sync of one Channel Record (PRODUCT_SPEC.md §18.2).</p></p>                    </div>
+            
+                <h2>Traits</h2>
+
+        
+    <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-6">
+                    <abbr title="Illuminate\Queue\InteractsWithQueue">InteractsWithQueue</abbr>    </div>
+                <div class="col-md-6"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <abbr title="Illuminate\Bus\Queueable">Queueable</abbr>    </div>
+                <div class="col-md-6"></div>
+            </div>
+            </div>
+    
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                                                                                        CHANNEL_PART
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>
+                                                                                                                        VIDEO_PART
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>
+                                                                                                                        PAGE_SIZE
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_tries">
+                                                                                int
+                                                                                
+                                    </td>
+                <td>$tries</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_channelNotFound">
+                                        protected                                        bool
+                                                                                
+                                    </td>
+                <td>$channelNotFound</td>
+                <td class="last"><p>Set when the channel lookup returns no item, so the failure is recorded as channel_not_found.</p></td>
+                <td></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___construct">__construct</a>(int $youtubeChannelId, int|null $maxPages = 1)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_handle">handle</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_sync">sync</a>(<a href="../../../Cable8mm/Youtube/Models/YoutubeChannel.html"><abbr title="Cable8mm\Youtube\Models\YoutubeChannel">YoutubeChannel</abbr></a> $channel)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_flagUnavailable">flagUnavailable</a>(<a href="../../../Cable8mm/Youtube/Models/YoutubeChannel.html"><abbr title="Cable8mm\Youtube\Models\YoutubeChannel">YoutubeChannel</abbr></a> $channel, array $videoIds)
+        
+                                            <p><p>Set unavailable_at on the channel's Video Records that videos.list did not return,
+keeping an already-set value (PRODUCT_SPEC.md §18.3). Returns the number newly flagged.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_fillChannel">fillChannel</a>(<a href="../../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a> $youtube, <a href="../../../Cable8mm/Youtube/Models/YoutubeChannel.html"><abbr title="Cable8mm\Youtube\Models\YoutubeChannel">YoutubeChannel</abbr></a> $channel)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_uploadedVideoIds">uploadedVideoIds</a>(<a href="../../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a> $youtube, string $playlistId)
+        
+                                            <p><p>Video IDs of the uploads playlist, reading at most $maxPages pages (every page when null).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_storeVideo">storeVideo</a>(<a href="../../../Cable8mm/Youtube/Models/YoutubeChannel.html"><abbr title="Cable8mm\Youtube\Models\YoutubeChannel">YoutubeChannel</abbr></a> $channel, object $item)
+        
+                                            <p><p>Create or update the Video Record of a videos Resource Object. Returns true when created.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_recordFailure">recordFailure</a>(<a href="../../../Cable8mm/Youtube/Models/YoutubeChannel.html"><abbr title="Cable8mm\Youtube\Models\YoutubeChannel">YoutubeChannel</abbr></a> $channel, <a href="../../../Cable8mm/Youtube/Sync/QuotaBlock.html"><abbr title="Cable8mm\Youtube\Sync\QuotaBlock">QuotaBlock</abbr></a> $quotaBlock, <a target="_blank" rel="noopener" href="https://www.php.net/Throwable">Throwable</a> $e)
+        
+                                            <p><p>Record a failed Sync (PRODUCT_SPEC.md §19.2).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location">at line 42</div>
+        <code>                    
+    <strong>__construct</strong>(int $youtubeChannelId, int|null $maxPages = 1)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$youtubeChannelId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$maxPages</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_handle">
+        <div class="location">at line 47</div>
+        <code>                    void
+    <strong>handle</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_sync">
+        <div class="location">at line 79</div>
+        <code>            protected        void
+    <strong>sync</strong>(<a href="../../../Cable8mm/Youtube/Models/YoutubeChannel.html"><abbr title="Cable8mm\Youtube\Models\YoutubeChannel">YoutubeChannel</abbr></a> $channel)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Cable8mm/Youtube/Models/YoutubeChannel.html"><abbr title="Cable8mm\Youtube\Models\YoutubeChannel">YoutubeChannel</abbr></a></td>
+                <td>$channel</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Throwable">Throwable</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_flagUnavailable">
+        <div class="location">at line 120</div>
+        <code>            protected        int
+    <strong>flagUnavailable</strong>(<a href="../../../Cable8mm/Youtube/Models/YoutubeChannel.html"><abbr title="Cable8mm\Youtube\Models\YoutubeChannel">YoutubeChannel</abbr></a> $channel, array $videoIds)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set unavailable_at on the channel's Video Records that videos.list did not return,
+keeping an already-set value (PRODUCT_SPEC.md §18.3). Returns the number newly flagged.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Cable8mm/Youtube/Models/YoutubeChannel.html"><abbr title="Cable8mm\Youtube\Models\YoutubeChannel">YoutubeChannel</abbr></a></td>
+                <td>$channel</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$videoIds</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_fillChannel">
+        <div class="location">at line 137</div>
+        <code>            protected        void
+    <strong>fillChannel</strong>(<a href="../../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a> $youtube, <a href="../../../Cable8mm/Youtube/Models/YoutubeChannel.html"><abbr title="Cable8mm\Youtube\Models\YoutubeChannel">YoutubeChannel</abbr></a> $channel)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a></td>
+                <td>$youtube</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Cable8mm/Youtube/Models/YoutubeChannel.html"><abbr title="Cable8mm\Youtube\Models\YoutubeChannel">YoutubeChannel</abbr></a></td>
+                <td>$channel</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_uploadedVideoIds">
+        <div class="location">at line 161</div>
+        <code>            protected        array
+    <strong>uploadedVideoIds</strong>(<a href="../../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a> $youtube, string $playlistId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Video IDs of the uploads playlist, reading at most $maxPages pages (every page when null).</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a></td>
+                <td>$youtube</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$playlistId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_storeVideo">
+        <div class="location">at line 184</div>
+        <code>            protected        bool
+    <strong>storeVideo</strong>(<a href="../../../Cable8mm/Youtube/Models/YoutubeChannel.html"><abbr title="Cable8mm\Youtube\Models\YoutubeChannel">YoutubeChannel</abbr></a> $channel, object $item)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Create or update the Video Record of a videos Resource Object. Returns true when created.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Cable8mm/Youtube/Models/YoutubeChannel.html"><abbr title="Cable8mm\Youtube\Models\YoutubeChannel">YoutubeChannel</abbr></a></td>
+                <td>$channel</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>object</td>
+                <td>$item</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_recordFailure">
+        <div class="location">at line 208</div>
+        <code>            protected        void
+    <strong>recordFailure</strong>(<a href="../../../Cable8mm/Youtube/Models/YoutubeChannel.html"><abbr title="Cable8mm\Youtube\Models\YoutubeChannel">YoutubeChannel</abbr></a> $channel, <a href="../../../Cable8mm/Youtube/Sync/QuotaBlock.html"><abbr title="Cable8mm\Youtube\Sync\QuotaBlock">QuotaBlock</abbr></a> $quotaBlock, <a target="_blank" rel="noopener" href="https://www.php.net/Throwable">Throwable</a> $e)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Record a failed Sync (PRODUCT_SPEC.md §19.2).</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Cable8mm/Youtube/Models/YoutubeChannel.html"><abbr title="Cable8mm\Youtube\Models\YoutubeChannel">YoutubeChannel</abbr></a></td>
+                <td>$channel</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Cable8mm/Youtube/Sync/QuotaBlock.html"><abbr title="Cable8mm\Youtube\Sync\QuotaBlock">QuotaBlock</abbr></a></td>
+                <td>$quotaBlock</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Throwable">Throwable</a></td>
+                <td>$e</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
+    </div>
+    </body>
+
+</html>
