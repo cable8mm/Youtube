@@ -14,14 +14,14 @@ Baseline: T-001 to T-016 describe the code at commit `0e6721a` (release `v5.1.1`
 - `[x]`: implemented, and every acceptance criterion is covered by a passing test.
 - `[ ]`: implemented, but some acceptance criteria have no test. The work is to add those tests. Change product code only when a new test fails, and then follow AGENTS.md PRODUCT_SPEC_CHANGES.
 
-Out of scope for every task until a human decides: the `[UNVERIFIED]` sections PS §8.1, PS §9.1, PS §11.1, TS §1.1, and TS §7.1.
+Out of scope for every task until a human decides: the `[UNVERIFIED]` sections PS §8.1, PS §9.1, and PS §11.1.
 
 - [x] T-001 Project foundation
-  - Satisfies: TS §1, TS §2, TS §3, TS §7 (excluding TS §1.1 and TS §7.1)
+  - Satisfies: TS §1, TS §2, TS §3, TS §7
   - External boundary: no
   - Acceptance criteria:
     - `composer.json` declares the constraints, autoload mappings, provider, and alias listed in TS §1 and TS §2.
-    - The `run-tests` workflow passes on PHP `8.2`, `8.3`, `8.4`, and `8.5`.
+    - The `run-tests` workflow passes on PHP `8.2`, `8.3`, `8.4`, and `8.5`. Superseded by T-017.
     - `composer inspect` passes.
 
 - [x] T-002 Developer configures the API Key and resolves the Shared Client
@@ -188,3 +188,14 @@ Out of scope for every task until a human decides: the `[UNVERIFIED]` sections P
     - `getActivitiesByChannelId('UCk1SpWNzOs4MYmr0uICEntg')` returns an array of at most 5 items.
     - `(new Youtube('invalid_key'))->getVideoInfo('rie-hPVJ7Sw')` throws `YoutubeApiException` with code `400` and a message starting `Error 400` and ending ` : badRequest`.
     - Live tests passing.
+
+- [x] T-017 Package requires PHP 8.3+ and Laravel 12+
+  - Satisfies: TS §1; TS §7
+  - External boundary: no
+  - Acceptance criteria:
+    - `composer.json` requires `php` `^8.3` and `illuminate/support` `^12.0|^13.0`.
+    - `composer.json` requires-dev `orchestra/testbench` `^10.0|^11.0`, `phpunit/phpunit` `^11.5.50|^12.5.8`, and `mockery/mockery` `^1.6`.
+    - `composer validate` exits 0.
+    - The `run-tests` matrix has six jobs: PHP `8.3`, `8.4`, `8.5` × Laravel `12.*` with Testbench `10.*`, and × Laravel `13.*` with Testbench `11.*`.
+    - Every `run-tests` job passes.
+    - README requirements list PHP 8.3 or higher and Laravel 12.x or 13.x.
