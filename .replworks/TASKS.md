@@ -345,7 +345,7 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - Every T-011 example keeps its result.
     - Unit tests passing.
 
-- [ ] T-030 Channel URL resolution reads the right path segment and looks handles up directly
+- [x] T-030 Channel URL resolution reads the right path segment and looks handles up directly
   - Satisfies: PS §9; C5; AR §3.2
   - External boundary: yes
   - Acceptance criteria:

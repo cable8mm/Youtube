@@ -92,6 +92,63 @@ class UrlParserTest extends TestCase
         $this->assertSame('', UrlParser::path('https://youtu.be'));
     }
 
+    public static function channelUrls(): array
+    {
+        return [
+            'channel' => ['https://www.youtube.com/channel/UC1', ['type' => 'id', 'value' => 'UC1']],
+            'channel trailing slash' => ['https://www.youtube.com/channel/UC1/', ['type' => 'id', 'value' => 'UC1']],
+            'channel sub-page' => ['https://www.youtube.com/channel/UC1/videos', ['type' => 'id', 'value' => 'UC1']],
+            'user sub-page' => ['https://www.youtube.com/user/google/featured', ['type' => 'username', 'value' => 'google']],
+            'c sub-page' => ['https://www.youtube.com/c/name/about', ['type' => 'search', 'value' => 'name']],
+            'handle' => ['https://www.youtube.com/@xda', ['type' => 'handle', 'value' => '@xda']],
+            'handle sub-page' => ['https://www.youtube.com/@xda/videos', ['type' => 'handle', 'value' => '@xda']],
+            'mobile handle' => ['https://m.youtube.com/@xda', ['type' => 'handle', 'value' => '@xda']],
+            'without scheme' => ['youtube.com/@xda', ['type' => 'handle', 'value' => '@xda']],
+        ];
+    }
+
+    #[DataProvider('channelUrls')]
+    public function test_channel_reads_the_right_segment(string $url, array $expected): void
+    {
+        $this->assertSame($expected, UrlParser::channel($url));
+    }
+
+    public static function channelUrlsWithoutValue(): array
+    {
+        return [
+            'channel' => ['https://www.youtube.com/channel/'],
+            'user' => ['https://www.youtube.com/user/'],
+            'c' => ['https://www.youtube.com/c'],
+        ];
+    }
+
+    #[DataProvider('channelUrlsWithoutValue')]
+    public function test_channel_prefix_without_value_throws(string $url): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('does not look like a Youtube Channel URL');
+
+        UrlParser::channel($url);
+    }
+
+    public static function nonChannelHosts(): array
+    {
+        return [
+            'music' => ['https://music.youtube.com/channel/UC1'],
+            'youtube.com in another host query' => ['https://example.com/?u=youtube.com/channel/UC1'],
+            'youtu.be' => ['https://youtu.be/channel/UC1'],
+        ];
+    }
+
+    #[DataProvider('nonChannelHosts')]
+    public function test_channel_rejects_other_hosts(string $url): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The supplied URL does not look like a Youtube URL');
+
+        UrlParser::channel($url);
+    }
+
     public function test_channel_throws_for_bare_youtube_url(): void
     {
         $this->expectException(\InvalidArgumentException::class);

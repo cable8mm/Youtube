@@ -97,20 +97,18 @@ class ResourcesTest extends TestCase
         ], $result['info']);
     }
 
-    public function test_channel_from_handle_url_searches_then_fetches_by_id(): void
+    public function test_channel_from_handle_url_looks_the_handle_up_without_search(): void
     {
-        $client = new FakeApiClient([
-            $this->listJson([['snippet' => ['channelId' => 'UC123']]]),
-            $this->listJson([['id' => 'UC123']]),
-        ]);
+        $client = new FakeApiClient([$this->listJson([['id' => 'UC123']])]);
         $decoder = new ResponseDecoder;
         $channels = new Channels($client, $decoder, new Search($client, $decoder));
 
         $channel = $channels->fromUrl('https://www.youtube.com/@laravelphp');
 
         $this->assertSame('UC123', $channel->id);
-        $this->assertSame('laravelphp', $client->requests[0]['params']['q']);
-        $this->assertSame('UC123', $client->requests[1]['params']['id']);
+        $this->assertCount(1, $client->requests);
+        $this->assertSame(ApiClient::ENDPOINTS['channels.list'], $client->requests[0]['url']);
+        $this->assertSame('@laravelphp', $client->requests[0]['params']['forHandle']);
     }
 
     public function test_channel_by_handle_sends_for_handle_and_default_part(): void

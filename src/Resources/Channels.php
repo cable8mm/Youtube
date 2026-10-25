@@ -99,6 +99,7 @@ class Channels extends Resource
         return match ($type) {
             'id' => $this->byId($value),
             'username' => $this->byName($value),
+            'handle' => $this->byHandle($value),
             'search' => $this->searchByName($value),
         };
     }

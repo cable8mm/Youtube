@@ -44,6 +44,24 @@ class UrlParser
     ];
 
     /**
+     * Hosts whose URLs can be channel pages.
+     */
+    public const CHANNEL_HOSTS = [
+        'youtube.com',
+        'www.youtube.com',
+        'm.youtube.com',
+    ];
+
+    /**
+     * First path segments that take the channel value from the second segment, and their lookup type.
+     */
+    public const CHANNEL_PREFIXES = [
+        'channel' => 'id',
+        'user' => 'username',
+        'c' => 'search',
+    ];
+
+    /**
      * Parse a youtube URL to get the youtube Vid.
      * Support full URLs (www.youtube.com), embed URLs, and short URLs (youtu.be)
      *
@@ -74,34 +92,32 @@ class UrlParser
     /**
      * Work out how to look up the channel behind a channel page URL.
      *
-     * @return array{type: 'id'|'username'|'search', value: string}
+     * @return array{type: 'id'|'username'|'handle'|'search', value: string}
      *
      * @throws \InvalidArgumentException
      */
     public static function channel(string $youtube_url): array
     {
-        if (strpos($youtube_url, 'youtube.com') === false) {
+        $url = static::withScheme($youtube_url);
+
+        if (! in_array(static::host($url), self::CHANNEL_HOSTS, true)) {
             throw new \InvalidArgumentException('The supplied URL does not look like a Youtube URL');
         }
 
-        $path = static::path($youtube_url);
-        $segments = explode('/', $path);
-        $last = $segments[count($segments) - 1];
+        $path = static::path($url);
+        $segments = static::segments($url);
+        $first = $segments[0] ?? '';
 
-        if (strpos($path, '/channel/') === 0) {
-            return ['type' => 'id', 'value' => $last];
+        if (isset(self::CHANNEL_PREFIXES[$first])) {
+            if (! isset($segments[1])) {
+                throw new \InvalidArgumentException('The supplied URL does not look like a Youtube Channel URL');
+            }
+
+            return ['type' => self::CHANNEL_PREFIXES[$first], 'value' => $segments[1]];
         }
 
-        if (strpos($path, '/user/') === 0) {
-            return ['type' => 'username', 'value' => $last];
-        }
-
-        if (strpos($path, '/c/') === 0) {
-            return ['type' => 'search', 'value' => $last];
-        }
-
-        if (strpos($path, '/@') === 0) {
-            return ['type' => 'search', 'value' => str_replace('@', '', $last)];
+        if (str_starts_with($first, '@')) {
+            return ['type' => 'handle', 'value' => $first];
         }
 
         foreach (self::RESERVED_PATHS as $r) {
@@ -110,11 +126,11 @@ class UrlParser
             }
         }
 
-        if (empty($segments[1])) {
+        if ($first === '') {
             throw new \InvalidArgumentException('The supplied URL does not look like a Youtube Channel URL');
         }
 
-        return ['type' => 'search', 'value' => $segments[1]];
+        return ['type' => 'search', 'value' => $first];
     }
 
     /**
