@@ -172,7 +172,7 @@ Out of scope for every task until a human decides: the `[UNVERIFIED]` sections P
     - `_parse_url_path($u)` equals `UrlParser::path($u)` and `_parse_url_query($u)` equals `UrlParser::query($u)` for `https://www.youtube.com/watch?v=abc`.
     - Unit tests passing.
 
-- [ ] T-016 Live tests cover the remaining operations and the live error path
+- [x] T-016 Live tests cover the remaining operations and the live error path
   - Satisfies: PS §7.1 (operations without a live test); PS §7.3 (`$isFuture` true); PS §9; PS §12 row 7; PS §15
   - External boundary: yes
   - Acceptance criteria:
