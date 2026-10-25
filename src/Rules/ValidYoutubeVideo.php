@@ -9,6 +9,11 @@ use Illuminate\Contracts\Validation\ValidationRule;
 class ValidYoutubeVideo implements ValidationRule
 {
     /**
+     * @param  Youtube|null  $youtube  Client to look the video up with; resolved from the container when omitted.
+     */
+    public function __construct(protected ?Youtube $youtube = null) {}
+
+    /**
      * Run the validation rule.
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
@@ -23,10 +28,10 @@ class ValidYoutubeVideo implements ValidationRule
                 return;
             }
 
-            $youtube = new Youtube(config('youtube.key'));
+            $youtube = $this->youtube ?? app(Youtube::class);
             $video = $youtube->getVideoInfo($videoId, ['id']);
 
-            if ($video === false) {
+            if ($video === null) {
                 $fail('The :attribute does not exist on Youtube.');
             }
         } catch (\Exception $exception) {

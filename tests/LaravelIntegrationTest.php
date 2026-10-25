@@ -5,23 +5,13 @@ namespace Cable8mm\Youtube\Tests;
 use Cable8mm\Youtube\Exceptions\YoutubeApiException;
 use Cable8mm\Youtube\Facades\Youtube;
 use Cable8mm\Youtube\Rules\ValidYoutubeVideo;
-use Dotenv\Dotenv;
+use Cable8mm\Youtube\Tests\Resources\FakeApiClient;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
 
 class LaravelIntegrationTest extends TestCase
 {
-    private static bool $youtubeEnabled = false;
-
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-
-        $dotenv = Dotenv::createImmutable(__DIR__.'/../')->load();
-        self::$youtubeEnabled = isset($dotenv['YOUTUBE_ENABLED']) && $dotenv['YOUTUBE_ENABLED'] == 'true';
-    }
-
     // ==================== Facade Tests ====================
 
     public function test_facade_is_accessible(): void
@@ -68,9 +58,7 @@ class LaravelIntegrationTest extends TestCase
 
     public function test_youtube_caching_integration(): void
     {
-        if (! self::$youtubeEnabled) {
-            $this->markTestSkipped('YouTube API tests are disabled');
-        }
+        $this->useLiveApiKey();
 
         // Enable caching
         Youtube::cache();
@@ -86,13 +74,46 @@ class LaravelIntegrationTest extends TestCase
         $this->assertEquals(count($videos1), count($videos2));
     }
 
+    public function test_api_client_serves_repeat_requests_from_laravel_cache(): void
+    {
+        Cache::flush();
+
+        $client = (new FakeApiClient(['{"etag":"first"}', '{"etag":"second"}']))->cache();
+
+        $this->assertSame('{"etag":"first"}', $client->call('videos.list', ['id' => 'abc']));
+        $this->assertSame('{"etag":"first"}', $client->call('videos.list', ['id' => 'abc']));
+        $this->assertCount(1, $client->requests);
+    }
+
+    public function test_api_client_does_not_cache_error_responses(): void
+    {
+        Cache::flush();
+
+        $error = '{"error":{"code":403,"message":"Forbidden"}}';
+        $client = (new FakeApiClient([$error, '{"items":[]}']))->cache();
+
+        $this->assertSame($error, $client->call('videos.list', ['id' => 'abc']));
+        $this->assertSame('{"items":[]}', $client->call('videos.list', ['id' => 'abc']));
+        $this->assertCount(2, $client->requests);
+    }
+
+    public function test_api_client_does_not_cache_invalid_json(): void
+    {
+        Cache::flush();
+
+        $client = (new FakeApiClient(['', '{"items":[]}']))->cache();
+
+        $client->call('videos.list', ['id' => 'abc']);
+        $client->call('videos.list', ['id' => 'abc']);
+
+        $this->assertCount(2, $client->requests);
+    }
+
     // ==================== Validation Rule Tests ====================
 
     public function test_validation_rule_works_with_laravel_validator(): void
     {
-        if (! self::$youtubeEnabled) {
-            $this->markTestSkipped('YouTube API tests are disabled');
-        }
+        $this->useLiveApiKey();
 
         $validator = Validator::make(
             ['video_url' => 'https://www.youtube.com/watch?v=rie-hPVJ7Sw'],
@@ -165,9 +186,7 @@ class LaravelIntegrationTest extends TestCase
 
     public function test_youtube_methods_are_accessible_via_facade(): void
     {
-        if (! self::$youtubeEnabled) {
-            $this->markTestSkipped('YouTube API tests are disabled');
-        }
+        $this->useLiveApiKey();
 
         // Test that we can call methods via Facade
         $video = Youtube::getVideoInfo('rie-hPVJ7Sw');

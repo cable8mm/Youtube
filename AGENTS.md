@@ -10,8 +10,17 @@ This is a Laravel package for YouTube Data API v3 (Non-OAuth). It provides a cle
 
 ```text
 src/
-├── Youtube.php                    # Main class - all API methods
+├── Youtube.php                    # Public entry point - delegates to Resources (BC API)
 ├── YoutubeServiceProvider.php     # Laravel service provider (singleton binding)
+├── Http/
+│   ├── ApiClient.php              # Endpoints, API key, cURL GET, response caching
+│   └── ResponseDecoder.php        # JSON decoding, error handling, page info
+├── Resources/
+│   ├── Resource.php               # Base: fetchById / fetchList / fetchPaginated
+│   └── Videos, Search, Channels, Playlists, PlaylistItems,
+│       Activities, CommentThreads, Categories
+├── Support/
+│   └── UrlParser.php              # Video ID / channel URL parsing
 ├── Facades/
 │   └── Youtube.php                # Laravel Facade
 ├── Rules/
@@ -28,6 +37,9 @@ tests/
 ├── YoutubeTest.php                # Main class tests (30 tests)
 ├── LaravelIntegrationTest.php     # Laravel integration tests (14 tests)
 ├── YoutubeDevEnvironmentTest.php  # Environment check test
+├── Resources/
+│   ├── FakeApiClient.php          # ApiClient double with canned responses
+│   └── ResourcesTest.php          # Offline resource/decoder/parser tests
 ├── Rules/
 │   └── ValidYoutubeVideoTest.php  # Validation rule tests (13 tests)
 └── Cache/

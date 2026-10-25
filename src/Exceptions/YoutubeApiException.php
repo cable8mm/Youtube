@@ -3,6 +3,7 @@
 namespace Cable8mm\Youtube\Exceptions;
 
 use Exception;
+use Throwable;
 
 class YoutubeApiException extends Exception
 {

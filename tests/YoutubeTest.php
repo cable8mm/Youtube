@@ -4,22 +4,10 @@ namespace Cable8mm\Youtube\Tests;
 
 use Cable8mm\Youtube\Youtube;
 use Carbon\Carbon;
-use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
 
 class YoutubeTest extends TestCase
 {
-    private static array $dotenv;
-
-    private static bool $youtubeEnabled;
-
-    public static function setUpBeforeClass(): void
-    {
-        self::$dotenv = Dotenv::createImmutable(__DIR__.'/../')->load();
-
-        self::$youtubeEnabled = isset(self::$dotenv['YOUTUBE_ENABLED']) && self::$dotenv['YOUTUBE_ENABLED'] == 'true';
-    }
-
     // ==================== Unit Tests with Mocking ====================
 
     public function test_constructor_requires_api_key(): void
@@ -43,13 +31,7 @@ class YoutubeTest extends TestCase
         $youtube = new Youtube('test_key');
         $youtube->useHttpHost(true);
 
-        // Use reflection to check private property
-        $reflection = new \ReflectionClass($youtube);
-        $property = $reflection->getProperty('config');
-        $property->setAccessible(true);
-        $config = $property->getValue($youtube);
-
-        $this->assertTrue($config['use-http-host']);
+        $this->assertTrue($youtube->getClient()->isUsingHttpHost());
     }
 
     public function test_set_api_key_updates_key(): void
@@ -105,11 +87,7 @@ class YoutubeTest extends TestCase
         $youtube = new Youtube('test_key', ['cache_enabled' => false]);
         $youtube->cache(true);
 
-        $reflection = new \ReflectionClass($youtube);
-        $property = $reflection->getProperty('cacheEnabled');
-        $property->setAccessible(true);
-
-        $this->assertTrue($property->getValue($youtube));
+        $this->assertTrue($youtube->getClient()->isCacheEnabled());
     }
 
     public function test_set_cache_ttl_sets_ttl_correctly(): void
@@ -117,11 +95,7 @@ class YoutubeTest extends TestCase
         $youtube = new Youtube('test_key');
         $youtube->setCacheTtl(1800);
 
-        $reflection = new \ReflectionClass($youtube);
-        $property = $reflection->getProperty('cacheTtl');
-        $property->setAccessible(true);
-
-        $this->assertEquals(1800, $property->getValue($youtube));
+        $this->assertEquals(1800, $youtube->getClient()->getCacheTtl());
     }
 
     public function test_search_advanced_throws_exception_without_params(): void
@@ -145,12 +119,12 @@ class YoutubeTest extends TestCase
 
     public function test_get_channel_videos(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
-        $channelId = self::$dotenv['YOUTUBE_CHANNEL_ID'];
+        $apiKey = Env::get('YOUTUBE_API_KEY');
+        $channelId = Env::get('YOUTUBE_CHANNEL_ID');
         $publishedBefore = Carbon::now()->toRfc3339String();
 
         $videos = (new Youtube($apiKey))->getChannelVideos($channelId, 1, $publishedBefore)['results'];
@@ -162,12 +136,12 @@ class YoutubeTest extends TestCase
 
     public function test_get_channel_videos_returns_different_videos(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
-        $channelId = self::$dotenv['YOUTUBE_CHANNEL_ID'];
+        $apiKey = Env::get('YOUTUBE_API_KEY');
+        $channelId = Env::get('YOUTUBE_CHANNEL_ID');
         $publishedBefore = Carbon::now()->toRfc3339String();
 
         $video = (new Youtube($apiKey))->getChannelVideos($channelId, 1, $publishedBefore)['results'][0];
@@ -182,12 +156,12 @@ class YoutubeTest extends TestCase
 
     public function test_get_channel_videos_with_page_token(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
-        $channelId = self::$dotenv['YOUTUBE_CHANNEL_ID'];
+        $apiKey = Env::get('YOUTUBE_API_KEY');
+        $channelId = Env::get('YOUTUBE_CHANNEL_ID');
 
         $response = (new Youtube($apiKey))->getChannelVideos($channelId, 1, null, false, '');
 
@@ -202,11 +176,11 @@ class YoutubeTest extends TestCase
 
     public function test_get_video_info(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
+        $apiKey = Env::get('YOUTUBE_API_KEY');
 
         $video = (new Youtube($apiKey))->getVideoInfo('rie-hPVJ7Sw');
 
@@ -217,11 +191,11 @@ class YoutubeTest extends TestCase
 
     public function test_search_videos(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
+        $apiKey = Env::get('YOUTUBE_API_KEY');
 
         $results = (new Youtube($apiKey))->searchVideos('Laravel', 5);
 
@@ -231,11 +205,11 @@ class YoutubeTest extends TestCase
 
     public function test_get_channel_by_id(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
+        $apiKey = Env::get('YOUTUBE_API_KEY');
 
         $channel = (new Youtube($apiKey))->getChannelById('UCk1SpWNzOs4MYmr0uICEntg');
 
@@ -246,11 +220,11 @@ class YoutubeTest extends TestCase
 
     public function test_get_popular_videos(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
+        $apiKey = Env::get('YOUTUBE_API_KEY');
 
         $videos = (new Youtube($apiKey))->getPopularVideos('US', 5);
 
@@ -267,11 +241,11 @@ class YoutubeTest extends TestCase
 
     public function test_get_playlist_by_id(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
+        $apiKey = Env::get('YOUTUBE_API_KEY');
 
         $playlist = (new Youtube($apiKey))->getPlaylistById('PL590L5WQmH8fJ54F369BLDSqIwcs-TCfs');
 
@@ -282,11 +256,11 @@ class YoutubeTest extends TestCase
 
     public function test_get_playlist_items(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
+        $apiKey = Env::get('YOUTUBE_API_KEY');
 
         $items = (new Youtube($apiKey))->getPlaylistItemsByPlaylistId('PL590L5WQmH8fJ54F369BLDSqIwcs-TCfs');
 
@@ -297,11 +271,11 @@ class YoutubeTest extends TestCase
 
     public function test_caching_functionality(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
+        $apiKey = Env::get('YOUTUBE_API_KEY');
 
         // First request without cache
         $youtube1 = new Youtube($apiKey);
@@ -325,11 +299,11 @@ class YoutubeTest extends TestCase
 
     public function test_get_categories(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
+        $apiKey = Env::get('YOUTUBE_API_KEY');
 
         $categories = (new Youtube($apiKey))->getCategories('US');
 
@@ -339,13 +313,13 @@ class YoutubeTest extends TestCase
 
     public function test_search_channel_videos(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
+        $apiKey = Env::get('YOUTUBE_API_KEY');
 
-        $videos = (new Youtube($apiKey))->searchChannelVideos('Laravel', 'UCk1SpWNzOs4MYmr0uICEntg', 5);
+        $videos = (new Youtube($apiKey))->searchChannelVideos('Android', 'UCk1SpWNzOs4MYmr0uICEntg', 5);
 
         $this->assertIsArray($videos);
         $this->assertNotEmpty($videos);
@@ -353,11 +327,11 @@ class YoutubeTest extends TestCase
 
     public function test_get_channel_by_name(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
+        $apiKey = Env::get('YOUTUBE_API_KEY');
 
         $channel = (new Youtube($apiKey))->getChannelByName('Google');
 
@@ -367,11 +341,11 @@ class YoutubeTest extends TestCase
 
     public function test_paginate_results(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
+        $apiKey = Env::get('YOUTUBE_API_KEY');
 
         $params = [
             'q' => 'Laravel',
@@ -391,11 +365,11 @@ class YoutubeTest extends TestCase
 
     public function test_api_error_throws_youtube_api_exception(): void
     {
-        if (! self::$youtubeEnabled) {
+        if (! Env::youtubeEnabled()) {
             $this->markTestSkipped('YouTube API tests are disabled');
         }
 
-        $apiKey = self::$dotenv['YOUTUBE_API_KEY'];
+        $apiKey = Env::get('YOUTUBE_API_KEY');
 
         // Use an invalid video ID that will cause an API error
         $youtube = new Youtube($apiKey);
