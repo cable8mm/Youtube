@@ -2,6 +2,8 @@
 
 namespace Cable8mm\Youtube\Tests;
 
+use Cable8mm\Youtube\Support\UrlParser;
+use Cable8mm\Youtube\Tests\Resources\FakeApiClient;
 use Cable8mm\Youtube\Youtube;
 use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
@@ -113,6 +115,73 @@ class YoutubeTest extends TestCase
 
         $youtube = new Youtube('test_key');
         $youtube->getActivitiesByChannelId('');
+    }
+
+    public function test_constructor_config_sets_client_settings(): void
+    {
+        $client = (new Youtube('k', [
+            'use-http-host' => true,
+            'cache_enabled' => true,
+            'cache_ttl' => 60,
+        ]))->getClient();
+
+        $this->assertTrue($client->isUsingHttpHost());
+        $this->assertTrue($client->isCacheEnabled());
+        $this->assertSame(60, $client->getCacheTtl());
+    }
+
+    // ==================== Low-level Helper Tests ====================
+
+    public function test_get_api_returns_endpoint_url(): void
+    {
+        $this->assertSame('https://www.googleapis.com/youtube/v3/videos', (new Youtube('test_key'))->getApi('videos.list'));
+    }
+
+    public function test_decode_helpers_apply_result_rules_to_body_with_items(): void
+    {
+        $youtube = new Youtube('test_key');
+        $body = '{"kind":"k","etag":"e","items":[{"id":"a"},{"id":"b"}]}';
+
+        $this->assertSame('a', $youtube->decodeSingle($body)->id);
+        $this->assertSame(['a', 'b'], array_column($youtube->decodeMultiple($body), 'id'));
+        $this->assertSame(['a', 'b'], array_column($youtube->decodeList($body), 'id'));
+    }
+
+    public function test_decode_helpers_apply_result_rules_to_body_without_items(): void
+    {
+        $youtube = new Youtube('test_key');
+        $body = '{"kind":"k","etag":"e","items":[]}';
+
+        $this->assertNull($youtube->decodeSingle($body));
+        $this->assertNull($youtube->decodeMultiple($body));
+        $this->assertFalse($youtube->decodeList($body));
+    }
+
+    public function test_api_get_returns_raw_body_and_sends_api_key(): void
+    {
+        $fake = new FakeApiClient(['{"items":[]}']);
+        $youtube = new class('test_key') extends Youtube
+        {
+            public function useClient(FakeApiClient $client): void
+            {
+                $this->client = $client;
+            }
+        };
+        $youtube->useClient($fake);
+
+        $url = 'https://www.googleapis.com/youtube/v3/videos';
+
+        $this->assertSame('{"items":[]}', $youtube->api_get($url, ['id' => 'a']));
+        $this->assertSame($url, $fake->requests[0]['url']);
+        $this->assertSame(['id' => 'a', 'key' => 'test_key'], $fake->requests[0]['params']);
+    }
+
+    public function test_parse_url_helpers_match_url_parser(): void
+    {
+        $url = 'https://www.youtube.com/watch?v=abc';
+
+        $this->assertSame(UrlParser::path($url), Youtube::_parse_url_path($url));
+        $this->assertSame(UrlParser::query($url), Youtube::_parse_url_query($url));
     }
 
     // ==================== Integration Tests ====================
