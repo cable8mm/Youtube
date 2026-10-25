@@ -252,7 +252,7 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - The cache key is `youtube_quota_blocked_until`.
     - Unit tests passing.
 
-- [ ] T-022 Import cells resolve to channels
+- [x] T-022 Import cells resolve to channels
   - Satisfies: PS §17.2; C12; I9
   - External boundary: yes
   - Acceptance criteria:
