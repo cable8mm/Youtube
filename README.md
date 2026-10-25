@@ -11,25 +11,25 @@
 
 > 🚀 A modern, elegant, and feature-rich Laravel wrapper for YouTube Data API v3 (Non-OAuth)
 
-A beautifully crafted Laravel package that provides a simple, fluent interface to interact with YouTube Data API v3. Built with PHP 8.2+ features, comprehensive test coverage, and developer experience in mind.
+A beautifully crafted Laravel package that provides a simple, fluent interface to interact with YouTube Data API v3. Built with PHP 8.3+ features, comprehensive test coverage, and developer experience in mind.
 
 ## ✨ Features
 
 - 🎯 **Simple & Elegant API** - Clean, intuitive, and Laravel-style interface
 - ⚡ **Fluent Interface** - Chain methods for better readability
-- 🔒 **Type-Safe** - Full type hints and strict typing for PHP 8.2+
+- 🔒 **Type-Safe** - Full type hints and strict typing for PHP 8.3+
 - 🎨 **Laravel Native** - Seamless integration with Laravel ecosystem
 - 🚀 **High Performance** - Built-in response caching to reduce API calls
 - ✅ **Well Tested** - 73 comprehensive tests with 100% pass rate
 - 🛡️ **Custom Exceptions** - Domain-specific error handling
-- 📝 **Validation Rules** - Built-in validation for YouTube URLs (Laravel 10+)
+- 📝 **Validation Rules** - Built-in validation for YouTube URLs (Laravel 12+)
 - 🔄 **Auto-Discovery** - Automatic service provider registration
 - 📚 **Extensive Documentation** - Clear examples and usage guides
 
 ## 📋 Requirements
 
-- PHP 8.2 or higher
-- Laravel 10.x, 11.x, 12.x, or 13.x
+- PHP 8.3 or higher
+- Laravel 12.x or 13.x
 - YouTube Data API v3 Key ([Get one here](https://console.developers.google.com))
 
 ## 🚀 Installation
@@ -273,7 +273,7 @@ $request->validate([
 - `https://youtu.be/VIDEO_ID`
 - `https://www.youtube.com/embed/VIDEO_ID`
 
-**Note:** Uses Laravel 10+ `ValidationRule` interface with closure-based error messages.
+**Note:** Uses Laravel `ValidationRule` interface with closure-based error messages.
 
 ## 🧪 Testing
 
