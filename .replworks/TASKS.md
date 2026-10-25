@@ -4,7 +4,7 @@ Execution checklist in dependency order. Select and run tasks as AGENTS.md TASK_
 
 Conventions:
 
-- `PS §N`, `TS §N`, and `AR §N` mean PRODUCT_SPEC.md, TECH_STACK.md, and ARCHITECTURE.md section N. `C1`-`C10`, `I1`-`I7`, and `F1`-`F6` are ARCHITECTURE.md IDs.
+- `PS §N`, `TS §N`, and `AR §N` mean PRODUCT_SPEC.md, TECH_STACK.md, and ARCHITECTURE.md section N. `C1`-`C18`, `I1`-`I12`, and `F1`-`F9` are ARCHITECTURE.md IDs.
 - "Unit tests passing" means the task's offline tests pass under `composer test` (TS §5).
 - "Live tests passing" means the task's live tests pass under `YOUTUBE_ENABLED=true composer test` (TS §5).
 - A task with "External boundary: yes" needs live tests (AGENTS.md TASK_EXECUTION step 8).
@@ -16,6 +16,7 @@ Baseline: T-001 to T-016 describe the code at commit `0e6721a` (release `v5.1.1`
 
 Out of scope for every task until a human decides: the `[UNVERIFIED]` sections PS §8.1, PS §9.1, and PS §11.1.
 
+T-018 onward are new work for release `v6.0.0`: build the code, then test it.
 - [x] T-001 Project foundation
   - Satisfies: TS §1, TS §2, TS §3, TS §7
   - External boundary: no
@@ -199,3 +200,125 @@ Out of scope for every task until a human decides: the `[UNVERIFIED]` sections P
     - The `run-tests` matrix has six jobs: PHP `8.3`, `8.4`, `8.5` × Laravel `12.*` with Testbench `10.*`, and × Laravel `13.*` with Testbench `11.*`.
     - Every `run-tests` job passes.
     - README requirements list PHP 8.3 or higher and Laravel 12.x or 13.x.
+
+- [ ] T-018 Developer looks up a channel by Handle
+  - Satisfies: PS §7.1 (`getChannelByHandle`)
+  - External boundary: yes
+  - Acceptance criteria:
+    - Through `FakeApiClient`, `getChannelByHandle('@Google')` sends `forHandle`=`@Google` and `part`=`id,snippet,contentDetails,statistics` to channels.
+    - `$optionalParams` replaces generated values (PS §7.2).
+    - `getChannelByHandle('@Google')` returns a Resource Object with `id` `UCK8sQmJBp8GCxrOtXWBpyEA`.
+    - `getChannelByHandle('Google')` (without `@`) returns the same channel.
+    - A Handle with no channel returns `null`.
+    - Unit tests passing. Live tests passing.
+
+- [ ] T-019 Developer publishes migrations and uses the record models
+  - Satisfies: PS §4 (migration publishing, settings); PS §16; TS §1 (new runtime dependencies); TS §2; C8; C9; C11
+  - External boundary: no
+  - Acceptance criteria:
+    - `composer.json` requires `illuminate/console`, `illuminate/database`, `illuminate/queue`, `illuminate/events` `^12.0|^13.0` and `maatwebsite/excel` `^4.0`.
+    - `vendor:publish --tag=youtube-migrations` copies the migrations for `youtube_channels`, `youtube_videos`, and `youtube_sync_errors` into the host's `database/migrations`.
+    - After migrating, each table has exactly the columns, nullability, defaults, unique keys, and foreign-key delete rules of PS §16.1-§16.3.
+    - `YoutubeChannel::videos()`, `syncErrors()`, `owner()`, `YoutubeVideo::channel()`, and `YoutubeSyncError::channel()` return the related records.
+    - A test model using `HasYoutubeChannels` returns its Channel Records from `youtubeChannels()`.
+    - Deleting a Channel Record deletes its Video Records and sets `youtube_channel_id` to `null` on its Sync Error Records.
+    - `config('youtube.sync.queue')` is `null` and `config('youtube.sync.max_pages')` is `1` by default; `YOUTUBE_SYNC_QUEUE` sets the queue.
+    - Unit tests passing.
+
+- [ ] T-020 Sync failures are classified into Failure Reasons
+  - Satisfies: PS §19.1; C16
+  - External boundary: no
+  - Acceptance criteria:
+    - `FailureReason::fromThrowable()` returns, for a `YoutubeApiException` built from:
+      - code `429`, reason `rateLimitExceeded`: `quota_exceeded`
+      - code `403`, reason `quotaExceeded`: `quota_exceeded`
+      - code `403`, reason `dailyLimitExceeded`: `quota_exceeded`
+      - code `400`, message `API key not valid. Please pass a valid API key.`, reason `badRequest`: `invalid_key`
+      - code `403`, reason `forbidden`: `forbidden`
+      - code `404`, reason `playlistNotFound`: `channel_not_found`
+      - message `Curl Error : timeout`: `transport`
+      - message `Invalid response from Youtube API : Syntax error`: `transport`
+    - Any other `Throwable` returns `unknown`.
+    - Error bodies in tests follow the observed values in PS §12 and PS §19.1, or the YouTube Data API error reference.
+    - Unit tests passing.
+
+- [ ] T-021 Quota Block starts, expires, and clears
+  - Satisfies: PS §19.3; C17
+  - External boundary: no
+  - Acceptance criteria:
+    - With the test time `2026-10-25 15:00 America/Los_Angeles`, `QuotaBlock::start()` returns `2026-10-26 00:00 America/Los_Angeles` and `until()` returns the same time.
+    - `isActive()` is true after `start()`, false after `clear()`, and false once the test time passes `until()`.
+    - With no bound `cache` service, `isActive()` is false and `start()` does not throw.
+    - The cache key is `youtube_quota_blocked_until`.
+    - Unit tests passing.
+
+- [ ] T-022 Import cells resolve to channels
+  - Satisfies: PS §17.2; C12; I9
+  - External boundary: yes
+  - Acceptance criteria:
+    - Offline, each input row of PS §17.2 sends the listed request with the listed argument, and sends no search request.
+    - `https://www.youtube.com/c/Google`, `hello world`, and an empty cell send no request and give `unsupported input`.
+    - Live, `UCk1SpWNzOs4MYmr0uICEntg` resolves to that channel; `@Google`, `https://www.youtube.com/@Google`, and `https://www.youtube.com/user/Google` resolve to `UCK8sQmJBp8GCxrOtXWBpyEA`.
+    - Live, a Channel ID with no channel gives `channel not found`.
+    - Unit tests passing. Live tests passing.
+
+- [ ] T-023 Administrator imports channels from CSV or Excel
+  - Satisfies: PS §17.1; PS §17.3; PS §21 (first two criteria); C13; C8 (command registration); F7
+  - External boundary: yes
+  - Acceptance criteria:
+    - `tests/fixtures/channels.csv` and `tests/fixtures/channels.xlsx` hold the four rows of PS §21. Importing either, live, gives `created`, `created`, `updated`, `failed: unsupported input` and two Channel Records with `channel_id`, `title`, and `uploads_playlist_id` set.
+    - Importing the same file again gives `updated`, `updated`, `updated`, `failed: unsupported input` and no new Channel Record.
+    - Re-import keeps `is_active`, `sync_status`, and Video Records of existing Channel Records.
+    - `new YoutubeChannelsImport($owner)` sets the Owner on every created or updated Channel Record.
+    - A file without a `channel` header imports nothing and reports `missing channel column`.
+    - Offline, a `quota_exceeded` error on row 2 of 4 gives `failed: quota_exceeded` on row 2 and `skipped: quota exceeded` on rows 3-4.
+    - `youtube:import-channels` prints the counts and failed rows of PS §17.3, exits `1` when a row failed, and exits `0` otherwise.
+    - Unit tests passing. Live tests passing.
+
+- [ ] T-024 Sync job stores a channel's videos and records failures
+  - Satisfies: PS §18.2 (steps 1-6 and 8); PS §19.2; PS §20; C15; C18; I8; I10; I11; F8; F9
+  - External boundary: yes
+  - Acceptance criteria:
+    - Live, `SyncChannelVideos` for the Channel Record of `UCk1SpWNzOs4MYmr0uICEntg` creates up to 50 Video Records with `video_id`, `title`, `published_at`, `duration`, `thumbnail_url`, and `view_count` set, and sets `sync_status` `ok` and `last_synced_at`.
+    - Running it again creates no new Video Record and fires `ChannelSynced` with `created` `0`.
+    - A Channel Record with `uploads_playlist_id` `null` gets it filled before the playlist is read.
+    - Offline, with `$maxPages` `2` and three queued playlist pages, exactly two playlistItems requests are sent; with `null`, all three.
+    - Offline, the check set includes known Video IDs, and videos.list requests carry at most 50 IDs each.
+    - A missing `statistics.likeCount` stores `like_count` `null`.
+    - Live, with an invalid API Key, one Sync Error Record with reason `invalid_key` and code `400` is created, `sync_status` becomes `failed`, `last_error_reason` becomes `invalid_key`, `ChannelSyncFailed` fires, and no exception leaves the job.
+    - Offline, a `quota_exceeded` error starts a Quota Block and fires `QuotaExceeded`.
+    - Offline, a channel lookup returning no item records `channel_not_found`.
+    - During a Quota Block the job sends no request and changes no record.
+    - Unit tests passing. Live tests passing.
+
+- [ ] T-025 Sync flags videos that are no longer available
+  - Satisfies: PS §18.2 (step 7); PS §18.3
+  - External boundary: yes
+  - Observed IDs for live tests (PS §18.3): private `3x_bMyRvJu0`, deleted `Flf-L9FjaV8`.
+  - Acceptance criteria:
+    - A Video Record not returned by videos.list gets `unavailable_at` set; an already-set value is kept.
+    - A Video Record returned again gets `unavailable_at` `null`.
+    - No Video Record is deleted.
+    - `ChannelSynced` reports the number of newly flagged Video Records in `unavailable`.
+    - Unit tests passing. Live tests passing.
+
+- [ ] T-026 Scheduler runs youtube:sync
+  - Satisfies: PS §18.1; PS §21 (last four criteria); C14; I12
+  - External boundary: yes
+  - Acceptance criteria:
+    - With `Queue::fake()`, `youtube:sync` pushes one `SyncChannelVideos` per active Channel Record, on queue `youtube.sync.queue`, with `$maxPages` = `youtube.sync.max_pages`.
+    - `--full` pushes jobs with `$maxPages` `null`.
+    - `--channel=<id>` pushes a job for that Channel Record even when inactive; an unknown ID prints `unknown channel <id>` and pushes nothing for it.
+    - During a Quota Block the command pushes nothing, prints `quota blocked until <time>`, and exits `0`.
+    - Live, on the `sync` queue connection, `youtube:sync --channel=UCk1SpWNzOs4MYmr0uICEntg` stores Video Records and sets `sync_status` `ok`.
+    - Unit tests passing. Live tests passing.
+
+- [ ] T-027 README documents the Laravel sync features
+  - Satisfies: PS §3 (administration screen built by the host); PS §4; PS §17; PS §18.1; PS §19; PS §20
+  - External boundary: no
+  - Acceptance criteria:
+    - README lists the publish commands for config and migrations.
+    - README shows `youtube:import-channels`, the `channel` column, and the accepted input forms.
+    - README shows scheduling `youtube:sync` and running a queue worker.
+    - README lists the Failure Reasons, the Quota Block, and the three events.
+    - README shows one Filament resource and one Nova resource example reading `YoutubeChannel` and `YoutubeSyncError`.
