@@ -212,7 +212,7 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - A Handle with no channel returns `null`.
     - Unit tests passing. Live tests passing.
 
-- [ ] T-019 Developer publishes migrations and uses the record models
+- [x] T-019 Developer publishes migrations and uses the record models
   - Satisfies: PS §4 (migration publishing, settings); PS §16; TS §1 (new runtime dependencies); TS §2; C8; C9; C11
   - External boundary: no
   - Acceptance criteria:
