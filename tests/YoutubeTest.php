@@ -2,6 +2,7 @@
 
 namespace Cable8mm\Youtube\Tests;
 
+use Cable8mm\Youtube\Exceptions\YoutubeApiException;
 use Cable8mm\Youtube\Support\UrlParser;
 use Cable8mm\Youtube\Tests\Resources\FakeApiClient;
 use Cable8mm\Youtube\Youtube;
@@ -448,5 +449,112 @@ class YoutubeTest extends TestCase
 
         // API returns empty result for non-existent videos, not an error
         $this->assertNull($result);
+    }
+
+    public function test_invalid_api_key_throws_youtube_api_exception(): void
+    {
+        if (! Env::youtubeEnabled()) {
+            $this->markTestSkipped('YouTube API tests are disabled');
+        }
+
+        try {
+            (new Youtube('invalid_key'))->getVideoInfo('rie-hPVJ7Sw');
+            $this->fail('Expected YoutubeApiException');
+        } catch (YoutubeApiException $e) {
+            $this->assertSame(400, $e->getCode());
+            $this->assertStringStartsWith('Error 400', $e->getMessage());
+            $this->assertStringEndsWith(' : badRequest', $e->getMessage());
+        }
+    }
+
+    // ==================== Remaining Operations (Live) ====================
+
+    private function liveYoutube(): Youtube
+    {
+        if (! Env::youtubeEnabled()) {
+            $this->markTestSkipped('YouTube API tests are disabled');
+        }
+
+        return new Youtube(Env::get('YOUTUBE_API_KEY'));
+    }
+
+    public function test_get_localized_video_info(): void
+    {
+        $video = $this->liveYoutube()->getLocalizedVideoInfo('rie-hPVJ7Sw', 'ko');
+
+        $this->assertObjectHasProperty('id', $video);
+        $this->assertObjectHasProperty('snippet', $video);
+    }
+
+    public function test_search(): void
+    {
+        $results = $this->liveYoutube()->search('Laravel', 5);
+
+        $this->assertIsArray($results);
+        $this->assertNotEmpty($results);
+    }
+
+    public function test_list_channel_videos(): void
+    {
+        $videos = $this->liveYoutube()->listChannelVideos('UCk1SpWNzOs4MYmr0uICEntg', 5);
+
+        $this->assertIsArray($videos);
+        $this->assertNotEmpty($videos);
+    }
+
+    public function test_get_channel_videos_after_a_time(): void
+    {
+        $youtube = $this->liveYoutube();
+        $channelId = 'UCk1SpWNzOs4MYmr0uICEntg';
+
+        $since = $youtube->getChannelVideos($channelId, 2, null)['results'][1]->snippet->publishedAt;
+
+        $videos = $youtube->getChannelVideos($channelId, 5, $since, true)['results'];
+
+        $this->assertNotEmpty($videos);
+
+        foreach ($videos as $video) {
+            $this->assertTrue(Carbon::create($video->snippet->publishedAt)->gt(Carbon::create($since)));
+        }
+    }
+
+    public function test_search_channel_by_name(): void
+    {
+        $channel = $this->liveYoutube()->searchChannelByName('Google');
+
+        $this->assertObjectHasProperty('id', $channel);
+    }
+
+    public function test_get_channel_from_url(): void
+    {
+        $youtube = $this->liveYoutube();
+
+        $this->assertSame('UCK8sQmJBp8GCxrOtXWBpyEA', $youtube->getChannelFromURL('https://www.youtube.com/@Google')->id);
+        $this->assertSame('UCK8sQmJBp8GCxrOtXWBpyEA', $youtube->getChannelFromURL('https://www.youtube.com/user/Google')->id);
+        $this->assertSame('UCk1SpWNzOs4MYmr0uICEntg', $youtube->getChannelFromURL('https://www.youtube.com/channel/UCk1SpWNzOs4MYmr0uICEntg')->id);
+    }
+
+    public function test_get_playlists_by_channel_id(): void
+    {
+        $result = $this->liveYoutube()->getPlaylistsByChannelId('UCk1SpWNzOs4MYmr0uICEntg');
+
+        $this->assertNotEmpty($result['results']);
+        $this->assertSame(['totalResults', 'nextPageToken', 'prevPageToken'], array_keys($result['info']));
+    }
+
+    public function test_get_comment_threads_by_video_id(): void
+    {
+        $threads = $this->liveYoutube()->getCommentThreadsByVideoId('rie-hPVJ7Sw', 2);
+
+        $this->assertIsArray($threads);
+        $this->assertLessThanOrEqual(2, count($threads));
+    }
+
+    public function test_get_activities_by_channel_id(): void
+    {
+        $activities = $this->liveYoutube()->getActivitiesByChannelId('UCk1SpWNzOs4MYmr0uICEntg');
+
+        $this->assertIsArray($activities);
+        $this->assertLessThanOrEqual(5, count($activities));
     }
 }
