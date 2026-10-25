@@ -288,6 +288,27 @@ class YoutubeTest extends TestCase
         $this->assertObjectHasProperty('snippet', $channel);
     }
 
+    public function test_get_channel_by_handle(): void
+    {
+        if (! Env::youtubeEnabled()) {
+            $this->markTestSkipped('YouTube API tests are disabled');
+        }
+
+        $youtube = new Youtube(Env::get('YOUTUBE_API_KEY'));
+
+        $this->assertSame('UCK8sQmJBp8GCxrOtXWBpyEA', $youtube->getChannelByHandle('@Google')->id);
+        $this->assertSame('UCK8sQmJBp8GCxrOtXWBpyEA', $youtube->getChannelByHandle('Google')->id);
+    }
+
+    public function test_get_channel_by_handle_returns_null_for_unknown_handle(): void
+    {
+        if (! Env::youtubeEnabled()) {
+            $this->markTestSkipped('YouTube API tests are disabled');
+        }
+
+        $this->assertNull((new Youtube(Env::get('YOUTUBE_API_KEY')))->getChannelByHandle('@zz-no-such-handle-9q8x7w'));
+    }
+
     public function test_get_popular_videos(): void
     {
         if (! Env::youtubeEnabled()) {

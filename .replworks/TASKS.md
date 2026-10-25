@@ -201,7 +201,7 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - Every `run-tests` job passes.
     - README requirements list PHP 8.3 or higher and Laravel 12.x or 13.x.
 
-- [ ] T-018 Developer looks up a channel by Handle
+- [x] T-018 Developer looks up a channel by Handle
   - Satisfies: PS §7.1 (`getChannelByHandle`)
   - External boundary: yes
   - Acceptance criteria:
