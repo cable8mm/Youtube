@@ -52,7 +52,8 @@
         "post-update-cmd": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
-        "test": "./vendor/bin/phpunit tests",
+        "test": "./vendor/bin/phpunit --testsuite unit",
+        "test:e2e": "./vendor/bin/phpunit --testsuite e2e",
         "lint": "./vendor/bin/pint",
         "inspect": "./vendor/bin/pint --test",
         "apidoc": "doctum.phar update doctum.php --output-format=github --no-ansi --no-progress",

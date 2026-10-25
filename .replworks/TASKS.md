@@ -6,7 +6,7 @@ Conventions:
 
 - `PS §N`, `TS §N`, and `AR §N` mean PRODUCT_SPEC.md, TECH_STACK.md, and ARCHITECTURE.md section N. `C1`-`C18`, `I1`-`I12`, and `F1`-`F9` are ARCHITECTURE.md IDs.
 - "Unit tests passing" means the task's offline tests pass under `composer test` (TS §5).
-- "Live tests passing" means the task's live tests pass under `YOUTUBE_ENABLED=true composer test` (TS §5).
+- "Live tests passing" means the task's E2E tests pass under `composer test:e2e` (TS §5). Before T-028 the command was `YOUTUBE_ENABLED=true composer test`.
 - A task with "External boundary: yes" needs live tests (AGENTS.md TASK_EXECUTION step 8).
 - Example values below were observed against the live API: video `rie-hPVJ7Sw`; playlist `PL590L5WQmH8fJ54F369BLDSqIwcs-TCfs`; channel `UCk1SpWNzOs4MYmr0uICEntg` (XDA); `@Google` and `/user/Google` resolve to channel `UCK8sQmJBp8GCxrOtXWBpyEA`.
 
@@ -154,10 +154,10 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
   - Satisfies: TS §4; TS §5
   - External boundary: yes
   - Acceptance criteria:
-    - With `YOUTUBE_ENABLED=true` and a valid `YOUTUBE_API_KEY` in `.env`, `composer test` skips no test.
-    - With `YOUTUBE_ENABLED=false`, every live test is skipped and `composer test` exits 0.
+    - With `YOUTUBE_ENABLED=true` and a valid `YOUTUBE_API_KEY` in `.env`, `composer test` skips no test. Superseded by T-028.
+    - With `YOUTUBE_ENABLED=false`, every live test is skipped and `composer test` exits 0. Superseded by T-028.
     - `Env::get('YOUTUBE_CHANNEL_ID')` returns the value set by `phpunit.xml.dist` in every test class.
-    - Live tests that extend `Cable8mm\Youtube\Tests\TestCase` call the API with `YOUTUBE_API_KEY`, not `test_api_key`.
+    - Live tests that extend `Cable8mm\Youtube\Tests\TestCase` call the API with `YOUTUBE_API_KEY`, not `test_api_key`. Superseded by T-028.
     - Live tests passing.
 
 - [x] T-015 Tests cover the Shared Client identity, constructor settings, and low-level helpers
@@ -322,3 +322,16 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - README shows scheduling `youtube:sync` and running a queue worker.
     - README lists the Failure Reasons, the Quota Block, and the three events.
     - README shows one Filament resource and one Nova resource example reading `YoutubeChannel` and `YoutubeSyncError`.
+
+- [x] T-028 E2E tests run separately from unit tests and never in CI
+  - Satisfies: TS §4; TS §5; TS §7
+  - External boundary: yes
+  - Acceptance criteria:
+    - Every test that sends a request to the YouTube Data API is in `tests/E2E/` and extends `Cable8mm\Youtube\Tests\E2E\TestCase`. No test outside `tests/E2E/` sends one.
+    - `composer test` runs only the `unit` suite and exits 0 without `.env`.
+    - `composer test:e2e` runs only the `e2e` suite. With a valid `YOUTUBE_API_KEY` in `.env` it skips no test.
+    - With `YOUTUBE_API_KEY` unset or equal to the `.env.example` placeholder, every E2E test fails with a message naming `YOUTUBE_API_KEY`.
+    - `YOUTUBE_ENABLED`, `Env::youtubeEnabled()`, and `TestCase::useLiveApiKey()` no longer exist; `.env.example` has no `YOUTUBE_ENABLED`.
+    - The `run-tests` workflow runs `composer test` and does not copy `.env.example`.
+    - README Testing section shows `composer test` and `composer test:e2e`.
+    - Unit tests passing. Live tests passing.

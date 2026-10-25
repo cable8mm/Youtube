@@ -27,9 +27,4 @@ final class Env
 
         return is_string($value) && $value !== '' ? $value : null;
     }
-
-    public static function youtubeEnabled(): bool
-    {
-        return self::get('YOUTUBE_ENABLED') === 'true';
-    }
 }

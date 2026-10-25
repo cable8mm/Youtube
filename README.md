@@ -280,11 +280,11 @@ $request->validate([
 Run the test suite:
 
 ```bash
-# Run all tests
+# Unit tests (no API key, no network; this is what CI runs)
 composer test
 
-# Run with API tests enabled
-YOUTUBE_ENABLED=true composer test
+# E2E tests against the live YouTube Data API (needs YOUTUBE_API_KEY in .env)
+composer test:e2e
 ```
 
 **Test Coverage:**
