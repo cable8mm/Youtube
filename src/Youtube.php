@@ -263,6 +263,16 @@ class Youtube
      *
      * @throws YoutubeApiException
      */
+    public function getChannelByHandle(string $handle, array $optionalParams = [], array $part = Channels::DEFAULT_PART)
+    {
+        return $this->channels->byHandle($handle, $optionalParams, $part);
+    }
+
+    /**
+     * @return \StdClass|null
+     *
+     * @throws YoutubeApiException
+     */
     public function searchChannelByName(string $username, int $maxResults = 1, array $part = ['id', 'snippet'])
     {
         return $this->channels->searchByName($username, $maxResults, $part);

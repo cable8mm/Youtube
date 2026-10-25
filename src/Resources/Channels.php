@@ -35,6 +35,21 @@ class Channels extends Resource
     }
 
     /**
+     * @return \StdClass|null
+     *
+     * @throws YoutubeApiException
+     */
+    public function byHandle(string $handle, array $optionalParams = [], array $part = self::DEFAULT_PART)
+    {
+        $apiData = $this->client->call('channels.list', array_merge([
+            'forHandle' => $handle,
+            'part' => implode(',', $part),
+        ], $optionalParams));
+
+        return $this->decoder->single($apiData);
+    }
+
+    /**
      * @return \StdClass|array|null
      *
      * @throws YoutubeApiException

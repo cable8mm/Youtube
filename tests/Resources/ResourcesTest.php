@@ -113,6 +113,43 @@ class ResourcesTest extends TestCase
         $this->assertSame('UC123', $client->requests[1]['params']['id']);
     }
 
+    public function test_channel_by_handle_sends_for_handle_and_default_part(): void
+    {
+        $client = new FakeApiClient([$this->listJson([['id' => 'UC123']])]);
+        $decoder = new ResponseDecoder;
+        $channels = new Channels($client, $decoder, new Search($client, $decoder));
+
+        $channel = $channels->byHandle('@Google');
+
+        $this->assertSame('UC123', $channel->id);
+        $this->assertSame(ApiClient::ENDPOINTS['channels.list'], $client->requests[0]['url']);
+        $this->assertSame([
+            'forHandle' => '@Google',
+            'part' => 'id,snippet,contentDetails,statistics',
+            'key' => 'test_key',
+        ], $client->requests[0]['params']);
+    }
+
+    public function test_channel_by_handle_optional_params_replace_generated_values(): void
+    {
+        $client = new FakeApiClient([$this->listJson([['id' => 'UC123']])]);
+        $decoder = new ResponseDecoder;
+        $channels = new Channels($client, $decoder, new Search($client, $decoder));
+
+        $channels->byHandle('@Google', ['part' => 'id', 'hl' => 'ko']);
+
+        $this->assertSame('id', $client->requests[0]['params']['part']);
+        $this->assertSame('ko', $client->requests[0]['params']['hl']);
+    }
+
+    public function test_channel_by_handle_returns_null_when_not_found(): void
+    {
+        $client = new FakeApiClient([$this->listJson([])]);
+        $decoder = new ResponseDecoder;
+
+        $this->assertNull((new Channels($client, $decoder, new Search($client, $decoder)))->byHandle('@missing'));
+    }
+
     public function test_url_parser_resolves_channel_url_types(): void
     {
         $this->assertSame(['type' => 'id', 'value' => 'UC1'], UrlParser::channel('https://www.youtube.com/channel/UC1'));
