@@ -262,7 +262,7 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - Live, a Channel ID with no channel gives `channel not found`.
     - Unit tests passing. Live tests passing.
 
-- [ ] T-023 Administrator imports channels from CSV or Excel
+- [x] T-023 Administrator imports channels from CSV or Excel
   - Satisfies: PS §17.1; PS §17.3; PS §21 (first two criteria); C13; C8 (command registration); F7
   - External boundary: yes
   - Acceptance criteria:

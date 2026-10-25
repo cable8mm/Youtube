@@ -4,6 +4,7 @@ namespace Cable8mm\Youtube\Tests;
 
 use Cable8mm\Youtube\Facades\Youtube;
 use Cable8mm\Youtube\YoutubeServiceProvider;
+use Maatwebsite\Excel\ExcelServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 abstract class TestCase extends OrchestraTestCase
@@ -12,6 +13,7 @@ abstract class TestCase extends OrchestraTestCase
     {
         return [
             YoutubeServiceProvider::class,
+            ExcelServiceProvider::class,
         ];
     }
 
