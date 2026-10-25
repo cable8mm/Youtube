@@ -1,10 +1,12 @@
 # ARCHITECTURE: cable8mm/youtube
 
-Reference sections as `ARCHITECTURE.md §N` and components as `C1`-`C10`. Terms such as Client, Shared Client, Transport, and the result types are defined in PRODUCT_SPEC.md §2 and §6.
+Reference sections as `ARCHITECTURE.md §N` and components as `C1`-`C18`. Terms such as Client, Shared Client, Transport, and the result types are defined in PRODUCT_SPEC.md §2 and §6.
 
 ## 1. Purpose
 
 One entry point sits over a request pipeline. The entry point keeps a fixed public method set and delegates each call to one operation group. Operation groups build parameters. One Transport sends requests. One decoder turns response bodies into result types.
+
+A storage layer sits beside the pipeline. An importer and a sync job are the only writers of stored records. Both reach the API only through the Shared Client.
 
 ## 2. Components
 
@@ -17,11 +19,19 @@ One entry point sits over a request pipeline. The entry point keeps a fixed publ
 | C5 | URL Parser | Extracting a Video ID from a URL. Classifying a channel URL as lookup by ID, by username, or by search term. Pure functions: no requests, no settings. | none |
 | C6 | Cache Wrapper | Reading and writing the host cache store with a fixed TTL. Generating cache keys. | host cache store |
 | C7 | Validation Rule | Extracting a Video ID with C5 and checking existence with a Client. Mapping outcomes to validation messages. | C5, a Client (injected or the Shared Client) |
-| C8 | Registration | Merging settings, offering config publishing, building the Shared Client lazily, binding its container keys, providing the facade. | C9, C1 |
-| C9 | Settings Definition | The API Key setting and its environment mapping. | host environment |
+| C8 | Registration | Merging settings, offering config and migration publishing, registering the import and sync commands, building the Shared Client lazily, binding its container keys, providing the facade. | C9, C1, C13, C14 |
+| C9 | Settings Definition | The API Key and sync settings and their environment mapping. | host environment |
 | C10 | Error Type | The product's API exception, built from an API error object or from a message. | none |
+| C11 | Records | Channel, Video, and Sync Error Records and their relations, including the optional Owner. The Owner relation helper for host models. Holds no API logic. | host database |
+| C12 | Channel Input Resolver | Turning one import cell into one channels Resource Object, or a failure cause, by the rules of PRODUCT_SPEC.md §17.2. Never sends a search request. | C5, C1 |
+| C13 | Channel Importer | Reading the first sheet of a spreadsheet file, resolving each `channel` cell with C12, writing Channel Records by Channel ID, and collecting row results. Stops at `quota_exceeded`. | C12, C11, C16, host spreadsheet reader |
+| C14 | Sync Dispatcher | Choosing Channel Records and queuing one C15 job per record. Checks C17 first. | C11, C17, host queue |
+| C15 | Channel Syncer | One Sync for one Channel Record: read the uploads playlist, look up the check set in batches of 50, write Video Records, mark unavailable videos, update the Channel Record. Converts every failure into a recorded failure. | C1, C11, C16, C17, C18 |
+| C16 | Failure Classifier | Mapping an exception to a Failure Reason. Pure function: no requests, no records. | C10 |
+| C17 | Quota Gate | Starting, reading, and clearing the Quota Block. | host cache store |
+| C18 | Sync Notifications | The `ChannelSynced`, `ChannelSyncFailed`, and `QuotaExceeded` events. | host event dispatcher |
 
-Host-supplied capabilities: settings storage, service container, default cache store, validator.
+Host-supplied capabilities: settings storage, service container, default cache store, validator, database, queue, scheduler, event dispatcher, spreadsheet reader.
 
 External boundary (AGENTS.md EXTERNAL_BOUNDARY): the YouTube Data API v3. Only C2 crosses it.
 
@@ -51,6 +61,27 @@ C5 decides the lookup kind from the URL string alone, without a request. A searc
 
 `Host boot -> C8 merges C9 -> first resolution of the Shared Client -> C1 built with the API Key setting -> reused for the rest of the process`
 
+### 3.5 Channel import
+
+`Administrator -> import command or host code -> C13 -> per row: C12 -> C1 channels -> C13 writes C11 -> row results`
+
+1. C13 reads rows in order and passes each `channel` cell to C12.
+2. C12 classifies the cell without a request, then sends at most one channels request through C1.
+3. C13 writes the Channel Record by Channel ID, keeping existing sync state and Video Records.
+4. On an API exception C13 asks C16 for the Failure Reason. On `quota_exceeded` C13 marks every remaining row skipped and stops.
+
+### 3.6 Sync
+
+`Host scheduler -> C14 -> C17 check -> host queue -> C15 -> C17 check -> C1 (playlist items, videos) -> C15 writes C11 -> C18 ChannelSynced`
+
+1. C14 queues nothing during a Quota Block.
+2. C15 checks C17 again when the job runs, because a block may start after queuing.
+3. C15 reads uploads, then looks up new and known Video IDs together, so one pass both adds new videos and refreshes or flags known ones.
+
+### 3.7 Sync failure
+
+`C15 catches exception -> C16 Failure Reason -> C11 Sync Error Record + Channel Record status -> [quota_exceeded: C17 start + C18 QuotaExceeded] -> C18 ChannelSyncFailed`
+
 ## 4. Caching
 
 - C2 uses C6 only when caching is on for that Client and the host cache store is bound.
@@ -67,6 +98,11 @@ C5 decides the lookup kind from the URL string alone, without a request. A searc
 - I5: Resource Objects pass from C3 to the caller unchanged.
 - I6: C2 reads the API Key and settings when it sends a request, not when C4 groups are created.
 - I7: Only C2 communicates with the YouTube Data API.
+- I8: Only C13 and C15 write records. C1-C7 never read or write records.
+- I9: C12 and C15 never send a search request.
+- I10: C15 never deletes a Video Record.
+- I11: A failed Sync never propagates its exception out of C15. Every failure leaves one Sync Error Record.
+- I12: During a Quota Block, C14 queues nothing and C15 sends nothing.
 
 ## 6. Failure boundaries
 
@@ -78,6 +114,9 @@ C5 decides the lookup kind from the URL string alone, without a request. A searc
 | F4 | transport failure | C2, as C10 | no |
 | F5 | error body or non-object body | C3, as C10 | no |
 | F6 | any `Exception` during validation | C7 converts it to a fail message | n/a |
+| F7 | an import cell that cannot be resolved, or an API exception on a row | C13 records a failed row and continues; stops on `quota_exceeded` | per row |
+| F8 | any exception during a Sync | C15 records it (§3.7) | no |
+| F9 | channel lookup returns no item during a Sync | C15 records `channel_not_found` | no |
 
 - A response with no items is not a failure. It yields the empty value of the selected result type.
 - An unbound host cache store turns caching off without a failure.
@@ -86,6 +125,8 @@ C5 decides the lookup kind from the URL string alone, without a request. A searc
 ## 7. Non-goals
 
 - No authentication other than the API Key.
-- No write operations.
-- No mapping of Resource Objects to typed data or storage.
-- No automatic paging, retries, or quota accounting.
+- No write operations to YouTube.
+- C1-C4 do not map Resource Objects to typed data or storage. Only C13 and C15 map them into records.
+- C1-C4 do not page automatically. Only C15 reads more than one page.
+- No retries. The only quota handling is C17.
+- No administration screen.

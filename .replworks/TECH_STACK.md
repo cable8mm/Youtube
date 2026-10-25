@@ -8,6 +8,8 @@ Reference sections as `TECH_STACK.md §N`. Terms such as Client, Shared Client, 
 - Framework: Laravel, version constraint `^12.0|^13.0`, through `illuminate/support`.
 - Package manager: composer.
 - Runtime dependency `illuminate/support` `^12.0|^13.0`. Reason: service provider base class, facade base class, cache and validation contracts.
+- Runtime dependencies `illuminate/console`, `illuminate/database`, `illuminate/queue`, `illuminate/events` `^12.0|^13.0`. Reason: Artisan commands, Eloquent models and migrations, queued jobs, events (PRODUCT_SPEC.md §16-§20).
+- Runtime dependency `maatwebsite/excel` `^4.0`. Reason: reading CSV and Excel files for channel import (PRODUCT_SPEC.md §17). Its versions `4.*` require PHP `^8.3` and `illuminate/support` `^12.0 || ^13.0`.
 - Runtime dependency `nesbot/carbon` `^3.0`. Reason: parsing and shifting the `getChannelVideos` time bound.
 - Runtime extension `ext-curl`. Reason: HTTP transport to the YouTube Data API.
 - Development dependency `orchestra/testbench` `^10.0|^11.0`. Reason: boots a Laravel application for package tests. Testbench `10.*` pairs with Laravel `12.*`; Testbench `11.*` pairs with Laravel `13.*`.
@@ -34,6 +36,21 @@ Reference sections as `TECH_STACK.md §N`. Terms such as Client, Shared Client, 
 - The facade alias `Youtube` MUST be registered under `extra.laravel.aliases` in `composer.json`.
 - The service provider class MUST be `Cable8mm\Youtube\YoutubeServiceProvider`.
 - The facade class MUST be `Cable8mm\Youtube\Facades\Youtube`.
+- `database/migrations/` MUST hold the package migrations. They are published with `publishesMigrations()` under tag `youtube-migrations` and are not loaded with `loadMigrationsFrom()`.
+- Class locations, by namespace under `Cable8mm\Youtube\` and folder under `src/`:
+
+| Kind | Namespace / folder |
+| --- | --- |
+| Eloquent models | `Models` |
+| Model traits | `Concerns` |
+| Artisan commands | `Console` |
+| Excel import objects | `Imports` |
+| Queued jobs | `Jobs` |
+| Events | `Events` |
+| Failure classifier, Quota Block, channel input resolver | `Sync` |
+
+- Command signatures MUST be `youtube:import-channels` and `youtube:sync`.
+- `tests/fixtures/` MUST hold the CSV and XLSX files used by import tests.
 
 ## 3. Coding conventions specific to the chosen stack
 
@@ -55,6 +72,10 @@ Reference sections as `TECH_STACK.md §N`. Terms such as Client, Shared Client, 
 - Offline tests of API operations MUST replace the Transport with `Cable8mm\Youtube\Tests\Resources\FakeApiClient`, which records requests and returns queued bodies.
 - Every body queued in `FakeApiClient` MUST follow a recorded live response or the YouTube Data API reference (AGENTS.md MOCK_RULES).
 - Code coverage MUST NOT be measured or required.
+- Tests that touch records MUST use SQLite in memory through Testbench, with the package migrations run by the test case (`defineDatabaseMigrations`) and `RefreshDatabase`.
+- Offline sync and import tests MUST inject a Client built on `FakeApiClient` into the container in place of the Shared Client.
+- Tests MAY use `Queue::fake()`, `Event::fake()`, and `Cache` with the `array` store. They MUST NOT fake the database.
+- Live sync and import tests MUST run the job synchronously (`dispatchSync` or the `sync` queue connection).
 
 ## 5. Verification commands
 
@@ -73,7 +94,10 @@ Reference sections as `TECH_STACK.md §N`. Terms such as Client, Shared Client, 
 - Package settings MUST be defined in `src/config/youtube.php`.
 - The environment variable for the API Key MUST be `YOUTUBE_API_KEY`.
 - `env()` MUST be called only inside `src/config/youtube.php`.
-- Only `Cable8mm\Youtube\YoutubeServiceProvider` reads Laravel config. Every other class receives the API Key through a constructor.
+- Only `Cable8mm\Youtube\YoutubeServiceProvider` and the two Artisan commands read Laravel config. The commands pass `youtube.sync.*` values to jobs through job constructor arguments. Every other class receives the API Key through a constructor.
+- Jobs and the import object obtain the Shared Client from the container (`app(Youtube::class)`), so tests can replace it.
+- The Quota Block MUST use the host's default cache store, resolved the way the Transport resolves it (`app('cache')->store()` when `app()->bound('cache')`), with key `youtube_quota_blocked_until`.
+- Sync jobs MUST implement `ShouldQueue`, set `$tries = 1`, and catch every `Throwable` inside `handle()`.
 
 ## 7. Deployment rules
 
