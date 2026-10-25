@@ -91,12 +91,16 @@ class SyncChannelVideos implements ShouldQueue
 
         $created = 0;
         $updated = 0;
+        $returned = [];
 
         foreach (array_chunk($checkSet, self::PAGE_SIZE) as $batch) {
             foreach ($youtube->getVideoInfo($batch, self::VIDEO_PART) ?? [] as $item) {
                 $this->storeVideo($channel, $item) ? $created++ : $updated++;
+                $returned[] = $item->id;
             }
         }
+
+        $unavailable = $this->flagUnavailable($channel, array_diff($checkSet, $returned));
 
         $channel->update([
             'sync_status' => 'ok',
@@ -104,7 +108,27 @@ class SyncChannelVideos implements ShouldQueue
             'last_error_reason' => null,
         ]);
 
-        Event::dispatch(new ChannelSynced($channel, $created, $updated, 0));
+        Event::dispatch(new ChannelSynced($channel, $created, $updated, $unavailable));
+    }
+
+    /**
+     * Set unavailable_at on the channel's Video Records that videos.list did not return,
+     * keeping an already-set value (PRODUCT_SPEC.md §18.3). Returns the number newly flagged.
+     *
+     * @param  string[]  $videoIds
+     */
+    protected function flagUnavailable(YoutubeChannel $channel, array $videoIds): int
+    {
+        $flagged = 0;
+
+        foreach (array_chunk(array_values($videoIds), self::PAGE_SIZE) as $batch) {
+            $flagged += $channel->videos()
+                ->whereIn('video_id', $batch)
+                ->whereNull('unavailable_at')
+                ->update(['unavailable_at' => Carbon::now()]);
+        }
+
+        return $flagged;
     }
 
     /**

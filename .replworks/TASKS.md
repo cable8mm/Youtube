@@ -291,7 +291,7 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - During a Quota Block the job sends no request and changes no record.
     - Unit tests passing. Live tests passing.
 
-- [ ] T-025 Sync flags videos that are no longer available
+- [x] T-025 Sync flags videos that are no longer available
   - Satisfies: PS §18.2 (step 7); PS §18.3
   - External boundary: yes
   - Observed IDs for live tests (PS §18.3): private `3x_bMyRvJu0`, deleted `Flf-L9FjaV8`.
