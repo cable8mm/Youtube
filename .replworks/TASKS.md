@@ -313,7 +313,7 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - Live, on the `sync` queue connection, `youtube:sync --channel=UCk1SpWNzOs4MYmr0uICEntg` stores Video Records and sets `sync_status` `ok`.
     - Unit tests passing. Live tests passing.
 
-- [ ] T-027 README documents the Laravel sync features
+- [x] T-027 README documents the Laravel sync features
   - Satisfies: PS §3 (administration screen built by the host); PS §4; PS §17; PS §18.1; PS §19; PS §20
   - External boundary: no
   - Acceptance criteria:
