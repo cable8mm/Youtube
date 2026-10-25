@@ -32,21 +32,36 @@ class UrlParser
     ];
 
     /**
+     * Hosts whose URLs carry a Video ID in `v` or after `/embed/`.
+     */
+    public const VIDEO_HOSTS = [
+        'youtube.com',
+        'www.youtube.com',
+        'm.youtube.com',
+        'music.youtube.com',
+        'youtube-nocookie.com',
+        'www.youtube-nocookie.com',
+    ];
+
+    /**
      * Parse a youtube URL to get the youtube Vid.
-     * Support both full URL (www.youtube.com) and short URL (youtu.be)
+     * Support full URLs (www.youtube.com), embed URLs, and short URLs (youtu.be)
      *
      * @throws \InvalidArgumentException
      */
     public static function videoId(string $youtube_url): string
     {
+        $url = static::withScheme($youtube_url);
+        $host = static::host($url);
+        $segments = static::segments($url);
         $vid = null;
 
-        if (strpos($youtube_url, 'youtube.com') !== false) {
-            $vid = strpos($youtube_url, 'embed') !== false
-                ? substr(static::path($youtube_url), 7)
-                : static::query($youtube_url)['v'] ?? null;
-        } elseif (strpos($youtube_url, 'youtu.be') !== false) {
-            $vid = substr(static::path($youtube_url), 1);
+        if ($host === 'youtu.be') {
+            $vid = $segments[0] ?? null;
+        } elseif (in_array($host, self::VIDEO_HOSTS, true)) {
+            $vid = ($segments[0] ?? null) === 'embed'
+                ? $segments[1] ?? null
+                : static::query($url)['v'] ?? null;
         }
 
         if (! is_string($vid) || $vid === '') {
@@ -100,6 +115,32 @@ class UrlParser
         }
 
         return ['type' => 'search', 'value' => $segments[1]];
+    }
+
+    /**
+     * Prefix https:// to a URL that has no scheme, so parse_url finds its host
+     */
+    public static function withScheme(string $url): string
+    {
+        return str_contains($url, '://') ? $url : 'https://'.$url;
+    }
+
+    /**
+     * Parse the input url string and return its lowercased host
+     */
+    public static function host(string $url): string
+    {
+        return strtolower(parse_url($url, PHP_URL_HOST) ?: '');
+    }
+
+    /**
+     * Parse the input url string and return the non-empty segments of its path
+     *
+     * @return string[]
+     */
+    public static function segments(string $url): array
+    {
+        return array_values(array_filter(explode('/', static::path($url)), fn ($segment) => $segment !== ''));
     }
 
     /**

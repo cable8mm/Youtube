@@ -18,7 +18,49 @@ class UrlParserTest extends TestCase
             'embed without id' => ['https://www.youtube.com/embed/'],
             'youtu.be without path' => ['https://youtu.be'],
             'youtu.be root path' => ['https://youtu.be/'],
+            'youtube.com in another host query' => ['https://example.com/?ref=youtube.com/watch?v=rie-hPVJ7Sw'],
+            'youtu.be in another host path' => ['https://example.com/youtu.be/rie-hPVJ7Sw'],
+            'host ending in youtube.com' => ['https://notyoutube.com/watch?v=rie-hPVJ7Sw'],
+            'other host' => ['https://example.com'],
         ];
+    }
+
+    public static function videoUrls(): array
+    {
+        return [
+            'watch' => ['https://www.youtube.com/watch?v=rie-hPVJ7Sw'],
+            'feature=embed param' => ['https://www.youtube.com/watch?v=rie-hPVJ7Sw&feature=embed'],
+            'mobile' => ['https://m.youtube.com/watch?v=rie-hPVJ7Sw'],
+            'music' => ['https://music.youtube.com/watch?v=rie-hPVJ7Sw'],
+            'bare host' => ['https://youtube.com/watch?v=rie-hPVJ7Sw'],
+            'upper-case host' => ['https://WWW.YouTube.com/watch?v=rie-hPVJ7Sw'],
+            'embed' => ['https://www.youtube.com/embed/rie-hPVJ7Sw'],
+            'embed with query' => ['https://www.youtube.com/embed/rie-hPVJ7Sw?start=10'],
+            'nocookie embed' => ['https://www.youtube-nocookie.com/embed/rie-hPVJ7Sw'],
+            'bare nocookie embed' => ['https://youtube-nocookie.com/embed/rie-hPVJ7Sw'],
+            'short' => ['https://youtu.be/rie-hPVJ7Sw'],
+            'short with query' => ['https://youtu.be/rie-hPVJ7Sw?t=10'],
+            'without scheme' => ['youtube.com/watch?v=rie-hPVJ7Sw'],
+            'short without scheme' => ['youtu.be/rie-hPVJ7Sw'],
+        ];
+    }
+
+    #[DataProvider('videoUrls')]
+    public function test_video_id_reads_video_urls(string $url): void
+    {
+        $this->assertSame('rie-hPVJ7Sw', UrlParser::videoId($url));
+    }
+
+    public function test_segments_skip_empty_parts(): void
+    {
+        $this->assertSame(['channel', 'UC1'], UrlParser::segments('https://www.youtube.com//channel/UC1/'));
+        $this->assertSame([], UrlParser::segments('https://www.youtube.com'));
+    }
+
+    public function test_host_is_lowercased(): void
+    {
+        $this->assertSame('www.youtube.com', UrlParser::host('https://WWW.YouTube.com/watch'));
+        $this->assertSame('', UrlParser::host('not a url'));
     }
 
     #[DataProvider('invalidVideoUrls')]

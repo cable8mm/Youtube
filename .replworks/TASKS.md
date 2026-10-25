@@ -336,7 +336,7 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - README Testing section shows `composer test` and `composer test:e2e`.
     - Unit tests passing. Live tests passing.
 
-- [ ] T-029 Video URL parsing checks the host and the path
+- [x] T-029 Video URL parsing checks the host and the path
   - Satisfies: PS §8; C5
   - External boundary: no
   - Acceptance criteria:
