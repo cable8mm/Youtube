@@ -302,7 +302,7 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - `ChannelSynced` reports the number of newly flagged Video Records in `unavailable`.
     - Unit tests passing. Live tests passing.
 
-- [ ] T-026 Scheduler runs youtube:sync
+- [x] T-026 Scheduler runs youtube:sync
   - Satisfies: PS §18.1; PS §21 (last four criteria); C14; I12
   - External boundary: yes
   - Acceptance criteria:
