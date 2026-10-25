@@ -14,7 +14,7 @@ Baseline: T-001 to T-016 describe the code at commit `0e6721a` (release `v5.1.1`
 - `[x]`: implemented, and every acceptance criterion is covered by a passing test.
 - `[ ]`: implemented, but some acceptance criteria have no test. The work is to add those tests. Change product code only when a new test fails, and then follow AGENTS.md PRODUCT_SPEC_CHANGES.
 
-Out of scope for every task until a human decides: the `[UNVERIFIED]` sections PS §8.1, PS §9.1, and PS §11.1.
+The former `[UNVERIFIED]` sections PS §8.1, PS §9.1, and PS §11.1 were decided as bugs; T-029 to T-031 fix them.
 
 T-018 onward are new work for release `v6.0.0`: build the code, then test it.
 - [x] T-001 Project foundation
@@ -121,7 +121,7 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - Live tests passing.
 
 - [x] T-011 Developer extracts a Video ID from a YouTube URL
-  - Satisfies: PS §8 (excluding PS §8.1)
+  - Satisfies: PS §8 (rules before T-029)
   - External boundary: no
   - Acceptance criteria:
     - `https://www.youtube.com/watch?v=rie-hPVJ7Sw`, `https://youtu.be/rie-hPVJ7Sw`, and `https://www.youtube.com/embed/rie-hPVJ7Sw` return `rie-hPVJ7Sw`.
@@ -131,16 +131,16 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - Unit tests passing.
 
 - [x] T-012 Developer resolves a channel from its URL
-  - Satisfies: PS §9 (excluding PS §9.1); AR §3.2
+  - Satisfies: PS §9 (rules before T-030); AR §3.2
   - External boundary: no (C5 and C4 dispatch; the live check is T-016)
   - Acceptance criteria:
     - `UrlParser::channel()` returns `['type' => 'id', 'value' => 'UC1']` for `/channel/UC1`, `['type' => 'username', 'value' => 'google']` for `/user/google`, and `['type' => 'search', 'value' => 'name']` for `/c/name` and `/name`.
     - `/feed/trending` and `https://www.youtube.com` throw the Channel URL Error.
-    - Offline: `getChannelFromURL('https://www.youtube.com/@laravelphp')` sends a search with `q=laravelphp`, then a channels request with the first hit's `snippet.channelId` as `id`.
+    - Offline: `getChannelFromURL('https://www.youtube.com/@laravelphp')` sends a search with `q=laravelphp`, then a channels request with the first hit's `snippet.channelId` as `id`. Superseded by T-030.
     - Unit tests passing.
 
 - [x] T-013 Developer validates that a URL points to an existing YouTube video
-  - Satisfies: PS §11 (excluding PS §11.1)
+  - Satisfies: PS §11 (rows before T-031)
   - External boundary: yes
   - Acceptance criteria:
     - Live: `https://www.youtube.com/watch?v=rie-hPVJ7Sw`, `https://youtu.be/rie-hPVJ7Sw`, `https://www.youtube.com/embed/rie-hPVJ7Sw`, and `https://www.youtube.com/watch?v=rie-hPVJ7Sw&t=123` pass.
@@ -334,4 +334,34 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - `YOUTUBE_ENABLED`, `Env::youtubeEnabled()`, and `TestCase::useLiveApiKey()` no longer exist; `.env.example` has no `YOUTUBE_ENABLED`.
     - The `run-tests` workflow runs `composer test` and does not copy `.env.example`.
     - README Testing section shows `composer test` and `composer test:e2e`.
+    - Unit tests passing. Live tests passing.
+
+- [ ] T-029 Video URL parsing checks the host and the path
+  - Satisfies: PS §8; C5
+  - External boundary: no
+  - Acceptance criteria:
+    - `https://www.youtube.com/watch?v=rie-hPVJ7Sw&feature=embed`, `https://m.youtube.com/watch?v=rie-hPVJ7Sw`, `https://music.youtube.com/watch?v=rie-hPVJ7Sw`, `https://www.youtube-nocookie.com/embed/rie-hPVJ7Sw`, `https://youtu.be/rie-hPVJ7Sw?t=10`, and `youtube.com/watch?v=rie-hPVJ7Sw` return `rie-hPVJ7Sw`.
+    - `https://example.com/?ref=youtube.com/watch?v=rie-hPVJ7Sw`, `https://example.com/youtu.be/rie-hPVJ7Sw`, and `https://notyoutube.com/watch?v=rie-hPVJ7Sw` throw the Video URL Error.
+    - Every T-011 example keeps its result.
+    - Unit tests passing.
+
+- [ ] T-030 Channel URL resolution reads the right path segment and looks handles up directly
+  - Satisfies: PS §9; C5; AR §3.2
+  - External boundary: yes
+  - Acceptance criteria:
+    - `UrlParser::channel()` returns `['type' => 'id', 'value' => 'UC1']` for `/channel/UC1`, `/channel/UC1/`, and `/channel/UC1/videos`; `['type' => 'handle', 'value' => '@xda']` for `/@xda` and `/@xda/videos`.
+    - `/channel/`, `/user/`, and `/c/` throw the Channel URL Error.
+    - `https://music.youtube.com/channel/UC1` and `https://example.com/?u=youtube.com/channel/UC1` throw the Video URL Error.
+    - Offline: `getChannelFromURL('https://www.youtube.com/@laravelphp')` sends one channels request with `forHandle=@laravelphp` and no search request.
+    - Live: `https://www.youtube.com/@Google/videos` returns channel `UCK8sQmJBp8GCxrOtXWBpyEA`.
+    - Unit tests passing. Live tests passing.
+
+- [ ] T-031 Validation rule fails on any input instead of throwing
+  - Satisfies: PS §11; C7; F6
+  - External boundary: yes
+  - Acceptance criteria:
+    - `null`, `[]`, `['https://youtu.be/rie-hPVJ7Sw']`, `new stdClass`, and `123` fail with exactly `The :attribute does not look like a valid Youtube URL.` and send no request.
+    - `https://example.com/watch?v=rie-hPVJ7Sw` and `not a youtube url` fail with exactly `The :attribute does not look like a valid Youtube URL.` and send no request.
+    - Offline: a lookup that throws fails with exactly `The :attribute could not be validated.`
+    - Live: `https://www.youtube.com/watch?v=rie-hPVJ7Sw` still passes.
     - Unit tests passing. Live tests passing.

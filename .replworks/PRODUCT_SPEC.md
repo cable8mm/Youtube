@@ -160,48 +160,42 @@ Every operation sends one GET request, except `searchChannelByName` and `getChan
 
 `Youtube::parseVidFromURL(string $youtube_url): string` is static. It sends no request and needs no API Key.
 
+A URL without `://` is read as `https://` followed by the URL. Let `host` be the lowercased URL host, `segments` the non-empty segments of the URL path, and `v` the URL-decoded `v` query parameter.
+
+Video hosts: `youtube.com`, `www.youtube.com`, `m.youtube.com`, `music.youtube.com`, `youtube-nocookie.com`, `www.youtube-nocookie.com`.
+
 Rules apply in this order; the first matching rule decides:
 
-1. The URL string contains `youtube.com` and contains `embed`: the result is the URL path with its first 7 characters (`/embed/`) removed.
-2. The URL string contains `youtube.com`: the result is the URL-decoded `v` query parameter.
-3. The URL string contains `youtu.be`: the result is the URL path with its leading `/` removed.
+1. `host` is `youtu.be`: the result is the first segment.
+2. `host` is a video host and the first segment is `embed`: the result is the second segment.
+3. `host` is a video host: the result is `v`.
 4. Otherwise: throw the Video URL Error.
 
-After the rule, a result that is not a string, or is `''`, throws the Video URL Error.
+After the rule, a result that is not a string, or is `''` or missing, throws the Video URL Error.
 
-Consequences: `youtube.com/shorts/{id}` and `youtube.com/live/{id}` have no `v` parameter and throw. Query strings on embed and `youtu.be` URLs are ignored.
-
-### 8.1 Open gap [UNVERIFIED]
-
-- Rule 1 matches `embed` anywhere in the URL string. `https://www.youtube.com/watch?v=abc&feature=embed` throws the Video URL Error instead of returning `abc`.
-- Rules 1-3 match `youtube.com` and `youtu.be` anywhere in the URL string, not only in the host.
-- Whether these are intended is undecided.
+Consequences: `youtube.com/shorts/{id}` and `youtube.com/live/{id}` have no `v` parameter and throw. Query strings on embed and `youtu.be` URLs are ignored, so `https://www.youtube.com/watch?v=abc&feature=embed` returns `abc`. A URL whose host is not listed throws even when `youtube.com` appears elsewhere in it.
 
 ## 9. Channel URL resolution
 
-`getChannelFromURL(string $youtube_url)` returns a Single Result for a channel. Let `path` be the URL path, and `last` be the text after the final `/` of `path`.
+`getChannelFromURL(string $youtube_url)` returns a Single Result for a channel. A URL without `://` is read as `https://` followed by the URL. Let `host` be the lowercased URL host, `path` the URL path, and `segments` the non-empty segments of `path`. Trailing slashes and sub-pages such as `/videos` therefore do not change the result.
 
 Rules apply in this order; the first matching rule decides:
 
-1. The URL string does not contain `youtube.com`: throw the Video URL Error.
-2. `path` starts with `/channel/`: return `getChannelById(last)`.
-3. `path` starts with `/user/`: return `getChannelByName(last)`.
-4. `path` starts with `/c/`: return `searchChannelByName(last)`.
-5. `path` starts with `/@`: return `searchChannelByName(last with every '@' removed)`.
+1. `host` is not `youtube.com`, `www.youtube.com`, or `m.youtube.com`: throw the Video URL Error.
+2. The first segment is `channel`: return `getChannelById(<second segment>)`.
+3. The first segment is `user`: return `getChannelByName(<second segment>)`.
+4. The first segment is `c`: return `searchChannelByName(<second segment>)`.
+5. The first segment starts with `@`: return `getChannelByHandle(<first segment>)`.
 6. `path` contains, anywhere, one of these reserved patterns: throw the Channel URL Error.
    - whole word after `/`: `about`, `account`, `ads`, `creators`, `feed`, `gaming`, `howyoutubeworks`, `new`, `playlist`, `results`, `shorts`, `upload`
    - prefix: `/account_`, `/reporthistory`
    - with a following `/`: `/feed/`, `/gaming/`, `/howyoutubeworks/`, `/playlist/`, `/shorts/`, `/t/`, `/yt/`
-7. The first segment of `path` is empty: throw the Channel URL Error.
-8. Otherwise: return `searchChannelByName(<first segment of path>)`.
+7. There is no segment: throw the Channel URL Error.
+8. Otherwise: return `searchChannelByName(<first segment>)`.
+
+In rules 2-4, a URL with no second segment, such as `/channel/`, throws the Channel URL Error instead of sending a request.
 
 Observed: `https://www.youtube.com/@Google` and `https://www.youtube.com/user/Google` both return channel `UCK8sQmJBp8GCxrOtXWBpyEA`.
-
-### 9.1 Open gap [UNVERIFIED]
-
-- Rules 2-5 use `last`, so a channel sub-page is misread: `/channel/UC1/videos` requests channel ID `videos`, and `/@xda/videos` searches for `videos`.
-- `/channel/UC1/` (trailing slash) requests an empty channel ID.
-- Whether these are intended is undecided.
 
 ## 10. Response caching
 
@@ -222,16 +216,17 @@ Observed: `https://www.youtube.com/@Google` and `https://www.youtube.com/user/Go
 
 | Input | Outcome |
 | --- | --- |
+Rows apply in this order; the first matching row decides:
+
+| Input | Outcome |
+| --- | --- |
+| not a string (`null`, an array, an object, a number) | fail: `The :attribute does not look like a valid Youtube URL.` No request is sent. |
+| a string that §8 rejects | fail: `The :attribute does not look like a valid Youtube URL.` No request is sent. |
 | a string that §8 parses, and the lookup returns a Resource Object | pass |
 | a string that §8 parses, and the lookup returns `null` | fail: `The :attribute does not exist on Youtube.` |
-| a string or int that §8 rejects | fail: `The :attribute could not be validated.` |
-| any input whose lookup throws an `Exception` | fail: `The :attribute could not be validated.` |
+| a string that §8 parses, and the lookup throws an `Exception` | fail: `The :attribute could not be validated.` |
 
-### 11.1 Open gap [UNVERIFIED]
-
-- `null`, arrays, and objects reach `parseVidFromURL(string)` and throw an uncaught `TypeError` instead of failing validation.
-- The message `The :attribute does not look like a valid Youtube URL.` is defined in the rule but never produced, because §8 throws instead of returning an empty Video ID.
-- Whether these are intended is undecided.
+The rule never throws.
 
 ## 12. Errors
 
