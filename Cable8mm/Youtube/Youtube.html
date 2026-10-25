@@ -101,56 +101,101 @@
 
             <table class="table table-condensed">
                     <tr>
-                <td class="type" id="property_APIs">
-                                        protected                                        array
-                                                                                
-                                    </td>
-                <td>$APIs</td>
-                <td class="last"></td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type" id="property_youtube_reserved_urls">
-                                        protected                                        array
-                                                                                
-                                    </td>
-                <td>$youtube_reserved_urls</td>
-                <td class="last"></td>
-                <td></td>
-            </tr>
-                    <tr>
                 <td class="type" id="property_page_info">
                                         protected                                        array
                                                                                 
                                     </td>
                 <td>$page_info</td>
+                <td class="last"><p>Pagination info of the last response decoded through decodeList().</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_client">
+                                        protected                                        <a href="../../Cable8mm/Youtube/Http/ApiClient.html"><abbr title="Cable8mm\Youtube\Http\ApiClient">ApiClient</abbr></a>
+                                                                                
+                                    </td>
+                <td>$client</td>
                 <td class="last"></td>
                 <td></td>
             </tr>
                     <tr>
-                <td class="type" id="property_config">
-                                        protected                                        array
+                <td class="type" id="property_decoder">
+                                        protected                                        <a href="../../Cable8mm/Youtube/Http/ResponseDecoder.html"><abbr title="Cable8mm\Youtube\Http\ResponseDecoder">ResponseDecoder</abbr></a>
                                                                                 
                                     </td>
-                <td>$config</td>
+                <td>$decoder</td>
                 <td class="last"></td>
                 <td></td>
             </tr>
                     <tr>
-                <td class="type" id="property_cacheEnabled">
-                                        protected                                        bool
+                <td class="type" id="property_categories">
+                                        protected                                        <a href="../../Cable8mm/Youtube/Resources/Categories.html"><abbr title="Cable8mm\Youtube\Resources\Categories">Categories</abbr></a>
                                                                                 
                                     </td>
-                <td>$cacheEnabled</td>
+                <td>$categories</td>
                 <td class="last"></td>
                 <td></td>
             </tr>
                     <tr>
-                <td class="type" id="property_cacheTtl">
-                                        protected                                        int
+                <td class="type" id="property_videos">
+                                        protected                                        <a href="../../Cable8mm/Youtube/Resources/Videos.html"><abbr title="Cable8mm\Youtube\Resources\Videos">Videos</abbr></a>
                                                                                 
                                     </td>
-                <td>$cacheTtl</td>
+                <td>$videos</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_searchResource">
+                                        protected                                        <a href="../../Cable8mm/Youtube/Resources/Search.html"><abbr title="Cable8mm\Youtube\Resources\Search">Search</abbr></a>
+                                                                                
+                                    </td>
+                <td>$searchResource</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_channels">
+                                        protected                                        <a href="../../Cable8mm/Youtube/Resources/Channels.html"><abbr title="Cable8mm\Youtube\Resources\Channels">Channels</abbr></a>
+                                                                                
+                                    </td>
+                <td>$channels</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_playlists">
+                                        protected                                        <a href="../../Cable8mm/Youtube/Resources/Playlists.html"><abbr title="Cable8mm\Youtube\Resources\Playlists">Playlists</abbr></a>
+                                                                                
+                                    </td>
+                <td>$playlists</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_playlistItems">
+                                        protected                                        <a href="../../Cable8mm/Youtube/Resources/PlaylistItems.html"><abbr title="Cable8mm\Youtube\Resources\PlaylistItems">PlaylistItems</abbr></a>
+                                                                                
+                                    </td>
+                <td>$playlistItems</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_activities">
+                                        protected                                        <a href="../../Cable8mm/Youtube/Resources/Activities.html"><abbr title="Cable8mm\Youtube\Resources\Activities">Activities</abbr></a>
+                                                                                
+                                    </td>
+                <td>$activities</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_commentThreads">
+                                        protected                                        <a href="../../Cable8mm/Youtube/Resources/CommentThreads.html"><abbr title="Cable8mm\Youtube\Resources\CommentThreads">CommentThreads</abbr></a>
+                                                                                
+                                    </td>
+                <td>$commentThreads</td>
                 <td class="last"></td>
                 <td></td>
             </tr>
@@ -168,6 +213,16 @@
                     <a href="#method___construct">__construct</a>(string $youtube_key, array $config = [])
         
                                             <p>Constructor</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Cable8mm/Youtube/Http/ApiClient.html"><abbr title="Cable8mm\Youtube\Http\ApiClient">ApiClient</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getClient">getClient</a>()
+        
+                                            <p><p>Get the underlying HTTP client.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -225,7 +280,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null
+                    array|null
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getCategories">getCategories</a>(string $regionCode = &#039;US&#039;, array $part = [&#039;snippet&#039;])
@@ -236,43 +291,10 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    array
+                    array|false
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getCommentThreadsByVideoId">getCommentThreadsByVideoId</a>(string|null $videoId = null, int $maxResults = 20, string|null $order = null, array $part = [&#039;id&#039;, &#039;replies&#039;, &#039;snippet&#039;], bool $pageInfo = false)
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    array
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_getCommentThreads">getCommentThreads</a>(string|null $channelId = null, string|null $id = null, string|null $videoId = null, int $maxResults = 20, string|null $order = null, array $part = [&#039;id&#039;, &#039;replies&#039;, &#039;snippet&#039;], bool $pageInfo = false)
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_getVideoInfo">getVideoInfo</a>(array|string $vId, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;player&#039;, &#039;statistics&#039;, &#039;status&#039;])
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_getLocalizedVideoInfo">getLocalizedVideoInfo</a>(mixed $vId, string $language, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;player&#039;, &#039;statistics&#039;, &#039;status&#039;])
+                    <a href="#method_getCommentThreadsByVideoId">getCommentThreadsByVideoId</a>(string|null $videoId = null, int $maxResults = 20, string|null $order = null, array $part = CommentThreads::DEFAULT_PART, bool $pageInfo = false)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -283,7 +305,40 @@
                     array|false
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getPopularVideos">getPopularVideos</a>(string $regionCode, int $maxResults = 10, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;player&#039;, &#039;statistics&#039;, &#039;status&#039;])
+                    <a href="#method_getCommentThreads">getCommentThreads</a>(string|null $channelId = null, string|null $id = null, string|null $videoId = null, int $maxResults = 20, string|null $order = null, array $part = CommentThreads::DEFAULT_PART, bool $pageInfo = false)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getVideoInfo">getVideoInfo</a>(array|string $vId, array $part = Videos::DEFAULT_PART)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getLocalizedVideoInfo">getLocalizedVideoInfo</a>(mixed $vId, string $language, array $part = Videos::DEFAULT_PART)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|false
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getPopularVideos">getPopularVideos</a>(string $regionCode, int $maxResults = 10, array $part = Videos::DEFAULT_PART)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -313,7 +368,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    array
+                    array|false
                 </div>
                 <div class="col-md-8">
                     <a href="#method_searchChannelVideos">searchChannelVideos</a>(string $q, string $channelId, int $maxResults = 10, string|null $order = null, array $part = [&#039;id&#039;, &#039;snippet&#039;], bool $pageInfo = false)
@@ -335,7 +390,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    array
+                    array|false
                 </div>
                 <div class="col-md-8">
                     <a href="#method_listChannelVideos">listChannelVideos</a>(string $channelId, int $maxResults = 10, string|null $order = null, array $part = [&#039;id&#039;, &#039;snippet&#039;], bool $pageInfo = false)
@@ -371,7 +426,7 @@
                     <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getChannelByName">getChannelByName</a>(string $username, array $optionalParams = [], array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;statistics&#039;])
+                    <a href="#method_getChannelByName">getChannelByName</a>(string $username, array $optionalParams = [], array $part = Channels::DEFAULT_PART)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -393,7 +448,7 @@
                     <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getChannelById">getChannelById</a>(mixed $id, array $optionalParams = [], array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;statistics&#039;])
+                    <a href="#method_getChannelById">getChannelById</a>(mixed $id, array $optionalParams = [], array $part = Channels::DEFAULT_PART)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -404,7 +459,7 @@
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getPlaylistsByChannelId">getPlaylistsByChannelId</a>(string $channelId, array $optionalParams = [], array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;status&#039;])
+                    <a href="#method_getPlaylistsByChannelId">getPlaylistsByChannelId</a>(string $channelId, array $optionalParams = [], array $part = Playlists::DEFAULT_PART)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -415,7 +470,7 @@
                     <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getPlaylistById">getPlaylistById</a>(mixed $id, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;status&#039;])
+                    <a href="#method_getPlaylistById">getPlaylistById</a>(mixed $id, array $part = Playlists::DEFAULT_PART)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -434,7 +489,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    array
+                    array|false
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getActivitiesByChannelId">getActivitiesByChannelId</a>(string $channelId, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;], int $maxResults = 5, bool $pageInfo = false, string $pageToken = &#039;&#039;)
@@ -542,7 +597,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location">at line 72</div>
+        <div class="location">at line 52</div>
         <code>                    
     <strong>__construct</strong>(string $youtube_key, array $config = [])
         </code>
@@ -589,8 +644,41 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_getClient">
+        <div class="location">at line 79</div>
+        <code>                    <a href="../../Cable8mm/Youtube/Http/ApiClient.html"><abbr title="Cable8mm\Youtube\Http\ApiClient">ApiClient</abbr></a>
+    <strong>getClient</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the underlying HTTP client.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Cable8mm/Youtube/Http/ApiClient.html"><abbr title="Cable8mm\Youtube\Http\ApiClient">ApiClient</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_useHttpHost">
-        <div class="location">at line 82</div>
+        <div class="location">at line 84</div>
         <code>                    <a href="../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a>
     <strong>useHttpHost</strong>(bool $setting)
         </code>
@@ -634,7 +722,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_setApiKey">
-        <div class="location">at line 89</div>
+        <div class="location">at line 91</div>
         <code>                    <a href="../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a>
     <strong>setApiKey</strong>(string $key)
         </code>
@@ -678,7 +766,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getApiKey">
-        <div class="location">at line 96</div>
+        <div class="location">at line 98</div>
         <code>                    string
     <strong>getApiKey</strong>()
         </code>
@@ -712,7 +800,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_cache">
-        <div class="location">at line 104</div>
+        <div class="location">at line 106</div>
         <code>                    <a href="../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a>
     <strong>cache</strong>(bool $enabled = true)
         </code>
@@ -755,7 +843,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_setCacheTtl">
-        <div class="location">at line 114</div>
+        <div class="location">at line 116</div>
         <code>                    <a href="../../Cable8mm/Youtube/Youtube.html"><abbr title="Cable8mm\Youtube\Youtube">Youtube</abbr></a>
     <strong>setCacheTtl</strong>(int $ttl)
         </code>
@@ -798,8 +886,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getCategories">
-        <div class="location">at line 126</div>
-        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null
+        <div class="location">at line 128</div>
+        <code>                    array|null
     <strong>getCategories</strong>(string $regionCode = &#039;US&#039;, array $part = [&#039;snippet&#039;])
         </code>
     </h3>
@@ -833,7 +921,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null</td>
+            <td>array|null</td>
             <td></td>
         </tr>
     </table>
@@ -856,9 +944,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getCommentThreadsByVideoId">
-        <div class="location">at line 145</div>
-        <code>                    array
-    <strong>getCommentThreadsByVideoId</strong>(string|null $videoId = null, int $maxResults = 20, string|null $order = null, array $part = [&#039;id&#039;, &#039;replies&#039;, &#039;snippet&#039;], bool $pageInfo = false)
+        <div class="location">at line 138</div>
+        <code>                    array|false
+    <strong>getCommentThreadsByVideoId</strong>(string|null $videoId = null, int $maxResults = 20, string|null $order = null, array $part = CommentThreads::DEFAULT_PART, bool $pageInfo = false)
         </code>
     </h3>
     <div class="details">    
@@ -906,7 +994,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td>array</td>
+            <td>array|false</td>
             <td></td>
         </tr>
     </table>
@@ -929,9 +1017,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getCommentThreads">
-        <div class="location">at line 155</div>
-        <code>                    array
-    <strong>getCommentThreads</strong>(string|null $channelId = null, string|null $id = null, string|null $videoId = null, int $maxResults = 20, string|null $order = null, array $part = [&#039;id&#039;, &#039;replies&#039;, &#039;snippet&#039;], bool $pageInfo = false)
+        <div class="location">at line 148</div>
+        <code>                    array|false
+    <strong>getCommentThreads</strong>(string|null $channelId = null, string|null $id = null, string|null $videoId = null, int $maxResults = 20, string|null $order = null, array $part = CommentThreads::DEFAULT_PART, bool $pageInfo = false)
         </code>
     </h3>
     <div class="details">    
@@ -989,7 +1077,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td>array</td>
+            <td>array|false</td>
             <td></td>
         </tr>
     </table>
@@ -1012,9 +1100,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getVideoInfo">
-        <div class="location">at line 185</div>
+        <div class="location">at line 158</div>
         <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null
-    <strong>getVideoInfo</strong>(array|string $vId, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;player&#039;, &#039;statistics&#039;, &#039;status&#039;])
+    <strong>getVideoInfo</strong>(array|string $vId, array $part = Videos::DEFAULT_PART)
         </code>
     </h3>
     <div class="details">    
@@ -1070,9 +1158,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getLocalizedVideoInfo">
-        <div class="location">at line 209</div>
+        <div class="location">at line 169</div>
         <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null
-    <strong>getLocalizedVideoInfo</strong>(mixed $vId, string $language, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;player&#039;, &#039;statistics&#039;, &#039;status&#039;])
+    <strong>getLocalizedVideoInfo</strong>(mixed $vId, string $language, array $part = Videos::DEFAULT_PART)
         </code>
     </h3>
     <div class="details">    
@@ -1133,9 +1221,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getPopularVideos">
-        <div class="location">at line 233</div>
+        <div class="location">at line 179</div>
         <code>                    array|false
-    <strong>getPopularVideos</strong>(string $regionCode, int $maxResults = 10, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;player&#039;, &#039;statistics&#039;, &#039;status&#039;])
+    <strong>getPopularVideos</strong>(string $regionCode, int $maxResults = 10, array $part = Videos::DEFAULT_PART)
         </code>
     </h3>
     <div class="details">    
@@ -1196,7 +1284,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_search">
-        <div class="location">at line 253</div>
+        <div class="location">at line 189</div>
         <code>                    array|false
     <strong>search</strong>(string $q, int $maxResults = 10, array $part = [&#039;id&#039;, &#039;snippet&#039;])
         </code>
@@ -1259,7 +1347,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_searchVideos">
-        <div class="location">at line 269</div>
+        <div class="location">at line 199</div>
         <code>                    array|false
     <strong>searchVideos</strong>(string $q, int $maxResults = 10, string|null $order = null, array $part = [&#039;id&#039;])
         </code>
@@ -1327,8 +1415,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_searchChannelVideos">
-        <div class="location">at line 290</div>
-        <code>                    array
+        <div class="location">at line 209</div>
+        <code>                    array|false
     <strong>searchChannelVideos</strong>(string $q, string $channelId, int $maxResults = 10, string|null $order = null, array $part = [&#039;id&#039;, &#039;snippet&#039;], bool $pageInfo = false)
         </code>
     </h3>
@@ -1382,7 +1470,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td>array</td>
+            <td>array|false</td>
             <td></td>
         </tr>
     </table>
@@ -1405,7 +1493,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getChannelVideos">
-        <div class="location">at line 310</div>
+        <div class="location">at line 217</div>
         <code>                    array
     <strong>getChannelVideos</strong>(string $channelId, int $maxResults, string|null $publishedBefore, bool $isFuture = false, string $pageToken = &#039;&#039;)
         </code>
@@ -1478,8 +1566,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_listChannelVideos">
-        <div class="location">at line 340</div>
-        <code>                    array
+        <div class="location">at line 227</div>
+        <code>                    array|false
     <strong>listChannelVideos</strong>(string $channelId, int $maxResults = 10, string|null $order = null, array $part = [&#039;id&#039;, &#039;snippet&#039;], bool $pageInfo = false)
         </code>
     </h3>
@@ -1528,7 +1616,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td>array</td>
+            <td>array|false</td>
             <td></td>
         </tr>
     </table>
@@ -1551,7 +1639,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_searchAdvanced">
-        <div class="location">at line 361</div>
+        <div class="location">at line 238</div>
         <code>                    array|false
     <strong>searchAdvanced</strong>(array $params, bool $pageInfo = false)
         </code>
@@ -1599,6 +1687,10 @@
                 <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/InvalidArgumentException">InvalidArgumentException</a></td>
+                <td></td>
+            </tr>
             </table>
 
             
@@ -1609,7 +1701,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_paginateResults">
-        <div class="location">at line 383</div>
+        <div class="location">at line 246</div>
         <code>                    array
     <strong>paginateResults</strong>(array $params, string|null $token = null)
         </code>
@@ -1667,9 +1759,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getChannelByName">
-        <div class="location">at line 397</div>
+        <div class="location">at line 256</div>
         <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null
-    <strong>getChannelByName</strong>(string $username, array $optionalParams = [], array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;statistics&#039;])
+    <strong>getChannelByName</strong>(string $username, array $optionalParams = [], array $part = Channels::DEFAULT_PART)
         </code>
     </h3>
     <div class="details">    
@@ -1730,7 +1822,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_searchChannelByName">
-        <div class="location">at line 417</div>
+        <div class="location">at line 266</div>
         <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null
     <strong>searchChannelByName</strong>(string $username, int $maxResults = 1, array $part = [&#039;id&#039;, &#039;snippet&#039;])
         </code>
@@ -1793,9 +1885,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getChannelById">
-        <div class="location">at line 443</div>
+        <div class="location">at line 277</div>
         <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null
-    <strong>getChannelById</strong>(mixed $id, array $optionalParams = [], array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;statistics&#039;])
+    <strong>getChannelById</strong>(mixed $id, array $optionalParams = [], array $part = Channels::DEFAULT_PART)
         </code>
     </h3>
     <div class="details">    
@@ -1856,9 +1948,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getPlaylistsByChannelId">
-        <div class="location">at line 467</div>
+        <div class="location">at line 287</div>
         <code>                    array
-    <strong>getPlaylistsByChannelId</strong>(string $channelId, array $optionalParams = [], array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;status&#039;])
+    <strong>getPlaylistsByChannelId</strong>(string $channelId, array $optionalParams = [], array $part = Playlists::DEFAULT_PART)
         </code>
     </h3>
     <div class="details">    
@@ -1919,9 +2011,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getPlaylistById">
-        <div class="location">at line 493</div>
+        <div class="location">at line 298</div>
         <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|array|null
-    <strong>getPlaylistById</strong>(mixed $id, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;status&#039;])
+    <strong>getPlaylistById</strong>(mixed $id, array $part = Playlists::DEFAULT_PART)
         </code>
     </h3>
     <div class="details">    
@@ -1977,7 +2069,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getPlaylistItemsByPlaylistId">
-        <div class="location">at line 515</div>
+        <div class="location">at line 308</div>
         <code>                    array
     <strong>getPlaylistItemsByPlaylistId</strong>(string $playlistId, string $pageToken = &#039;&#039;, int $maxResults = 50, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;, &#039;status&#039;])
         </code>
@@ -2045,8 +2137,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getActivitiesByChannelId">
-        <div class="location">at line 540</div>
-        <code>                    array
+        <div class="location">at line 319</div>
+        <code>                    array|false
     <strong>getActivitiesByChannelId</strong>(string $channelId, array $part = [&#039;id&#039;, &#039;snippet&#039;, &#039;contentDetails&#039;], int $maxResults = 5, bool $pageInfo = false, string $pageToken = &#039;&#039;)
         </code>
     </h3>
@@ -2095,7 +2187,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td>array</td>
+            <td>array|false</td>
             <td></td>
         </tr>
     </table>
@@ -2108,6 +2200,10 @@
                 <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
                 <td></td>
             </tr>
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/InvalidArgumentException">InvalidArgumentException</a></td>
+                <td></td>
+            </tr>
             </table>
 
             
@@ -2118,7 +2214,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_parseVidFromURL">
-        <div class="location">at line 573</div>
+        <div class="location">at line 330</div>
         <code>        static            string
     <strong>parseVidFromURL</strong>(string $youtube_url)
         </code>
@@ -2170,7 +2266,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getChannelFromURL">
-        <div class="location">at line 609</div>
+        <div class="location">at line 343</div>
         <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null
     <strong>getChannelFromURL</strong>(string $youtube_url)
         </code>
@@ -2209,6 +2305,10 @@
 
                     <table class="table table-condensed">
                     <tr>
+                <td><a href="../../Cable8mm/Youtube/Exceptions/YoutubeApiException.html"><abbr title="Cable8mm\Youtube\Exceptions\YoutubeApiException">YoutubeApiException</abbr></a></td>
+                <td></td>
+            </tr>
+                    <tr>
                 <td><a target="_blank" rel="noopener" href="https://www.php.net/InvalidArgumentException">InvalidArgumentException</a></td>
                 <td></td>
             </tr>
@@ -2222,7 +2322,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getApi">
-        <div class="location">at line 653</div>
+        <div class="location">at line 348</div>
         <code>                    mixed
     <strong>getApi</strong>(string $name)
         </code>
@@ -2266,7 +2366,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_decodeSingle">
-        <div class="location">at line 665</div>
+        <div class="location">at line 360</div>
         <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/StdClass">StdClass</a>|null
     <strong>decodeSingle</strong>(string $apiData)
         </code>
@@ -2318,7 +2418,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_decodeMultiple">
-        <div class="location">at line 684</div>
+        <div class="location">at line 372</div>
         <code>                    array|null
     <strong>decodeMultiple</strong>(string $apiData)
         </code>
@@ -2370,7 +2470,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_decodeList">
-        <div class="location">at line 703</div>
+        <div class="location">at line 384</div>
         <code>                    array|false
     <strong>decodeList</strong>(string $apiData)
         </code>
@@ -2422,7 +2522,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_api_get">
-        <div class="location">at line 753</div>
+        <div class="location">at line 397</div>
         <code>                    string
     <strong>api_get</strong>(string $url, array $params)
         </code>
@@ -2479,7 +2579,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method__parse_url_path">
-        <div class="location">at line 804</div>
+        <div class="location">at line 405</div>
         <code>        static            string
     <strong>_parse_url_path</strong>(string $url)
         </code>
@@ -2522,7 +2622,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method__parse_url_query">
-        <div class="location">at line 814</div>
+        <div class="location">at line 413</div>
         <code>        static            array
     <strong>_parse_url_query</strong>(string $url)
         </code>
