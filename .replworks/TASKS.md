@@ -159,7 +159,7 @@ Out of scope for every task until a human decides: the `[UNVERIFIED]` sections P
     - Live tests that extend `Cable8mm\Youtube\Tests\TestCase` call the API with `YOUTUBE_API_KEY`, not `test_api_key`.
     - Live tests passing.
 
-- [ ] T-015 Tests cover the Shared Client identity, constructor settings, and low-level helpers
+- [x] T-015 Tests cover the Shared Client identity, constructor settings, and low-level helpers
   - Satisfies: PS §5 (Shared Client identity, `$config` keys); PS §13
   - External boundary: no
   - Acceptance criteria:

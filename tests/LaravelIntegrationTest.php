@@ -150,6 +150,18 @@ class LaravelIntegrationTest extends TestCase
         $this->assertEquals('test_api_key', $youtube->getApiKey());
     }
 
+    public function test_facade_and_container_keys_share_one_client(): void
+    {
+        $byAlias = app('youtube');
+
+        $this->assertSame($byAlias, app(\Cable8mm\Youtube\Youtube::class));
+        $this->assertSame($byAlias, Youtube::getFacadeRoot());
+
+        Youtube::setApiKey('changed');
+
+        $this->assertSame('changed', app('youtube')->getApiKey());
+    }
+
     // ==================== Fluent Interface Tests ====================
 
     public function test_fluent_interface_with_facade(): void
