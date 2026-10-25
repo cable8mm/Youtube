@@ -17,6 +17,10 @@ class YoutubeServiceProvider extends ServiceProvider
 
         $this->publishes([$source => config_path('youtube.php')]);
 
+        $this->publishesMigrations([
+            __DIR__.'/../database/migrations' => database_path('migrations'),
+        ], 'youtube-migrations');
+
         $this->mergeConfigFrom($source, 'youtube');
     }
 
