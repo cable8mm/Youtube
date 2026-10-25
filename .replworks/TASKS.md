@@ -242,7 +242,7 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - Error bodies in tests follow the observed values in PS §12 and PS §19.1, or the YouTube Data API error reference.
     - Unit tests passing.
 
-- [ ] T-021 Quota Block starts, expires, and clears
+- [x] T-021 Quota Block starts, expires, and clears
   - Satisfies: PS §19.3; C17
   - External boundary: no
   - Acceptance criteria:
