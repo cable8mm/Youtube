@@ -1,5 +1,17 @@
 # Release Notes
 
+## v5.1.1 - 2026-10-25
+
+### What's Changed
+
+* Refactor Youtube class into client, decoder and resources; fix 5 bugs by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/21
+
+### New Contributors
+
+* [@replworks-bot](https://github.com/replworks-bot) made their first contribution in https://github.com/cable8mm/Youtube/pull/21
+
+**Full Changelog**: https://github.com/cable8mm/Youtube/compare/v5.1.0...v5.1.1
+
 ## v5.1.0 - 2026-07-06
 
 ### What's Changed
