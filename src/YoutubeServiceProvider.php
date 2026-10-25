@@ -3,6 +3,7 @@
 namespace Cable8mm\Youtube;
 
 use Cable8mm\Youtube\Console\ImportChannelsCommand;
+use Cable8mm\Youtube\Console\SyncChannelsCommand;
 use Illuminate\Support\ServiceProvider;
 
 class YoutubeServiceProvider extends ServiceProvider
@@ -25,6 +26,7 @@ class YoutubeServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 ImportChannelsCommand::class,
+                SyncChannelsCommand::class,
             ]);
         }
 
