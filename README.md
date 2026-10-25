@@ -20,7 +20,8 @@ A beautifully crafted Laravel package that provides a simple, fluent interface t
 - 🔒 **Type-Safe** - Full type hints and strict typing for PHP 8.3+
 - 🎨 **Laravel Native** - Seamless integration with Laravel ecosystem
 - 🚀 **High Performance** - Built-in response caching to reduce API calls
-- ✅ **Well Tested** - 73 comprehensive tests with 100% pass rate
+- 🔄 **Channel Sync** - Import channels from CSV or Excel and keep their videos in your database with a queued job
+- ✅ **Well Tested** - 178 unit tests and 44 E2E tests against the live API
 - 🛡️ **Custom Exceptions** - Domain-specific error handling
 - 📝 **Validation Rules** - Built-in validation for YouTube URLs (Laravel 12+)
 - 🔄 **Auto-Discovery** - Automatic service provider registration
@@ -488,10 +489,8 @@ composer test:e2e
 
 **Test Coverage:**
 
-- ✅ 73 comprehensive tests
-- ✅ Unit tests (no API key required)
-- ✅ Integration tests with Orchestra Testbench (requires API key)
-- ✅ 100% pass rate
+- ✅ 178 unit tests with Orchestra Testbench (no API key, no network)
+- ✅ 44 E2E tests against the live YouTube Data API (requires API key)
 
 ## 📁 Package Structure
 
@@ -501,14 +500,30 @@ src/
 ├── YoutubeServiceProvider.php     # Laravel service provider
 ├── Facades/
 │   └── Youtube.php                # Laravel facade
+├── Http/                          # API client and response decoder
+├── Resources/                     # One class per API resource group
+├── Support/
+│   └── UrlParser.php              # Video and channel URL parsing
 ├── Rules/
 │   └── ValidYoutubeVideo.php      # Validation rule
 ├── Cache/
 │   └── YoutubeCache.php           # Caching layer
 ├── Exceptions/
 │   └── YoutubeApiException.php    # Custom exceptions
+├── Models/                        # YoutubeChannel, YoutubeVideo, YoutubeSyncError
+├── Concerns/
+│   └── HasYoutubeChannels.php     # Owner model trait
+├── Imports/
+│   └── YoutubeChannelsImport.php  # CSV / Excel channel import
+├── Console/                       # youtube:import-channels, youtube:sync
+├── Jobs/
+│   └── SyncChannelVideos.php      # Queued channel sync
+├── Events/                        # ChannelSynced, ChannelSyncFailed, QuotaExceeded
+├── Sync/                          # Failure reasons, Quota Block, channel input resolver
 └── config/
     └── youtube.php                # Configuration file
+database/
+└── migrations/                    # Publishable migrations (youtube-migrations)
 ```
 
 ## 🤝 Contributing
