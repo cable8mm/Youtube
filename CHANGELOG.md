@@ -1,5 +1,34 @@
 # Release Notes
 
+## v6.0.0 - 2026-10-25
+
+### What's Changed
+
+* docs: add replworks baseline documents by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/22
+* test: cover shared client identity, constructor settings and helpers by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/23
+* test: add live tests for remaining operations and the error path by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/24
+* feat!: require PHP 8.3+ and Laravel 12+ by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/25
+* docs: specify channel import, video sync and sync failures by [@cable8mm](https://github.com/cable8mm) in https://github.com/cable8mm/Youtube/pull/26
+* feat: add getChannelByHandle by [@cable8mm](https://github.com/cable8mm) in https://github.com/cable8mm/Youtube/pull/27
+* test: move live API tests into a separate e2e suite by [@cable8mm](https://github.com/cable8mm) in https://github.com/cable8mm/Youtube/pull/28
+* feat: add channel, video and sync error records with publishable migrations by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/29
+* feat: classify sync failures into Failure Reasons by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/30
+* feat: add the Quota Block by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/31
+* feat: resolve import cells to channels by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/32
+* feat: import channels from CSV or Excel by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/33
+* feat: sync a channel's videos with a queued job by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/34
+* feat: flag videos that are no longer available by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/35
+* feat: add the youtube:sync command by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/36
+* docs: document the Laravel channel sync features by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/37
+* docs: refresh README features, test counts and package structure by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/38
+* docs: decide the URL parsing and validation gaps as bugs by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/39
+* fix: parse video URLs by host and path by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/40
+* fix: resolve channel URLs by path segment and look handles up directly by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/41
+* fix: make the video validation rule fail instead of throwing by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/42
+* docs: rewrite README around Laravel usage by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/43
+
+**Full Changelog**: https://github.com/cable8mm/Youtube/compare/v5.1.1...v6.0.0
+
 ## v5.1.1 - 2026-10-25
 
 ### What's Changed
