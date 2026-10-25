@@ -2,6 +2,7 @@
 
 namespace Cable8mm\Youtube;
 
+use Cable8mm\Youtube\Console\ImportChannelsCommand;
 use Illuminate\Support\ServiceProvider;
 
 class YoutubeServiceProvider extends ServiceProvider
@@ -20,6 +21,12 @@ class YoutubeServiceProvider extends ServiceProvider
         $this->publishesMigrations([
             __DIR__.'/../database/migrations' => database_path('migrations'),
         ], 'youtube-migrations');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                ImportChannelsCommand::class,
+            ]);
+        }
 
         $this->mergeConfigFrom($source, 'youtube');
     }
