@@ -2,7 +2,9 @@
 
 namespace Cable8mm\Youtube\Tests\Rules;
 
+use Cable8mm\Youtube\Resources\Videos;
 use Cable8mm\Youtube\Rules\ValidYoutubeVideo;
+use Cable8mm\Youtube\Youtube;
 use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
 
@@ -133,6 +135,48 @@ class ValidYoutubeVideoTest extends TestCase
         });
 
         $this->assertNotEmpty($errors, 'Validation should fail for Vimeo URL');
+    }
+
+    // ==================== Video Lookup Tests ====================
+
+    public function test_validate_fails_when_video_does_not_exist(): void
+    {
+        $rule = new ValidYoutubeVideo($this->youtubeReturning(null));
+
+        $errors = [];
+        $rule->validate('youtube_video_url', 'https://www.youtube.com/watch?v=missing0000', function ($message) use (&$errors) {
+            $errors[] = $message;
+        });
+
+        $this->assertSame(['The :attribute does not exist on Youtube.'], $errors);
+    }
+
+    public function test_validate_passes_when_video_exists(): void
+    {
+        $rule = new ValidYoutubeVideo($this->youtubeReturning((object) ['id' => 'rie-hPVJ7Sw']));
+
+        $errors = [];
+        $rule->validate('youtube_video_url', 'https://www.youtube.com/watch?v=rie-hPVJ7Sw', function ($message) use (&$errors) {
+            $errors[] = $message;
+        });
+
+        $this->assertEmpty($errors);
+    }
+
+    private function youtubeReturning(?object $video): Youtube
+    {
+        return new class($video) extends Youtube
+        {
+            public function __construct(private ?object $video)
+            {
+                parent::__construct('test_key');
+            }
+
+            public function getVideoInfo(array|string $vId, array $part = Videos::DEFAULT_PART)
+            {
+                return $this->video;
+            }
+        };
     }
 
     // ==================== Edge Cases ====================

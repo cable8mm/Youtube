@@ -91,11 +91,35 @@ class LaravelIntegrationTest extends TestCase
     {
         Cache::flush();
 
-        $client = (new FakeApiClient(['first', 'second']))->cache();
+        $client = (new FakeApiClient(['{"etag":"first"}', '{"etag":"second"}']))->cache();
 
-        $this->assertSame('first', $client->call('videos.list', ['id' => 'abc']));
-        $this->assertSame('first', $client->call('videos.list', ['id' => 'abc']));
+        $this->assertSame('{"etag":"first"}', $client->call('videos.list', ['id' => 'abc']));
+        $this->assertSame('{"etag":"first"}', $client->call('videos.list', ['id' => 'abc']));
         $this->assertCount(1, $client->requests);
+    }
+
+    public function test_api_client_does_not_cache_error_responses(): void
+    {
+        Cache::flush();
+
+        $error = '{"error":{"code":403,"message":"Forbidden"}}';
+        $client = (new FakeApiClient([$error, '{"items":[]}']))->cache();
+
+        $this->assertSame($error, $client->call('videos.list', ['id' => 'abc']));
+        $this->assertSame('{"items":[]}', $client->call('videos.list', ['id' => 'abc']));
+        $this->assertCount(2, $client->requests);
+    }
+
+    public function test_api_client_does_not_cache_invalid_json(): void
+    {
+        Cache::flush();
+
+        $client = (new FakeApiClient(['', '{"items":[]}']))->cache();
+
+        $client->call('videos.list', ['id' => 'abc']);
+        $client->call('videos.list', ['id' => 'abc']);
+
+        $this->assertCount(2, $client->requests);
     }
 
     // ==================== Validation Rule Tests ====================

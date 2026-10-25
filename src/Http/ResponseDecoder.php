@@ -45,8 +45,8 @@ class ResponseDecoder
         $resObj = $this->decode($apiData);
 
         $info = [
-            'kind' => $resObj->kind,
-            'etag' => $resObj->etag,
+            'kind' => $resObj->kind ?? null,
+            'etag' => $resObj->etag ?? null,
             'prevPageToken' => $resObj->prevPageToken ?? null,
             'nextPageToken' => $resObj->nextPageToken ?? null,
         ];
@@ -80,6 +80,11 @@ class ResponseDecoder
     protected function decode(string $apiData): object
     {
         $resObj = json_decode($apiData);
+
+        if (! is_object($resObj)) {
+            throw new YoutubeApiException('Invalid response from Youtube API : '.(json_last_error_msg() ?: 'not a JSON object'));
+        }
+
         $this->handleApiError($resObj);
 
         return $resObj;

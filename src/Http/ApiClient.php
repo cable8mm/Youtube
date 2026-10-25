@@ -122,9 +122,22 @@ class ApiClient
 
         $response = $this->send($url, $params);
 
-        $cache?->put($cacheKey, $response);
+        if ($cache !== null && $this->isCacheable($response)) {
+            $cache->put($cacheKey, $response);
+        }
 
         return $response;
+    }
+
+    /**
+     * Only successful JSON responses are cached, so errors such as an
+     * exceeded quota are not replayed for the whole TTL.
+     */
+    protected function isCacheable(string $response): bool
+    {
+        $decoded = json_decode($response);
+
+        return is_object($decoded) && ! isset($decoded->error);
     }
 
     /**

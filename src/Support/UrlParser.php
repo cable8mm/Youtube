@@ -39,25 +39,21 @@ class UrlParser
      */
     public static function videoId(string $youtube_url): string
     {
+        $vid = null;
+
         if (strpos($youtube_url, 'youtube.com') !== false) {
-            if (strpos($youtube_url, 'embed') !== false) {
-                return substr(static::path($youtube_url), 7);
-            }
-
-            $params = static::query($youtube_url);
-
-            if (! isset($params['v'])) {
-                throw new \InvalidArgumentException('The supplied URL does not look like a Youtube URL');
-            }
-
-            return $params['v'];
+            $vid = strpos($youtube_url, 'embed') !== false
+                ? substr(static::path($youtube_url), 7)
+                : static::query($youtube_url)['v'] ?? null;
+        } elseif (strpos($youtube_url, 'youtu.be') !== false) {
+            $vid = substr(static::path($youtube_url), 1);
         }
 
-        if (strpos($youtube_url, 'youtu.be') !== false) {
-            return substr(static::path($youtube_url), 1);
+        if (! is_string($vid) || $vid === '') {
+            throw new \InvalidArgumentException('The supplied URL does not look like a Youtube URL');
         }
 
-        throw new \InvalidArgumentException('The supplied URL does not look like a Youtube URL');
+        return $vid;
     }
 
     /**
@@ -99,6 +95,10 @@ class UrlParser
             }
         }
 
+        if (empty($segments[1])) {
+            throw new \InvalidArgumentException('The supplied URL does not look like a Youtube Channel URL');
+        }
+
         return ['type' => 'search', 'value' => $segments[1]];
     }
 
@@ -107,9 +107,7 @@ class UrlParser
      */
     public static function path(string $url): string
     {
-        $array = parse_url($url);
-
-        return $array['path'];
+        return parse_url($url, PHP_URL_PATH) ?: '';
     }
 
     /**
@@ -117,16 +115,7 @@ class UrlParser
      */
     public static function query(string $url): array
     {
-        $array = parse_url($url);
-        $query = $array['query'];
-
-        $queryParts = explode('&', $query);
-
-        $params = [];
-        foreach ($queryParts as $param) {
-            $item = explode('=', $param);
-            $params[$item[0]] = empty($item[1]) ? '' : $item[1];
-        }
+        parse_str(parse_url($url, PHP_URL_QUERY) ?: '', $params);
 
         return $params;
     }
