@@ -16,7 +16,7 @@ A storage layer sits beside the pipeline. An importer and a sync job are the onl
 | C2 | Transport | The API Key and request settings (Referer, caching on/off, TTL). The endpoint name-to-URL table. Adding `key` to every request. Cache lookup and store through C6. Sending one GET per call. | C6, YouTube Data API |
 | C3 | Response Decoder | Decoding a body. Raising C10 for an error body or a non-object body. Producing Single, Multi, List, and Paged results. Holds no state. | C10 |
 | C4 | Operation Groups | One group per API resource: videos, search, channels, playlists, playlist items, activities, comment threads, categories. Each group builds request parameters and selects a result type. Shared helpers: fetch by ID (By-ID Result), fetch list (List or Paged Result), fetch normalized page (Normalized Paged Result). | C2, C3; the channels group also depends on the search group and C5 |
-| C5 | URL Parser | Extracting a Video ID from a URL. Classifying a channel URL as lookup by ID, by username, or by search term. Pure functions: no requests, no settings. | none |
+| C5 | URL Parser | Extracting a Video ID from a URL. Classifying a channel URL as lookup by ID, by username, by handle, or by search term. Pure functions: no requests, no settings. | none |
 | C6 | Cache Wrapper | Reading and writing the host cache store with a fixed TTL. Generating cache keys. | host cache store |
 | C7 | Validation Rule | Extracting a Video ID with C5 and checking existence with a Client. Mapping outcomes to validation messages. | C5, a Client (injected or the Shared Client) |
 | C8 | Registration | Merging settings, offering config and migration publishing, registering the import and sync commands, building the Shared Client lazily, binding its container keys, providing the facade. | C9, C1, C13, C14 |
@@ -49,7 +49,7 @@ External boundary (AGENTS.md EXTERNAL_BOUNDARY): the YouTube Data API v3. Only C
 
 ### 3.2 Channel URL resolution
 
-`Developer -> C1 -> C4 channels -> C5 classify -> C4 channels (by ID | by username) or C4 search -> C4 channels by ID`
+`Developer -> C1 -> C4 channels -> C5 classify -> C4 channels (by ID | by username | by handle) or C4 search -> C4 channels by ID`
 
 C5 decides the lookup kind from the URL string alone, without a request. A search-term lookup sends two requests: one search, then one channel fetch by the first hit's channel ID. When the search has no hit, the second request is not sent.
 
@@ -120,7 +120,7 @@ C5 decides the lookup kind from the URL string alone, without a request. A searc
 
 - A response with no items is not a failure. It yields the empty value of the selected result type.
 - An unbound host cache store turns caching off without a failure.
-- C7 does not catch `TypeError`. A non-string input that cannot be coerced to a string escapes C7 (PRODUCT_SPEC.md §11.1).
+- C7 checks that the input is a string before calling C5, so no input escapes C7 as an exception.
 
 ## 7. Non-goals
 
