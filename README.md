@@ -275,6 +275,205 @@ $request->validate([
 
 **Note:** Uses Laravel `ValidationRule` interface with closure-based error messages.
 
+## 🔄 Channel Sync
+
+Store channels in your database and keep their videos up to date with a queued job.
+
+### Publish Config and Migrations
+
+```bash
+php artisan vendor:publish --provider="Cable8mm\Youtube\YoutubeServiceProvider"
+php artisan vendor:publish --tag=youtube-migrations
+php artisan migrate
+```
+
+This creates `youtube_channels`, `youtube_videos`, and `youtube_sync_errors`, with the models `YoutubeChannel`, `YoutubeVideo`, and `YoutubeSyncError` in `Cable8mm\Youtube\Models`.
+
+Sync settings in `config/youtube.php`:
+
+| Setting | Env | Default | Effect |
+| --- | --- | --- | --- |
+| `youtube.sync.queue` | `YOUTUBE_SYNC_QUEUE` | `null` | Queue for sync jobs. `null` uses your default queue. |
+| `youtube.sync.max_pages` | | `1` | Pages of 50 uploads read per sync, unless `--full` is given. |
+
+### Import Channels
+
+Make a CSV or Excel file (`csv`, `xlsx`, `xls`) with a `channel` column. Only the first sheet is read, and other columns are ignored.
+
+```csv
+channel
+UCk1SpWNzOs4MYmr0uICEntg
+@Google
+https://www.youtube.com/channel/UCk1SpWNzOs4MYmr0uICEntg
+https://www.youtube.com/@Google
+https://www.youtube.com/user/Google
+```
+
+Accepted inputs: a Channel ID, a `@handle`, or a URL that starts with `/channel/`, `/@`, or `/user/`. Other inputs, including `/c/` URLs, fail with `unsupported input`.
+
+```bash
+php artisan youtube:import-channels channels.csv
+```
+
+The command prints a count for each result (`created`, `updated`, `failed: <cause>`, `skipped: quota exceeded`) and one line per failed row:
+
+```
+created: 2
+updated: 1
+failed: unsupported input: 1
+row 5: https://www.youtube.com/c/Google: unsupported input
+```
+
+It exits `1` when any row failed. Importing again updates channels and keeps their sync state and videos.
+
+To attach the channels to one of your models, add the `HasYoutubeChannels` trait and import in code:
+
+```php
+use Cable8mm\Youtube\Concerns\HasYoutubeChannels;
+use Cable8mm\Youtube\Imports\YoutubeChannelsImport;
+use Maatwebsite\Excel\Facades\Excel;
+
+class Artist extends Model
+{
+    use HasYoutubeChannels;
+}
+
+$import = new YoutubeChannelsImport($artist);
+Excel::import($import, $path);
+
+$import->results();          // [['row' => 2, 'input' => '@Google', 'result' => 'created'], ...]
+$artist->youtubeChannels;    // the imported channels
+```
+
+### Schedule the Sync
+
+`youtube:sync` queues one `SyncChannelVideos` job per active channel. Schedule it in `routes/console.php`:
+
+```php
+use Illuminate\Support\Facades\Schedule;
+
+Schedule::command('youtube:sync')->hourly();
+```
+
+Then run a queue worker:
+
+```bash
+php artisan queue:work --queue=default
+```
+
+Use the queue name you set in `YOUTUBE_SYNC_QUEUE` if it is not `default`.
+
+```bash
+php artisan youtube:sync                                      # every active channel
+php artisan youtube:sync --channel=UCk1SpWNzOs4MYmr0uICEntg   # one channel, even if inactive
+php artisan youtube:sync --full                               # read every page of uploads
+```
+
+Each sync adds new uploads, refreshes known videos, and sets `unavailable_at` on videos that became private or were deleted. No video is deleted.
+
+### Sync Failures
+
+A failed sync is not retried. It creates a `YoutubeSyncError` record, sets the channel's `sync_status` to `failed`, and stores the reason in `last_error_reason`.
+
+| Failure Reason | When |
+| --- | --- |
+| `quota_exceeded` | The API quota is used up. |
+| `invalid_key` | The API key is not valid. |
+| `forbidden` | The API refused the request (HTTP 403). |
+| `channel_not_found` | The channel or its uploads playlist no longer exists. |
+| `transport` | A network error or an invalid response. |
+| `unknown` | Anything else. |
+
+**Quota Block:** a `quota_exceeded` failure starts a Quota Block that lasts until the next midnight in `America/Los_Angeles`, when the daily quota resets. During the block, `youtube:sync` queues nothing and prints `quota blocked until <time>`, and queued jobs send no request. The block is stored in your default cache store.
+
+```php
+use Cable8mm\Youtube\Sync\QuotaBlock;
+
+$block = new QuotaBlock;
+$block->isActive();   // bool
+$block->until();      // ?Carbon
+$block->clear();
+```
+
+### Events
+
+All events are in `Cable8mm\Youtube\Events`.
+
+| Event | Fired | Properties |
+| --- | --- | --- |
+| `ChannelSynced` | A sync finished | `$channel`, `$created`, `$updated`, `$unavailable` |
+| `ChannelSyncFailed` | A sync failed | `$channel`, `$reason`, `$exception` |
+| `QuotaExceeded` | A Quota Block started | `$until` |
+
+```php
+use Cable8mm\Youtube\Events\ChannelSyncFailed;
+use Illuminate\Support\Facades\Event;
+
+Event::listen(function (ChannelSyncFailed $event) {
+    logger()->warning("YouTube sync failed for {$event->channel->title}: {$event->reason}");
+});
+```
+
+### Admin Screen
+
+The package ships no admin screen. Build one in your app on top of the models. These examples are not dependencies of this package.
+
+**Filament** resource:
+
+```php
+use Cable8mm\Youtube\Models\YoutubeChannel;
+use Filament\Resources\Resource;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+
+class YoutubeChannelResource extends Resource
+{
+    protected static ?string $model = YoutubeChannel::class;
+
+    public static function table(Table $table): Table
+    {
+        return $table->columns([
+            TextColumn::make('title')->searchable(),
+            TextColumn::make('handle'),
+            IconColumn::make('is_active')->boolean(),
+            TextColumn::make('sync_status')->badge(),
+            TextColumn::make('last_error_reason'),
+            TextColumn::make('last_synced_at')->since(),
+            TextColumn::make('videos_count')->counts('videos'),
+        ]);
+    }
+}
+```
+
+**Nova** resource:
+
+```php
+use Cable8mm\Youtube\Models\YoutubeSyncError;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Resource;
+
+class YoutubeSyncErrorResource extends Resource
+{
+    public static $model = YoutubeSyncError::class;
+
+    public function fields(NovaRequest $request): array
+    {
+        return [
+            Text::make('Channel', fn () => $this->channel?->title),
+            Text::make('Reason'),
+            Number::make('HTTP Code', 'http_code'),
+            Textarea::make('Message'),
+            DateTime::make('Created At')->sortable(),
+        ];
+    }
+}
+```
+
 ## 🧪 Testing
 
 Run the test suite:
