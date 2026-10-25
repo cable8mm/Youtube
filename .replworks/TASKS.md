@@ -356,7 +356,7 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - Live: `https://www.youtube.com/@Google/videos` returns channel `UCK8sQmJBp8GCxrOtXWBpyEA`.
     - Unit tests passing. Live tests passing.
 
-- [ ] T-031 Validation rule fails on any input instead of throwing
+- [x] T-031 Validation rule fails on any input instead of throwing
   - Satisfies: PS §11; C7; F6
   - External boundary: yes
   - Acceptance criteria:
