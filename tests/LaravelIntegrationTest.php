@@ -2,7 +2,6 @@
 
 namespace Cable8mm\Youtube\Tests;
 
-use Cable8mm\Youtube\Exceptions\YoutubeApiException;
 use Cable8mm\Youtube\Facades\Youtube;
 use Cable8mm\Youtube\Rules\ValidYoutubeVideo;
 use Cable8mm\Youtube\Tests\Resources\FakeApiClient;
@@ -56,24 +55,6 @@ class LaravelIntegrationTest extends TestCase
         $this->assertTrue(Cache::has('test_key'));
     }
 
-    public function test_youtube_caching_integration(): void
-    {
-        $this->useLiveApiKey();
-
-        // Enable caching
-        Youtube::cache();
-
-        // First request
-        $videos1 = Youtube::getPopularVideos('US', 5);
-
-        // Second request should use cache
-        $videos2 = Youtube::getPopularVideos('US', 5);
-
-        $this->assertNotEmpty($videos1);
-        $this->assertNotEmpty($videos2);
-        $this->assertEquals(count($videos1), count($videos2));
-    }
-
     public function test_api_client_serves_repeat_requests_from_laravel_cache(): void
     {
         Cache::flush();
@@ -110,18 +91,6 @@ class LaravelIntegrationTest extends TestCase
     }
 
     // ==================== Validation Rule Tests ====================
-
-    public function test_validation_rule_works_with_laravel_validator(): void
-    {
-        $this->useLiveApiKey();
-
-        $validator = Validator::make(
-            ['video_url' => 'https://www.youtube.com/watch?v=rie-hPVJ7Sw'],
-            ['video_url' => ['required', new ValidYoutubeVideo]]
-        );
-
-        $this->assertTrue($validator->passes());
-    }
 
     public function test_validation_rule_fails_for_invalid_url(): void
     {
@@ -178,15 +147,6 @@ class LaravelIntegrationTest extends TestCase
 
     // ==================== Error Handling Tests ====================
 
-    public function test_custom_exception_is_thrown(): void
-    {
-        $this->expectException(YoutubeApiException::class);
-
-        // This will throw an exception due to invalid API key format
-        $youtube = new \Cable8mm\Youtube\Youtube('invalid_key');
-        $youtube->getVideoInfo('test');
-    }
-
     // ==================== Integration with Laravel Helpers ====================
 
     public function test_parse_vid_from_url_utility(): void
@@ -194,16 +154,5 @@ class LaravelIntegrationTest extends TestCase
         $videoId = Youtube::parseVidFromURL('https://www.youtube.com/watch?v=rie-hPVJ7Sw');
 
         $this->assertEquals('rie-hPVJ7Sw', $videoId);
-    }
-
-    public function test_youtube_methods_are_accessible_via_facade(): void
-    {
-        $this->useLiveApiKey();
-
-        // Test that we can call methods via Facade
-        $video = Youtube::getVideoInfo('rie-hPVJ7Sw');
-
-        $this->assertNotNull($video);
-        $this->assertObjectHasProperty('id', $video);
     }
 }

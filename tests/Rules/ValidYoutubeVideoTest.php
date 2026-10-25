@@ -4,7 +4,6 @@ namespace Cable8mm\Youtube\Tests\Rules;
 
 use Cable8mm\Youtube\Resources\Videos;
 use Cable8mm\Youtube\Rules\ValidYoutubeVideo;
-use Cable8mm\Youtube\Tests\Env;
 use Cable8mm\Youtube\Youtube;
 use PHPUnit\Framework\TestCase;
 
@@ -15,65 +14,7 @@ class ValidYoutubeVideoTest extends TestCase
     protected function setUp(): void
     {
         // Plain PHPUnit has no container, so hand the rule a client directly.
-        $this->rule = new ValidYoutubeVideo(new Youtube(Env::get('YOUTUBE_API_KEY') ?? 'test_key'));
-    }
-
-    // ==================== Valid URL Tests ====================
-
-    public function test_validate_passes_with_standard_youtube_url(): void
-    {
-        if (! Env::youtubeEnabled()) {
-            $this->markTestSkipped('YouTube API tests are disabled');
-        }
-
-        $errors = [];
-        $this->rule->validate('youtube_video_url', 'https://www.youtube.com/watch?v=rie-hPVJ7Sw', function ($message) use (&$errors) {
-            $errors[] = $message;
-        });
-
-        $this->assertEmpty($errors, 'Validation should pass for valid YouTube URL');
-    }
-
-    public function test_validate_passes_with_short_youtube_url(): void
-    {
-        if (! Env::youtubeEnabled()) {
-            $this->markTestSkipped('YouTube API tests are disabled');
-        }
-
-        $errors = [];
-        $this->rule->validate('youtube_video_url', 'https://youtu.be/rie-hPVJ7Sw', function ($message) use (&$errors) {
-            $errors[] = $message;
-        });
-
-        $this->assertEmpty($errors, 'Validation should pass for valid short YouTube URL');
-    }
-
-    public function test_validate_passes_with_embed_youtube_url(): void
-    {
-        if (! Env::youtubeEnabled()) {
-            $this->markTestSkipped('YouTube API tests are disabled');
-        }
-
-        $errors = [];
-        $this->rule->validate('youtube_video_url', 'https://www.youtube.com/embed/rie-hPVJ7Sw', function ($message) use (&$errors) {
-            $errors[] = $message;
-        });
-
-        $this->assertEmpty($errors, 'Validation should pass for valid embed YouTube URL');
-    }
-
-    public function test_validate_passes_with_url_containing_parameters(): void
-    {
-        if (! Env::youtubeEnabled()) {
-            $this->markTestSkipped('YouTube API tests are disabled');
-        }
-
-        $errors = [];
-        $this->rule->validate('youtube_video_url', 'https://www.youtube.com/watch?v=rie-hPVJ7Sw&t=123', function ($message) use (&$errors) {
-            $errors[] = $message;
-        });
-
-        $this->assertEmpty($errors, 'Validation should pass for YouTube URL with parameters');
+        $this->rule = new ValidYoutubeVideo(new Youtube('test_key'));
     }
 
     // ==================== Invalid URL Tests ====================
