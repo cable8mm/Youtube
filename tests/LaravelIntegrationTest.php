@@ -103,6 +103,17 @@ class LaravelIntegrationTest extends TestCase
         $this->assertArrayHasKey('video_url', $validator->errors()->toArray());
     }
 
+    public function test_validation_rule_fails_for_an_array_instead_of_throwing(): void
+    {
+        $validator = Validator::make(
+            ['video_url' => ['https://youtu.be/rie-hPVJ7Sw']],
+            ['video_url' => ['required', new ValidYoutubeVideo]]
+        );
+
+        $this->assertTrue($validator->fails());
+        $this->assertSame(['The video url does not look like a valid Youtube URL.'], $validator->errors()->get('video_url'));
+    }
+
     // ==================== Service Container Tests ====================
 
     public function test_youtube_is_bound_in_container(): void

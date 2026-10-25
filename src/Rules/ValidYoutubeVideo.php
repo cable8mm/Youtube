@@ -14,28 +14,35 @@ class ValidYoutubeVideo implements ValidationRule
     public function __construct(protected ?Youtube $youtube = null) {}
 
     /**
-     * Run the validation rule.
+     * Run the validation rule. It never throws.
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        if (! is_string($value)) {
+            $fail('The :attribute does not look like a valid Youtube URL.');
+
+            return;
+        }
+
         try {
             $videoId = Youtube::parseVidFromURL($value);
+        } catch (\InvalidArgumentException) {
+            $fail('The :attribute does not look like a valid Youtube URL.');
 
-            // 만약 videoId를 파싱하지 못했다면 유효하지 않음
-            if (! $videoId) {
-                $fail('The :attribute does not look like a valid Youtube URL.');
+            return;
+        }
 
-                return;
-            }
-
+        try {
             $youtube = $this->youtube ?? app(Youtube::class);
             $video = $youtube->getVideoInfo($videoId, ['id']);
-
-            if ($video === null) {
-                $fail('The :attribute does not exist on Youtube.');
-            }
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             $fail('The :attribute could not be validated.');
+
+            return;
+        }
+
+        if ($video === null) {
+            $fail('The :attribute does not exist on Youtube.');
         }
     }
 }

@@ -27,6 +27,18 @@ class ValidYoutubeVideoTest extends TestCase
         $this->assertEmpty($errors, 'Validation should pass for valid YouTube URL');
     }
 
+    public function test_validate_passes_with_music_and_nocookie_urls(): void
+    {
+        foreach (['https://music.youtube.com/watch?v=rie-hPVJ7Sw', 'https://www.youtube-nocookie.com/embed/rie-hPVJ7Sw'] as $url) {
+            $errors = [];
+            $this->rule->validate('youtube_video_url', $url, function ($message) use (&$errors) {
+                $errors[] = $message;
+            });
+
+            $this->assertEmpty($errors, $url);
+        }
+    }
+
     public function test_validate_passes_with_short_youtube_url(): void
     {
         $errors = [];
