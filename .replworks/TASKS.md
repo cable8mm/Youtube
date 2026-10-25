@@ -275,7 +275,7 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - `youtube:import-channels` prints the counts and failed rows of PS §17.3, exits `1` when a row failed, and exits `0` otherwise.
     - Unit tests passing. Live tests passing.
 
-- [ ] T-024 Sync job stores a channel's videos and records failures
+- [x] T-024 Sync job stores a channel's videos and records failures
   - Satisfies: PS §18.2 (steps 1-6 and 8); PS §19.2; PS §20; C15; C18; I8; I10; I11; F8; F9
   - External boundary: yes
   - Acceptance criteria:
