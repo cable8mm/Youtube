@@ -1,5 +1,13 @@
 # Release Notes
 
+## v6.1.0 - 2026-11-05
+
+### What's Changed
+
+* feat: format a Video Record duration by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/44
+
+**Full Changelog**: https://github.com/cable8mm/Youtube/compare/v6.0.0...v6.1.0
+
 ## v6.0.0 - 2026-10-25
 
 ### What's Changed
