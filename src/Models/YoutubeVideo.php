@@ -2,6 +2,7 @@
 
 namespace Cable8mm\Youtube\Models;
 
+use Cable8mm\Youtube\Support\Duration;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -33,6 +34,14 @@ class YoutubeVideo extends Model
             'like_count' => 'integer',
             'comment_count' => 'integer',
         ];
+    }
+
+    /**
+     * The stored ISO 8601 duration as `M:SS`, or `H:MM:SS` when it lasts an hour or more.
+     */
+    public function durationLabel(): ?string
+    {
+        return Duration::format($this->duration);
     }
 
     /**

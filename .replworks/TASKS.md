@@ -365,3 +365,12 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - Offline: a lookup that throws fails with exactly `The :attribute could not be validated.`
     - Live: `https://www.youtube.com/watch?v=rie-hPVJ7Sw` still passes.
     - Unit tests passing. Live tests passing.
+
+- [x] T-032 Format a Video Record duration
+  - Satisfies: PS §16.2; C11
+  - External boundary: no
+  - Acceptance criteria:
+    - `Duration::format()` returns `0:53`, `1:00`, `9:43`, `1:00:00`, and `1:02:10` for `PT53S`, `PT1M`, `PT9M43S`, `PT60M`, and `PT1H2M10S`.
+    - It returns `null` for `null`, an empty string, and a string that is not an ISO 8601 duration.
+    - `YoutubeVideo::durationLabel()` returns the formatted `duration` of the Video Record.
+    - Unit tests passing.
