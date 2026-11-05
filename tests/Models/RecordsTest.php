@@ -179,6 +179,16 @@ class RecordsTest extends TestCase
         $this->assertSame(1, YoutubeSyncError::count());
     }
 
+    // ==================== Duration ====================
+
+    public function test_a_video_record_formats_its_duration(): void
+    {
+        $video = new YoutubeVideo(['duration' => 'PT4M13S']);
+
+        $this->assertSame('4:13', $video->durationLabel());
+        $this->assertNull((new YoutubeVideo)->durationLabel());
+    }
+
     // ==================== Publishing and settings ====================
 
     public function test_vendor_publish_copies_the_migrations(): void

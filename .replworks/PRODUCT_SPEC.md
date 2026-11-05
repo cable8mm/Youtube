@@ -320,6 +320,8 @@ Model: `Cable8mm\Youtube\Models\YoutubeVideo`.
 
 Relation: `channel()` belongs to the Channel Record.
 
+A Video Record formats its stored `duration` through `durationLabel()`: `M:SS` for a duration under one hour (for example `4:13`), `H:MM:SS` for one hour or more (for example `1:02:10`), and `null` when `duration` is `null`, empty, or not a valid ISO 8601 duration.
+
 ### 16.3 `youtube_sync_errors`
 
 Model: `Cable8mm\Youtube\Models\YoutubeSyncError`.
