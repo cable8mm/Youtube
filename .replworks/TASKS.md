@@ -427,3 +427,11 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - Offline, syncing videos with `shortsAspectRatio` thumbnails, `liveBroadcastContent` `live`, and plain bodies stores `shorts`, `live`, and `regular`.
     - Live, `youtube:sync --channel=UCk1SpWNzOs4MYmr0uICEntg` stores each Video Record with a `kind` in `shorts`, `live`, `upcoming`, or `regular`.
     - Unit tests passing. Live tests passing.
+
+- [x] T-039 Classify short videos without shortsAspectRatio by duration
+  - Satisfies: PS §7.4
+  - External boundary: no
+  - Acceptance criteria:
+    - `VideoKind::of()` returns `shorts` for a plain 60-second-or-less body and `regular` for a longer plain body.
+    - `Duration::toSeconds()` returns total seconds or null for missing and invalid input; `Duration::format()` keeps its results.
+    - Unit tests passing.

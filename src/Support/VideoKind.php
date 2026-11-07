@@ -24,10 +24,22 @@ class VideoKind
             return self::SHORTS;
         }
 
-        return match ($video->snippet->liveBroadcastContent ?? 'none') {
-            'live' => self::LIVE,
-            'upcoming' => self::UPCOMING,
-            default => self::REGULAR,
-        };
+        $broadcast = $video->snippet->liveBroadcastContent ?? 'none';
+
+        if ($broadcast === 'live') {
+            return self::LIVE;
+        }
+
+        if ($broadcast === 'upcoming') {
+            return self::UPCOMING;
+        }
+
+        $seconds = Duration::toSeconds($video->contentDetails->duration ?? null);
+
+        if ($seconds !== null && $seconds <= 60) {
+            return self::SHORTS;
+        }
+
+        return self::REGULAR;
     }
 }
