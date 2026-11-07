@@ -215,12 +215,14 @@ class SyncChannelVideosTest extends TestCase
         $shorts['snippet']['thumbnails']['shortsAspectRatio'] = ['url' => 'https://i.ytimg.com/vi/shorts1/sardefault.jpg'];
         $live = self::video('live1');
         $live['snippet']['liveBroadcastContent'] = 'live';
+        $plainShort = self::video('short45');
+        $plainShort['contentDetails']['duration'] = 'PT45S';
 
         $channel = $this->channel();
         array_push(
             $this->fake->responses,
-            self::playlistPage(['shorts1', 'live1', 'regular1']),
-            self::videoList([$shorts, $live, self::video('regular1')]),
+            self::playlistPage(['shorts1', 'live1', 'regular1', 'short45']),
+            self::videoList([$shorts, $live, self::video('regular1'), $plainShort]),
         );
 
         $this->sync($channel);
@@ -228,6 +230,7 @@ class SyncChannelVideosTest extends TestCase
         $this->assertSame('shorts', YoutubeVideo::where('video_id', 'shorts1')->first()->kind);
         $this->assertSame('live', YoutubeVideo::where('video_id', 'live1')->first()->kind);
         $this->assertSame('regular', YoutubeVideo::where('video_id', 'regular1')->first()->kind);
+        $this->assertSame('shorts', YoutubeVideo::where('video_id', 'short45')->first()->kind);
     }
 
     public function test_max_pages_limits_playlist_requests(): void

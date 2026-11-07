@@ -33,4 +33,24 @@ class DurationTest extends TestCase
         $this->assertNull(Duration::format(''));
         $this->assertNull(Duration::format('4 minutes 13 seconds'));
     }
+
+    public static function seconds(): array
+    {
+        return [
+            'seconds' => ['PT53S', 53],
+            'one minute' => ['PT1M', 60],
+            'minutes and seconds' => ['PT9M43S', 583],
+            'one hour' => ['PT1H2M10S', 3730],
+            'zero' => ['PT0S', 0],
+            'missing' => [null, null],
+            'empty' => ['', null],
+            'invalid' => ['4 minutes 13 seconds', null],
+        ];
+    }
+
+    #[DataProvider('seconds')]
+    public function test_it_returns_total_seconds(?string $duration, ?int $expected): void
+    {
+        $this->assertSame($expected, Duration::toSeconds($duration));
+    }
 }
