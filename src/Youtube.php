@@ -389,6 +389,45 @@ class Youtube
         return $this->channels->byId($channelId);
     }
 
+    /**
+     * Get the channel object behind a Channel ID, handle, video URL, or channel URL.
+     *
+     * Unlike getChannelFromURL, `/c/` URLs and bare names throw instead of
+     * falling back to a search.
+     *
+     * @return \StdClass|null
+     *
+     * @throws YoutubeApiException
+     * @throws \InvalidArgumentException
+     */
+    public function getChannelFromInput(string $input)
+    {
+        $input = trim($input);
+
+        if (preg_match('/^UC[A-Za-z0-9_-]{22}$/', $input)) {
+            return $this->channels->byId($input);
+        }
+
+        if (str_starts_with($input, '@') && strlen($input) > 1) {
+            return $this->channels->byHandle($input);
+        }
+
+        try {
+            UrlParser::videoId($input);
+        } catch (\InvalidArgumentException) {
+            ['type' => $type, 'value' => $value] = UrlParser::channel($input);
+
+            return match ($type) {
+                'id' => $this->channels->byId($value),
+                'username' => $this->channels->byName($value),
+                'handle' => $this->channels->byHandle($value),
+                'search' => throw new \InvalidArgumentException('The supplied URL does not look like a Youtube Channel URL'),
+            };
+        }
+
+        return $this->getChannelFromVideoURL($input);
+    }
+
     public function getApi(string $name): mixed
     {
         return ApiClient::ENDPOINTS[$name];

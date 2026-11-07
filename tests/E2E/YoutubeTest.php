@@ -314,6 +314,16 @@ class YoutubeTest extends TestCase
         $this->assertObjectHasProperty('snippet', $video);
     }
 
+    public function test_get_channel_from_input(): void
+    {
+        $youtube = $this->liveYoutube();
+
+        $this->assertSame('UCk1SpWNzOs4MYmr0uICEntg', $youtube->getChannelFromInput('UCk1SpWNzOs4MYmr0uICEntg')->id);
+        $this->assertSame('UCK8sQmJBp8GCxrOtXWBpyEA', $youtube->getChannelFromInput('@Google')->id);
+        $this->assertSame('UC5ENZAI7prEaHGW1hPgOQEQ', $youtube->getChannelFromInput('https://www.youtube.com/watch?v=rie-hPVJ7Sw')->id);
+        $this->assertSame('UCK8sQmJBp8GCxrOtXWBpyEA', $youtube->getChannelFromInput('https://www.youtube.com/user/Google')->id);
+    }
+
     public function test_get_channel_from_handle_sub_page_url(): void
     {
         $youtube = $this->liveYoutube();

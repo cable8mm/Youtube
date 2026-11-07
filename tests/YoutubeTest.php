@@ -287,6 +287,72 @@ class YoutubeTest extends TestCase
         $this->assertCount(0, $fake->requests);
     }
 
+    public function test_get_channel_from_input_resolves_ids_handles_and_urls(): void
+    {
+        $cases = [
+            ['UCk1SpWNzOs4MYmr0uICEntg', 'channels.list', 'id'],
+            ['  UCk1SpWNzOs4MYmr0uICEntg  ', 'channels.list', 'id'],
+            ['@Google', 'channels.list', 'forHandle'],
+            ['https://www.youtube.com/channel/UCk1SpWNzOs4MYmr0uICEntg', 'channels.list', 'id'],
+            ['https://www.youtube.com/user/Google', 'channels.list', 'forUsername'],
+            ['https://www.youtube.com/@Google', 'channels.list', 'forHandle'],
+        ];
+
+        foreach ($cases as [$input, $endpoint, $param]) {
+            $fake = new FakeApiClient([$this->listJson([['id' => 'UCk1SpWNzOs4MYmr0uICEntg']])]);
+
+            $channel = $this->youtubeWithFake($fake)->getChannelFromInput($input);
+
+            $this->assertSame('UCk1SpWNzOs4MYmr0uICEntg', $channel->id, $input);
+            $this->assertCount(1, $fake->requests, $input);
+            $this->assertSame($endpoint, array_search($fake->requests[0]['url'], ApiClient::ENDPOINTS, true), $input);
+            $this->assertArrayHasKey($param, $fake->requests[0]['params'], $input);
+        }
+    }
+
+    public function test_get_channel_from_input_resolves_video_urls_with_two_requests(): void
+    {
+        $fake = new FakeApiClient([
+            $this->listJson([['id' => 'abc', 'snippet' => ['channelId' => 'UC123']]]),
+            $this->listJson([['id' => 'UC123']]),
+        ]);
+
+        $channel = $this->youtubeWithFake($fake)->getChannelFromInput('https://www.youtube.com/watch?v=abc');
+
+        $this->assertSame('UC123', $channel->id);
+        $this->assertCount(2, $fake->requests);
+    }
+
+    public function test_get_channel_from_input_returns_null_when_missing(): void
+    {
+        $fake = new FakeApiClient([$this->listJson([])]);
+
+        $this->assertNull($this->youtubeWithFake($fake)->getChannelFromInput('UCk1SpWNzOs4MYmr0uICEntg'));
+    }
+
+    public function test_get_channel_from_input_rejects_search_types_and_garbage(): void
+    {
+        $cases = [
+            'c url' => ['https://www.youtube.com/c/Google', 'The supplied URL does not look like a Youtube Channel URL'],
+            'bare name' => ['Google', 'The supplied URL does not look like a Youtube URL'],
+            'empty' => ['', 'The supplied URL does not look like a Youtube URL'],
+            'at only' => ['@', 'The supplied URL does not look like a Youtube URL'],
+        ];
+
+        foreach ($cases as $label => [$input, $message]) {
+            $fake = new FakeApiClient([]);
+
+            try {
+                $this->youtubeWithFake($fake)->getChannelFromInput($input);
+                $this->fail('Expected InvalidArgumentException for '.$label);
+            } catch (\InvalidArgumentException $e) {
+                $this->assertSame($message, $e->getMessage(), $label);
+            }
+
+            $this->assertCount(0, $fake->requests, $label);
+        }
+    }
+
     public function test_get_channel_from_video_url_accepts_shorts_urls(): void
     {
         $fake = new FakeApiClient([
