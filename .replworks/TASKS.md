@@ -418,3 +418,12 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - `VideoKind::of()` returns `shorts` for the recorded Shorts body, `live` and `upcoming` for those `liveBroadcastContent` values, and `regular` for the recorded regular body and for a video without a `snippet`.
     - The classifier sends no request and needs no API Key.
     - Unit tests passing.
+
+- [x] T-038 Record each video's kind during sync
+  - Satisfies: PS §16.2; PS §21
+  - External boundary: yes
+  - Acceptance criteria:
+    - `youtube_videos` has a `kind` column defaulting to `regular`.
+    - Offline, syncing videos with `shortsAspectRatio` thumbnails, `liveBroadcastContent` `live`, and plain bodies stores `shorts`, `live`, and `regular`.
+    - Live, `youtube:sync --channel=UCk1SpWNzOs4MYmr0uICEntg` stores each Video Record with a `kind` in `shorts`, `live`, `upcoming`, or `regular`.
+    - Unit tests passing. Live tests passing.

@@ -342,6 +342,7 @@ Model: `Cable8mm\Youtube\Models\YoutubeVideo`.
 | `id` | big integer, primary key | |
 | `youtube_channel_id` | foreign key to `youtube_channels.id`, cascade on delete | |
 | `video_id` | string, unique | `id` |
+| `kind` | string, default `regular` | `Cable8mm\Youtube\Support\VideoKind::of()` on the videos Resource Object (§7.4) |
 | `title` | string | `snippet.title` |
 | `description` | text, nullable | `snippet.description` |
 | `published_at` | timestamp | `snippet.publishedAt` |
@@ -484,6 +485,7 @@ All events are in namespace `Cable8mm\Youtube\Events`.
 
 - Importing a CSV with rows `UCk1SpWNzOs4MYmr0uICEntg`, `@Google`, `https://www.youtube.com/user/Google`, `https://www.youtube.com/c/Google` gives `created`, `created`, `updated`, `failed: unsupported input`, and creates two Channel Records.
 - Importing the same file again creates no Channel Record.
+- `youtube:sync --channel=UCk1SpWNzOs4MYmr0uICEntg` stores each Video Record with its `kind` (`shorts`, `live`, `upcoming`, or `regular`).
 - `youtube:sync --channel=UCk1SpWNzOs4MYmr0uICEntg` followed by running the queued job creates Video Records for the channel's newest uploads with `title`, `published_at`, and `view_count` filled, and sets `sync_status` to `ok`.
 - A second Sync creates no duplicate Video Records.
 - A Sync with an invalid API Key creates a Sync Error Record with reason `invalid_key`, sets `sync_status` to `failed`, and fires `ChannelSyncFailed`.

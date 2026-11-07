@@ -52,6 +52,7 @@ class SyncChannelVideosTest extends TestCase
             $this->assertNotNull($video->duration);
             $this->assertNotNull($video->thumbnail_url);
             $this->assertNotNull($video->view_count, $video->video_id);
+            $this->assertContains($video->kind, ['shorts', 'live', 'upcoming', 'regular'], $video->video_id);
         }
 
         Event::fake([ChannelSynced::class]);

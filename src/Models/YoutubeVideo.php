@@ -14,6 +14,7 @@ class YoutubeVideo extends Model
     protected $fillable = [
         'youtube_channel_id',
         'video_id',
+        'kind',
         'title',
         'description',
         'published_at',
