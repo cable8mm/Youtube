@@ -2,6 +2,9 @@
 
 namespace Cable8mm\Youtube\Support;
 
+use Carbon\Carbon;
+use Throwable;
+
 class VideoKind
 {
     public const SHORTS = 'shorts';
@@ -40,6 +43,28 @@ class VideoKind
             return self::SHORTS;
         }
 
+        if ($seconds !== null && $seconds <= 180 && self::publishedOnOrAfterThreeMinuteShorts($video->snippet->publishedAt ?? null)) {
+            return self::SHORTS;
+        }
+
         return self::REGULAR;
+    }
+
+    /**
+     * Three-minute Shorts started on 2024-10-15; older uploads stay long-form.
+     */
+    private static function publishedOnOrAfterThreeMinuteShorts(?string $publishedAt): bool
+    {
+        if ($publishedAt === null || $publishedAt === '') {
+            return false;
+        }
+
+        try {
+            $published = Carbon::parse($publishedAt);
+        } catch (Throwable) {
+            return false;
+        }
+
+        return $published->greaterThanOrEqualTo(Carbon::parse('2024-10-15T00:00:00Z'));
     }
 }

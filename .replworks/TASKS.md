@@ -435,3 +435,10 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - `VideoKind::of()` returns `shorts` for a plain 60-second-or-less body and `regular` for a longer plain body.
     - `Duration::toSeconds()` returns total seconds or null for missing and invalid input; `Duration::format()` keeps its results.
     - Unit tests passing.
+
+- [x] T-040 Classify 61-to-180-second verticals uploaded since 2024-10-15 as shorts
+  - Satisfies: PS §7.4
+  - External boundary: no
+  - Acceptance criteria:
+    - `VideoKind::of()` returns `shorts` for a plain 61-to-180-second body published on or after 2024-10-15 and `regular` for the same body published before it or without a parsable publish time.
+    - Unit tests passing.
