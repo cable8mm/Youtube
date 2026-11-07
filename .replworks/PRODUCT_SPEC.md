@@ -108,7 +108,7 @@ Resource Objects are never mapped, renamed, or filtered.
 
 ### 7.1 Operations
 
-Every operation sends one GET request, except `searchChannelByName` and `getChannelFromURL`, which may send two. Every request also sends `key`. "Sent parameters" lists the query parameters in addition to `key`; `[x]` means sent only under the rule in §7.2.
+Every operation sends one GET request, except `searchChannelByName`, `getChannelFromURL`, and `getChannelFromVideoURL`, which may send two. Every request also sends `key`. "Sent parameters" lists the query parameters in addition to `key`; `[x]` means sent only under the rule in §7.2.
 
 | Method | Endpoint | Sent parameters | Default Part | Returns |
 | --- | --- | --- | --- | --- |
@@ -127,6 +127,7 @@ Every operation sends one GET request, except `searchChannelByName` and `getChan
 | `getChannelByHandle(string $handle, array $optionalParams = [], array $part)` | channels | `forHandle`, `part`, `$optionalParams` | same as `getChannelById` | Single Result |
 | `searchChannelByName(string $username, int $maxResults = 1, array $part)` | search, then channels | search: `q`, `part`, `type`=`channel`, `maxResults` | `id, snippet` for the search | Single Result of `getChannelById(<first hit's snippet.channelId>)`; `null` when the search has no hit and no second request is sent |
 | `getChannelFromURL(string $youtube_url)` | see §9 | see §9 | see §9 | see §9 |
+| `getChannelFromVideoURL(string $youtube_url)` | videos, then channels | see §9 | see §9 | Single Result for a channel; `null` when the video or its channel is missing |
 | `getPlaylistById(array\|string $id, array $part)` | playlists | `id`, `part` | `id, snippet, status` | By-ID Result |
 | `getPlaylistsByChannelId(string $channelId, array $optionalParams = [], array $part)` | playlists | `channelId`, `part`, `$optionalParams` | `id, snippet, status` | Normalized Paged Result |
 | `getPlaylistItemsByPlaylistId(string $playlistId, string $pageToken = '', int $maxResults = 50, array $part)` | playlistItems | `playlistId`, `part`, `maxResults`, `pageToken` | `id, snippet, contentDetails, status` | Normalized Paged Result |
@@ -196,6 +197,8 @@ Rules apply in this order; the first matching rule decides:
 In rules 2-4, a URL with no second segment, such as `/channel/`, throws the Channel URL Error instead of sending a request.
 
 Observed: `https://www.youtube.com/@Google` and `https://www.youtube.com/user/Google` both return channel `UCK8sQmJBp8GCxrOtXWBpyEA`.
+
+`getChannelFromVideoURL(string $youtube_url)` returns the channel behind a video URL. It parses the Video ID with §8 (same hosts and rules; `/shorts/{id}` and `/live/{id}` throw the Video URL Error), calls `videos.list` with `part=id,snippet`, and returns `getChannelById(<snippet.channelId>)`. It sends at most two requests. A video lookup with no item, a video without `snippet.channelId`, or a channel lookup with no item returns `null`.
 
 ## 10. Response caching
 
@@ -277,6 +280,7 @@ Public methods on the Client kept for backward compatibility:
 - With caching on, two identical calls send one request; a response matching §12 row 6 or 7 is never served from the cache.
 - An invalid API Key raises §12 row 7 with code `400`.
 - The validation rule produces each outcome in §11.
+- `getChannelFromVideoURL("https://www.youtube.com/watch?v=rie-hPVJ7Sw")` returns the channel holding that video; a video URL whose video or channel is missing returns `null`.
 
 ## 16. Storage
 

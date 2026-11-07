@@ -297,6 +297,15 @@ class YoutubeTest extends TestCase
         $this->assertSame('UCk1SpWNzOs4MYmr0uICEntg', $youtube->getChannelFromURL('https://www.youtube.com/channel/UCk1SpWNzOs4MYmr0uICEntg')->id);
     }
 
+    public function test_get_channel_from_video_url(): void
+    {
+        $youtube = $this->liveYoutube();
+
+        $this->assertSame('UC5ENZAI7prEaHGW1hPgOQEQ', $youtube->getChannelFromVideoURL('https://www.youtube.com/watch?v=rie-hPVJ7Sw')->id);
+        $this->assertSame('UC5ENZAI7prEaHGW1hPgOQEQ', $youtube->getChannelFromVideoURL('https://youtu.be/rie-hPVJ7Sw')->id);
+        $this->assertSame('UC5ENZAI7prEaHGW1hPgOQEQ', $youtube->getChannelFromVideoURL('https://www.youtube.com/embed/rie-hPVJ7Sw')->id);
+    }
+
     public function test_get_channel_from_handle_sub_page_url(): void
     {
         $youtube = $this->liveYoutube();

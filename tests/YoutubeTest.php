@@ -2,6 +2,7 @@
 
 namespace Cable8mm\Youtube\Tests;
 
+use Cable8mm\Youtube\Http\ApiClient;
 use Cable8mm\Youtube\Support\UrlParser;
 use Cable8mm\Youtube\Tests\Resources\FakeApiClient;
 use Cable8mm\Youtube\Youtube;
@@ -183,10 +184,86 @@ class YoutubeTest extends TestCase
         $this->assertSame(UrlParser::query($url), Youtube::_parse_url_query($url));
     }
 
+    private function youtubeWithFake(FakeApiClient $fake): Youtube
+    {
+        $youtube = new Youtube('test_key');
+
+        $ref = new \ReflectionClass($youtube);
+        $ref->getProperty('client')->setValue($youtube, $fake);
+
+        foreach (['categories', 'videos', 'searchResource', 'channels', 'playlists', 'playlistItems', 'activities', 'commentThreads'] as $prop) {
+            $resource = $ref->getProperty($prop)->getValue($youtube);
+            (new \ReflectionClass($resource))->getProperty('client')->setValue($resource, $fake);
+        }
+
+        $channels = $ref->getProperty('channels')->getValue($youtube);
+        $search = (new \ReflectionClass($channels))->getProperty('search')->getValue($channels);
+        (new \ReflectionClass($search))->getProperty('client')->setValue($search, $fake);
+
+        return $youtube;
+    }
+
+    private function listJson(array $items): string
+    {
+        return json_encode(['kind' => 'youtube#list', 'etag' => 'etag', 'items' => $items]);
+    }
+
     public function test_parse_vid_from_url(): void
     {
         $videoId = Youtube::parseVidFromURL('https://www.youtube.com/watch?v=moSFlvxnbgk');
 
         $this->assertEquals('moSFlvxnbgk', $videoId);
+    }
+
+    public function test_get_channel_from_video_url_sends_video_then_channel_requests(): void
+    {
+        $fake = new FakeApiClient([
+            $this->listJson([['id' => 'abc', 'snippet' => ['channelId' => 'UC123']]]),
+            $this->listJson([['id' => 'UC123', 'snippet' => ['title' => 'C']]]),
+        ]);
+
+        $channel = $this->youtubeWithFake($fake)->getChannelFromVideoURL('https://www.youtube.com/watch?v=abc');
+
+        $this->assertSame('UC123', $channel->id);
+        $this->assertCount(2, $fake->requests);
+        $this->assertSame('videos.list', array_search($fake->requests[0]['url'], ApiClient::ENDPOINTS, true));
+        $this->assertSame(['id' => 'abc', 'part' => 'id,snippet', 'key' => 'test_key'], $fake->requests[0]['params']);
+        $this->assertSame('channels.list', array_search($fake->requests[1]['url'], ApiClient::ENDPOINTS, true));
+        $this->assertSame('UC123', $fake->requests[1]['params']['id']);
+    }
+
+    public function test_get_channel_from_video_url_returns_null_when_video_missing(): void
+    {
+        $fake = new FakeApiClient([$this->listJson([])]);
+
+        $this->assertNull($this->youtubeWithFake($fake)->getChannelFromVideoURL('https://youtu.be/missing'));
+        $this->assertCount(1, $fake->requests);
+    }
+
+    public function test_get_channel_from_video_url_returns_null_when_channel_missing(): void
+    {
+        $fake = new FakeApiClient([
+            $this->listJson([['id' => 'abc', 'snippet' => ['channelId' => 'UC123']]]),
+            $this->listJson([]),
+        ]);
+
+        $this->assertNull($this->youtubeWithFake($fake)->getChannelFromVideoURL('https://www.youtube.com/embed/abc'));
+        $this->assertCount(2, $fake->requests);
+    }
+
+    public function test_get_channel_from_video_url_rejects_shorts_and_non_youtube_urls(): void
+    {
+        foreach (['https://www.youtube.com/shorts/abc', 'https://example.com/watch?v=abc'] as $url) {
+            $fake = new FakeApiClient([]);
+
+            try {
+                $this->youtubeWithFake($fake)->getChannelFromVideoURL($url);
+                $this->fail('Expected InvalidArgumentException for '.$url);
+            } catch (\InvalidArgumentException $e) {
+                $this->assertSame('The supplied URL does not look like a Youtube URL', $e->getMessage());
+            }
+
+            $this->assertCount(0, $fake->requests);
+        }
     }
 }
