@@ -1,5 +1,9 @@
 # Release Notes
 
+## v6.6.1 - 2026-11-07
+
+**Full Changelog**: https://github.com/cable8mm/Youtube/compare/v6.5.3...v6.6.1
+
 ## v6.5.3 - 2026-11-07
 
 ### What's Changed
