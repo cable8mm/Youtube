@@ -451,3 +451,11 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - Offline, import and sync store the thumbnail from the recorded channel body.
     - Live, `youtube:sync --channel=UCk1SpWNzOs4MYmr0uICEntg` stores a non-null thumbnail.
     - Unit tests passing. Live tests passing.
+
+- [x] T-042 Refresh the channel record on every sync
+  - Satisfies: PS §18.2 step 2
+  - External boundary: yes
+  - Acceptance criteria:
+    - Offline, a Sync for a channel with a known playlist still sends one channels request and updates handle, title, and thumbnail.
+    - Offline, a failed or empty channel lookup with a known playlist keeps stored values and continues collection.
+    - Unit tests passing. Live tests passing.

@@ -81,9 +81,7 @@ class SyncChannelVideos implements ShouldQueue
     {
         $youtube = app(Youtube::class);
 
-        if ($channel->uploads_playlist_id === null) {
-            $this->fillChannel($youtube, $channel);
-        }
+        $this->refreshChannel($youtube, $channel);
 
         $checkSet = array_values(array_unique(array_merge(
             $this->uploadedVideoIds($youtube, $channel->uploads_playlist_id),
@@ -133,16 +131,32 @@ class SyncChannelVideos implements ShouldQueue
     }
 
     /**
+     * Refresh the Channel Record from YouTube. When the channel cannot be
+     * resolved but a playlist is already known, prior values are kept and
+     * collection continues with that playlist.
+     *
      * @throws YoutubeApiException
      */
-    protected function fillChannel(Youtube $youtube, YoutubeChannel $channel): void
+    protected function refreshChannel(Youtube $youtube, YoutubeChannel $channel): void
     {
-        $item = $youtube->getChannelById($channel->channel_id, [], self::CHANNEL_PART);
+        try {
+            $item = $youtube->getChannelById($channel->channel_id, [], self::CHANNEL_PART);
+        } catch (YoutubeApiException $exception) {
+            if ($channel->uploads_playlist_id === null) {
+                throw $exception;
+            }
+
+            return;
+        }
 
         if ($item === null) {
-            $this->channelNotFound = true;
+            if ($channel->uploads_playlist_id === null) {
+                $this->channelNotFound = true;
 
-            throw new YoutubeApiException('Channel not found : '.$channel->channel_id, 0);
+                throw new YoutubeApiException('Channel not found : '.$channel->channel_id, 0);
+            }
+
+            return;
         }
 
         $channel->update([
