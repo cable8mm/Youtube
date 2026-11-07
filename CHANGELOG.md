@@ -1,5 +1,14 @@
 # Release Notes
 
+## v6.2.0 - 2026-11-07
+
+### What's Changed
+
+* feat: resolve a channel from a video URL by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/45
+* docs: add subsession orchestration and probe paths by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/46
+
+**Full Changelog**: https://github.com/cable8mm/Youtube/compare/v6.1.0...v6.2.0
+
 ## v6.1.0 - 2026-11-05
 
 ### What's Changed
