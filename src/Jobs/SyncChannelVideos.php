@@ -149,6 +149,7 @@ class SyncChannelVideos implements ShouldQueue
             'uploads_playlist_id' => $item->contentDetails->relatedPlaylists->uploads ?? null,
             'handle' => $item->snippet->customUrl ?? null,
             'title' => $item->snippet->title ?? $channel->channel_id,
+            'thumbnail_url' => $item->snippet->thumbnails->default->url ?? null,
         ]);
     }
 

@@ -51,7 +51,7 @@ class YoutubeChannelsImportTest extends TestCase
             'items' => [[
                 'kind' => 'youtube#channel',
                 'id' => $id,
-                'snippet' => ['title' => $title, 'customUrl' => $customUrl],
+                'snippet' => ['title' => $title, 'customUrl' => $customUrl, 'thumbnails' => ['default' => ['url' => "https://example.com/{$id}.jpg"]]],
                 'contentDetails' => ['relatedPlaylists' => ['uploads' => 'UU'.substr($id, 2)]],
             ]],
         ]);
@@ -108,6 +108,7 @@ class YoutubeChannelsImportTest extends TestCase
         $xda = YoutubeChannel::where('channel_id', 'UCk1SpWNzOs4MYmr0uICEntg')->first();
         $this->assertSame('XDA', $xda->title);
         $this->assertSame('@xda', $xda->handle);
+        $this->assertSame('https://example.com/UCk1SpWNzOs4MYmr0uICEntg.jpg', $xda->thumbnail_url);
         $this->assertSame('UUk1SpWNzOs4MYmr0uICEntg', $xda->uploads_playlist_id);
         $this->assertTrue($xda->is_active);
         $this->assertNull($xda->owner_type);

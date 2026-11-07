@@ -40,6 +40,7 @@ class SyncChannelVideosTest extends TestCase
         $this->assertNotNull($channel->last_synced_at);
         $this->assertStringStartsWith('UU', $channel->uploads_playlist_id);
         $this->assertSame('XDA', $channel->title);
+        $this->assertNotNull($channel->thumbnail_url);
 
         $count = $channel->videos()->count();
         $this->assertGreaterThan(0, $count);

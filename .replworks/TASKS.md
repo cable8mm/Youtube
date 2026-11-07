@@ -442,3 +442,12 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
   - Acceptance criteria:
     - `VideoKind::of()` returns `shorts` for a plain 61-to-180-second body published on or after 2024-10-15 and `regular` for the same body published before it or without a parsable publish time.
     - Unit tests passing.
+
+- [x] T-041 Store the channel avatar during import and sync
+  - Satisfies: PS §16.1; PS §17.3; PS §18.2 step 2
+  - External boundary: yes
+  - Acceptance criteria:
+    - `youtube_channels` has a nullable `thumbnail_url` column storing `snippet.thumbnails.default.url`.
+    - Offline, import and sync store the thumbnail from the recorded channel body.
+    - Live, `youtube:sync --channel=UCk1SpWNzOs4MYmr0uICEntg` stores a non-null thumbnail.
+    - Unit tests passing. Live tests passing.

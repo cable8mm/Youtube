@@ -295,7 +295,7 @@ class SyncChannelVideosTest extends TestCase
             json_encode(['kind' => 'youtube#channelListResponse', 'etag' => 'e', 'items' => [[
                 'kind' => 'youtube#channel',
                 'id' => self::CHANNEL_ID,
-                'snippet' => ['title' => 'XDA', 'customUrl' => '@xda'],
+                'snippet' => ['title' => 'XDA', 'customUrl' => '@xda', 'thumbnails' => ['default' => ['url' => 'https://example.com/xda.jpg']]],
                 'contentDetails' => ['relatedPlaylists' => ['uploads' => self::UPLOADS]],
             ]]]),
             self::playlistPage(['v1']),
@@ -308,6 +308,7 @@ class SyncChannelVideosTest extends TestCase
         $this->assertSame(self::UPLOADS, $channel->uploads_playlist_id);
         $this->assertSame('@xda', $channel->handle);
         $this->assertSame('XDA', $channel->title);
+        $this->assertSame('https://example.com/xda.jpg', $channel->thumbnail_url);
         $this->assertSame(self::CHANNEL_ID, $this->requestsTo('channels')[0]['params']['id']);
         $this->assertSame(self::UPLOADS, $this->requestsTo('playlistItems')[0]['params']['playlistId']);
         $this->assertSame('ok', $channel->sync_status);

@@ -326,6 +326,7 @@ Model: `Cable8mm\Youtube\Models\YoutubeChannel`.
 | `channel_id` | string | Channel ID. Unique. |
 | `handle` | string, nullable | The channel's `snippet.customUrl`, for example `@google`. |
 | `title` | string | `snippet.title`. |
+| `thumbnail_url` | string, nullable | `snippet.thumbnails.default.url`, the channel avatar. |
 | `uploads_playlist_id` | string, nullable | `contentDetails.relatedPlaylists.uploads`. |
 | `owner_type`, `owner_id` | nullable morph | The Owner. |
 | `is_active` | boolean, default `true` | `youtube:sync` without `--channel` syncs only active Channel Records. |
@@ -402,7 +403,7 @@ A request that returns `null` gives the row result `failed: channel not found`.
 ### 17.3 Writing
 
 - A resolved channel is written by `channel_id`: a new Channel Record is created, or the existing one is updated. Existing `is_active`, `sync_status`, and Video Records are kept.
-- Written columns: `channel_id`, `handle`, `title`, `uploads_playlist_id`, and the Owner when one is given.
+- Written columns: `channel_id`, `handle`, `title`, `thumbnail_url`, `uploads_playlist_id`, and the Owner when one is given.
 - Row results: `created`, `updated`, `failed: <cause>`.
 - A `YoutubeApiException` on a row gives `failed: <Failure Reason>` (§19.1). When the Failure Reason is `quota_exceeded`, the remaining rows are not processed and each gets `skipped: quota exceeded`.
 - After the run, the command prints the count of each row result and one line per failed row: `row <n>: <cell value>: <cause>`, where `<n>` is the sheet row number. The command exits `0` when no row failed and `1` otherwise.
@@ -423,7 +424,7 @@ A request that returns `null` gives the row result `failed: channel not found`.
 `SyncChannelVideos(int $youtubeChannelId, ?int $maxPages = 1)` runs once. It is not retried. Steps:
 
 1. During a Quota Block, end without a request and without changing any record.
-2. When `uploads_playlist_id` is `null`, fetch the channel with `getChannelById` and store `uploads_playlist_id`, `handle`, and `title`. When the lookup returns `null`, the Sync fails with Failure Reason `channel_not_found` and exception `YoutubeApiException` with message `Channel not found : <channel_id>` and code `0`.
+2. When `uploads_playlist_id` is `null`, fetch the channel with `getChannelById` and store `uploads_playlist_id`, `handle`, `thumbnail_url`, and `title`. When the lookup returns `null`, the Sync fails with Failure Reason `channel_not_found` and exception `YoutubeApiException` with message `Channel not found : <channel_id>` and code `0`.
 3. Read the uploads playlist with `getPlaylistItemsByPlaylistId(<uploads_playlist_id>, <pageToken>, 50)`: at most `$maxPages` pages, or every page when `$maxPages` is `null`. Collect each item's `contentDetails.videoId`.
 4. Let the check set be the collected Video IDs plus the Video IDs of every Video Record of the channel.
 5. Call `getVideoInfo(<up to 50 IDs>, ['id', 'snippet', 'contentDetails', 'statistics'])` for each batch of the check set.

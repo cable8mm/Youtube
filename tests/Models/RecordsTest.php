@@ -84,9 +84,10 @@ class RecordsTest extends TestCase
         $this->assertSame([
             'id', 'channel_id', 'handle', 'title', 'uploads_playlist_id', 'owner_type', 'owner_id',
             'is_active', 'sync_status', 'last_synced_at', 'last_error_reason', 'created_at', 'updated_at',
+            'thumbnail_url',
         ], array_keys($columns));
 
-        foreach (['handle', 'uploads_playlist_id', 'owner_type', 'owner_id', 'sync_status', 'last_synced_at', 'last_error_reason'] as $name) {
+        foreach (['handle', 'thumbnail_url', 'uploads_playlist_id', 'owner_type', 'owner_id', 'sync_status', 'last_synced_at', 'last_error_reason'] as $name) {
             $this->assertTrue($columns[$name]['nullable'], "$name should be nullable");
         }
 
