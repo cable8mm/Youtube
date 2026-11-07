@@ -410,3 +410,11 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - `/c/name`, a bare name, and any other unsupported input throw the Channel URL Error and send no request.
     - Live: a Channel ID, `@Google`, a watch URL, and a `/user/Google` URL each return the expected channel.
     - Unit tests passing. Live tests passing.
+
+- [x] T-037 Classify a video as shorts, live, upcoming, or regular
+  - Satisfies: PS §7.4
+  - External boundary: no
+  - Acceptance criteria:
+    - `VideoKind::of()` returns `shorts` for the recorded Shorts body, `live` and `upcoming` for those `liveBroadcastContent` values, and `regular` for the recorded regular body and for a video without a `snippet`.
+    - The classifier sends no request and needs no API Key.
+    - Unit tests passing.

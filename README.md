@@ -356,7 +356,10 @@ $video  = Youtube::getVideoInfo('video_id');               // object or null
 $videos = Youtube::getVideoInfo(['id1', 'id2']);           // array or null
 $video  = Youtube::getLocalizedVideoInfo('video_id', 'ko');
 $videos = Youtube::getPopularVideos('KR', 20);
+$video  = Youtube::getVideoFromURL('https://youtu.be/rie-hPVJ7Sw');  // object or null
 ```
+
+`Cable8mm\Youtube\Support\VideoKind::of($video)` classifies one video object as `'shorts'`, `'live'`, `'upcoming'`, or `'regular'` without a request. Shorts carry a `shortsAspectRatio` thumbnail; live and upcoming follow `snippet.liveBroadcastContent`; everything else is regular.
 
 ### Search
 
@@ -390,6 +393,8 @@ $channel  = Youtube::getChannelByHandle('@Google');
 $channel  = Youtube::getChannelByName('username');          // legacy /user/ name
 $channel  = Youtube::searchChannelByName('Google');         // first search hit
 $channel  = Youtube::getChannelFromURL('https://www.youtube.com/channel/UCk1SpWNzOs4MYmr0uICEntg');
+$channel  = Youtube::getChannelFromVideoURL('https://youtu.be/rie-hPVJ7Sw');  // via the video, object or null
+$channel  = Youtube::getChannelFromInput('@Google');  // ID, @handle, video URL, or channel URL; no search fallback
 ```
 
 ### Playlists
@@ -467,13 +472,14 @@ Youtube::parseVidFromURL('https://youtu.be/rie-hPVJ7Sw');   // 'rie-hPVJ7Sw'
 | `https://m.youtube.com/watch?v=VIDEO_ID` | `v` |
 | `https://music.youtube.com/watch?v=VIDEO_ID` | `v` |
 | `https://www.youtube.com/embed/VIDEO_ID` | the path |
+| `https://www.youtube.com/shorts/VIDEO_ID` | the path |
+| `https://www.youtube.com/live/VIDEO_ID` | the path |
 | `https://www.youtube-nocookie.com/embed/VIDEO_ID` | the path |
 | `https://youtu.be/VIDEO_ID` | the path |
 
 - The host decides, not the text: `https://example.com/?ref=youtube.com/watch?v=abc` is rejected.
 - Other query parameters, such as `t`, `list`, or `feature=embed`, are ignored.
 - A URL without `https://` works too: `youtube.com/watch?v=VIDEO_ID`.
-- `/shorts/` and `/live/` URLs are not supported.
 - An unsupported URL throws `InvalidArgumentException`.
 
 ### Channel URLs
@@ -488,6 +494,8 @@ Youtube::parseVidFromURL('https://youtu.be/rie-hPVJ7Sw');   // 'rie-hPVJ7Sw'
 | `/c/name` or `/name` | `searchChannelByName` | 101 |
 
 Non-channel pages such as `/feed/trending` or `/playlist` throw `InvalidArgumentException`.
+
+`getChannelFromInput()` resolves one strict input with at most two requests and no search fallback: a Channel ID, an `@handle`, a video URL (via the video's channel), or a channel URL. `/c/` URLs and bare names throw instead of searching. A missing video or channel returns `null`.
 
 ## ⚠️ Errors
 
@@ -513,8 +521,8 @@ composer test
 composer test:e2e
 ```
 
-- ✅ 223 unit tests with Orchestra Testbench (no API key, no network)
-- ✅ 46 E2E tests against the live YouTube Data API (requires API key)
+- ✅ 256 unit tests with Orchestra Testbench (no API key, no network)
+- ✅ 49 E2E tests against the live YouTube Data API (requires API key)
 
 ## 📁 Package Structure
 

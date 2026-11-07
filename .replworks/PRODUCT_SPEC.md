@@ -159,6 +159,18 @@ Every operation sends one GET request, except `searchChannelByName`, `getChannel
 
 `pageToken` is sent only when `$pageToken` is not empty.
 
+### 7.4 Video kind classification
+
+`Cable8mm\Youtube\Support\VideoKind::of(object $video): string` is pure: it sends no request and needs no API Key. It reads one videos Resource Object and returns `shorts`, `live`, `upcoming`, or `regular`. Rules apply in this order; the first matching rule decides:
+
+1. `snippet.thumbnails` has a `shortsAspectRatio` member: `shorts`.
+2. `snippet.liveBroadcastContent` is `live`: `live`.
+3. `snippet.liveBroadcastContent` is `upcoming`: `upcoming`.
+4. Otherwise: `regular`, including a video without a `snippet`.
+
+`shortsAspectRatio` is observed on Shorts but is not a documented API field: its presence means Shorts, while its absence only means the video is not identifiable as Shorts. A finished live broadcast reports `none` and therefore classifies as `regular`.
+
+
 ## 8. Video URL parsing
 
 `Youtube::parseVidFromURL(string $youtube_url): string` is static. It sends no request and needs no API Key.
@@ -295,6 +307,7 @@ Public methods on the Client kept for backward compatibility:
 - The validation rule produces each outcome in §11.
 - `getChannelFromVideoURL("https://www.youtube.com/watch?v=rie-hPVJ7Sw")` returns the channel holding that video; a video URL whose video or channel is missing returns `null`.
 - `getVideoFromURL("https://www.youtube.com/shorts/rie-hPVJ7Sw")` returns the video with `id` `rie-hPVJ7Sw`; a video URL whose video is missing returns `null`.
+- `VideoKind::of()` returns `shorts` for a video with `shortsAspectRatio` thumbnails, `live` and `upcoming` for those `liveBroadcastContent` values, and `regular` otherwise.
 - `getChannelFromInput` returns the expected channel for a Channel ID, `@Google`, `https://www.youtube.com/watch?v=rie-hPVJ7Sw`, and `https://www.youtube.com/user/Google`, and throws the Channel URL Error for `https://www.youtube.com/c/Google`.
 
 ## 16. Storage
