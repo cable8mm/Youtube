@@ -1,5 +1,13 @@
 # Release Notes
 
+## v6.5.0 - 2026-11-07
+
+### What's Changed
+
+* feat: record each video's kind during sync by [@cable8mm](https://github.com/cable8mm) in https://github.com/cable8mm/Youtube/pull/51
+
+**Full Changelog**: https://github.com/cable8mm/Youtube/compare/v6.4.0...v6.5.0
+
 ## v6.4.0 - 2026-11-07
 
 ### What's Changed
