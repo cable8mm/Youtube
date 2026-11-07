@@ -9,6 +9,7 @@ use Cable8mm\Youtube\Exceptions\YoutubeApiException;
 use Cable8mm\Youtube\Models\YoutubeChannel;
 use Cable8mm\Youtube\Models\YoutubeSyncError;
 use Cable8mm\Youtube\Models\YoutubeVideo;
+use Cable8mm\Youtube\Support\VideoKind;
 use Cable8mm\Youtube\Sync\FailureReason;
 use Cable8mm\Youtube\Sync\QuotaBlock;
 use Cable8mm\Youtube\Youtube;
@@ -188,6 +189,7 @@ class SyncChannelVideos implements ShouldQueue
 
         $video->fill([
             'youtube_channel_id' => $channel->id,
+            'kind' => VideoKind::of($item),
             'title' => $item->snippet->title,
             'description' => $item->snippet->description ?? null,
             'published_at' => Carbon::parse($item->snippet->publishedAt),

@@ -209,6 +209,27 @@ class SyncChannelVideosTest extends TestCase
         $this->assertSame('https://i.ytimg.com/vi/v1/default.jpg', YoutubeVideo::first()->thumbnail_url);
     }
 
+    public function test_sync_records_each_video_kind(): void
+    {
+        $shorts = self::video('shorts1');
+        $shorts['snippet']['thumbnails']['shortsAspectRatio'] = ['url' => 'https://i.ytimg.com/vi/shorts1/sardefault.jpg'];
+        $live = self::video('live1');
+        $live['snippet']['liveBroadcastContent'] = 'live';
+
+        $channel = $this->channel();
+        array_push(
+            $this->fake->responses,
+            self::playlistPage(['shorts1', 'live1', 'regular1']),
+            self::videoList([$shorts, $live, self::video('regular1')]),
+        );
+
+        $this->sync($channel);
+
+        $this->assertSame('shorts', YoutubeVideo::where('video_id', 'shorts1')->first()->kind);
+        $this->assertSame('live', YoutubeVideo::where('video_id', 'live1')->first()->kind);
+        $this->assertSame('regular', YoutubeVideo::where('video_id', 'regular1')->first()->kind);
+    }
+
     public function test_max_pages_limits_playlist_requests(): void
     {
         $pages = [
