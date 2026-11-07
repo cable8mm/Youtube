@@ -198,6 +198,33 @@ For every task:
 
 ---
 
+## SUBSESSION_ORCHESTRATION
+
+Goal: keep the main session context small and reduce total token usage.
+Subsession = a separate agent context started by the main session
+(Claude Code subagent / Task tool, or any equivalent).
+If the runtime cannot create one, run TASK_EXECUTION in the main session.
+
+The main session is the orchestrator. It decides how to delegate:
+one subsession per task, or several tasks per subsession when that saves tokens.
+Subsessions run one at a time, never in parallel.
+
+Invariants:
+
+1. The main session owns all human communication.
+   A subsession never asks the human. On any STOP condition it stops and
+   reports the branch, the task ID, and the decision needed.
+2. The main session confirms delivery identities once and passes them on.
+3. Branch, commit, PR, and squash merge stay per task, even in a batch.
+4. A subsession report is a claim. The main session verifies merge state
+   and CI with `gh` before continuing.
+5. Every rule in this file applies inside a subsession,
+   including IGNORE, MOCK_RULES, and TASK_EXECUTION step 8 (E2E).
+6. For HUMAN_OWNED_CHANGES, the subsession stops after the diff and test
+   results. The main session obtains approval and instructs the commit.
+
+---
+
 ## AUTO_RUN
 
 AUTO_RUN applies only to tasks from TASKS.md.
@@ -273,6 +300,18 @@ inferred event flow
 If a mock's values cannot be traced to a recorded observation or a spec, do not write it.
 Any code touching an EXTERNAL_BOUNDARY requires at least one live observation before it may be mocked.
 Re-verify mocks when the external system's behavior may have changed.
+
+## PROBE_PATHS
+
+A probe is throwaway code run to observe behavior and inform a design or technical decision.
+Do not ask the human where to store a probe. Use these paths:
+
+```text
+Code:    probes/<YYYY-MM-DD>-<slug>/
+Report:  .replworks/observations/<YYYY-MM-DD>-<slug>.md
+```
+
+Code and report share the same `<YYYY-MM-DD>-<slug>`.
 
 ---
 
