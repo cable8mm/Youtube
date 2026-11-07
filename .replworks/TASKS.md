@@ -402,7 +402,7 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - Live: `getVideoFromURL('https://www.youtube.com/watch?v=rie-hPVJ7Sw')` returns the video with `id` `rie-hPVJ7Sw`.
     - Unit tests passing. Live tests passing.
 
-- [ ] T-036 Resolve any channel input without a search fallback
+- [x] T-036 Resolve any channel input without a search fallback
   - Satisfies: PS §7.1 (`getChannelFromInput`); PS §8; PS §9
   - External boundary: yes
   - Acceptance criteria:

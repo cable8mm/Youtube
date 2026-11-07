@@ -108,7 +108,7 @@ Resource Objects are never mapped, renamed, or filtered.
 
 ### 7.1 Operations
 
-Every operation sends one GET request, except `searchChannelByName`, `getChannelFromURL`, and `getChannelFromVideoURL`, which may send two. Every request also sends `key`. "Sent parameters" lists the query parameters in addition to `key`; `[x]` means sent only under the rule in §7.2.
+Every operation sends one GET request, except `searchChannelByName`, `getChannelFromURL`, `getChannelFromVideoURL`, and `getChannelFromInput`, which may send two. Every request also sends `key`. "Sent parameters" lists the query parameters in addition to `key`; `[x]` means sent only under the rule in §7.2.
 
 | Method | Endpoint | Sent parameters | Default Part | Returns |
 | --- | --- | --- | --- | --- |
@@ -129,6 +129,7 @@ Every operation sends one GET request, except `searchChannelByName`, `getChannel
 | `getChannelFromURL(string $youtube_url)` | see §9 | see §9 | see §9 | see §9 |
 | `getChannelFromVideoURL(string $youtube_url)` | videos, then channels | see §9 | see §9 | Single Result for a channel; `null` when the video or its channel is missing |
 | `getVideoFromURL(string $youtube_url)` | videos | `id`, `part`=`id,snippet` | fixed `id,snippet` | Single Result for a video; `null` when the video is missing |
+| `getChannelFromInput(string $input)` | channels (and videos for a video URL) | see §9 | see §9 | Single Result for a channel; `null` when the record is missing |
 | `getPlaylistById(array\|string $id, array $part)` | playlists | `id`, `part` | `id, snippet, status` | By-ID Result |
 | `getPlaylistsByChannelId(string $channelId, array $optionalParams = [], array $part)` | playlists | `channelId`, `part`, `$optionalParams` | `id, snippet, status` | Normalized Paged Result |
 | `getPlaylistItemsByPlaylistId(string $playlistId, string $pageToken = '', int $maxResults = 50, array $part)` | playlistItems | `playlistId`, `part`, `maxResults`, `pageToken` | `id, snippet, contentDetails, status` | Normalized Paged Result |
@@ -200,6 +201,15 @@ In rules 2-4, a URL with no second segment, such as `/channel/`, throws the Chan
 Observed: `https://www.youtube.com/@Google` and `https://www.youtube.com/user/Google` both return channel `UCK8sQmJBp8GCxrOtXWBpyEA`.
 
 `getVideoFromURL(string $youtube_url)` returns the video behind a video URL. It parses the Video ID with §8 and calls `videos.list` once with `part=id,snippet`. A lookup with no item returns `null`.
+
+`getChannelFromInput(string $input)` resolves any channel input without a search fallback. Leading and trailing whitespace is ignored. Rules apply in this order; the first matching rule decides:
+
+1. The input is a Channel ID: return `getChannelById(<input>)`.
+2. The input starts with `@` and is longer than `@`: return `getChannelByHandle(<input>)`.
+3. The input parses as a video URL under §8: return `getChannelFromVideoURL(<input>)`.
+4. Otherwise classify the input as a channel URL under §9: `id` returns `getChannelById`, `username` returns `getChannelByName`, `handle` returns `getChannelByHandle`, and `search` (from `/c/` or a bare name) throws the Channel URL Error instead of sending a request.
+
+It sends at most two requests. A lookup with no item returns `null`. Any other input throws the error raised by §8 or §9 parsing.
 
 `getChannelFromVideoURL(string $youtube_url)` returns the channel behind a video URL. It parses the Video ID with §8 (same hosts and rules), calls `videos.list` with `part=id,snippet`, and returns `getChannelById(<snippet.channelId>)`. It sends at most two requests. A video lookup with no item, a video without `snippet.channelId`, or a channel lookup with no item returns `null`.
 
@@ -285,6 +295,7 @@ Public methods on the Client kept for backward compatibility:
 - The validation rule produces each outcome in §11.
 - `getChannelFromVideoURL("https://www.youtube.com/watch?v=rie-hPVJ7Sw")` returns the channel holding that video; a video URL whose video or channel is missing returns `null`.
 - `getVideoFromURL("https://www.youtube.com/shorts/rie-hPVJ7Sw")` returns the video with `id` `rie-hPVJ7Sw`; a video URL whose video is missing returns `null`.
+- `getChannelFromInput` returns the expected channel for a Channel ID, `@Google`, `https://www.youtube.com/watch?v=rie-hPVJ7Sw`, and `https://www.youtube.com/user/Google`, and throws the Channel URL Error for `https://www.youtube.com/c/Google`.
 
 ## 16. Storage
 
