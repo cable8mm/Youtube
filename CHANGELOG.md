@@ -1,5 +1,13 @@
 # Release Notes
 
+## v6.5.1 - 2026-11-07
+
+### What's Changed
+
+* fix: classify short videos without shortsAspectRatio by duration by [@cable8mm](https://github.com/cable8mm) in https://github.com/cable8mm/Youtube/pull/52
+
+**Full Changelog**: https://github.com/cable8mm/Youtube/compare/v6.5.0...v6.5.1
+
 ## v6.5.0 - 2026-11-07
 
 ### What's Changed
