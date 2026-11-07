@@ -77,9 +77,10 @@ class UrlParser
         if ($host === 'youtu.be') {
             $vid = $segments[0] ?? null;
         } elseif (in_array($host, self::VIDEO_HOSTS, true)) {
-            $vid = ($segments[0] ?? null) === 'embed'
-                ? $segments[1] ?? null
-                : static::query($url)['v'] ?? null;
+            $vid = match ($segments[0] ?? null) {
+                'embed', 'shorts', 'live' => $segments[1] ?? null,
+                default => static::query($url)['v'] ?? null,
+            };
         }
 
         if (! is_string($vid) || $vid === '') {

@@ -251,19 +251,31 @@ class YoutubeTest extends TestCase
         $this->assertCount(2, $fake->requests);
     }
 
-    public function test_get_channel_from_video_url_rejects_shorts_and_non_youtube_urls(): void
+    public function test_get_channel_from_video_url_accepts_shorts_urls(): void
     {
-        foreach (['https://www.youtube.com/shorts/abc', 'https://example.com/watch?v=abc'] as $url) {
-            $fake = new FakeApiClient([]);
+        $fake = new FakeApiClient([
+            $this->listJson([['id' => 'abc', 'snippet' => ['channelId' => 'UC123']]]),
+            $this->listJson([['id' => 'UC123']]),
+        ]);
 
-            try {
-                $this->youtubeWithFake($fake)->getChannelFromVideoURL($url);
-                $this->fail('Expected InvalidArgumentException for '.$url);
-            } catch (\InvalidArgumentException $e) {
-                $this->assertSame('The supplied URL does not look like a Youtube URL', $e->getMessage());
-            }
+        $channel = $this->youtubeWithFake($fake)->getChannelFromVideoURL('https://www.youtube.com/shorts/abc');
 
-            $this->assertCount(0, $fake->requests);
+        $this->assertSame('UC123', $channel->id);
+        $this->assertCount(2, $fake->requests);
+        $this->assertSame('abc', $fake->requests[0]['params']['id']);
+    }
+
+    public function test_get_channel_from_video_url_rejects_non_youtube_urls(): void
+    {
+        $fake = new FakeApiClient([]);
+
+        try {
+            $this->youtubeWithFake($fake)->getChannelFromVideoURL('https://example.com/watch?v=abc');
+            $this->fail('Expected InvalidArgumentException');
+        } catch (\InvalidArgumentException $e) {
+            $this->assertSame('The supplied URL does not look like a Youtube URL', $e->getMessage());
         }
+
+        $this->assertCount(0, $fake->requests);
     }
 }

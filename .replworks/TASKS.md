@@ -383,3 +383,30 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - Offline: a `/shorts/abc` or non-YouTube URL throws the Video URL Error and sends no request.
     - Live: `getChannelFromVideoURL('https://www.youtube.com/watch?v=rie-hPVJ7Sw')` returns the channel holding that video.
     - Unit tests passing. Live tests passing.
+
+- [x] T-034 Parse shorts and live video URLs
+  - Satisfies: PS §8; C5
+  - External boundary: no
+  - Acceptance criteria:
+    - `parseVidFromURL` returns `rie-hPVJ7Sw` for `https://www.youtube.com/shorts/rie-hPVJ7Sw`, `https://m.youtube.com/live/rie-hPVJ7Sw`, and `https://www.youtube-nocookie.com/embed/rie-hPVJ7Sw?start=10`.
+    - `https://www.youtube.com/shorts/`, `https://www.youtube.com/live/`, and `https://example.com/shorts/rie-hPVJ7Sw` throw the Video URL Error.
+    - Every T-011 and T-029 example keeps its result.
+    - Unit tests passing.
+
+- [ ] T-035 Return the video behind a video URL
+  - Satisfies: PS §7.1 (`getVideoFromURL`); PS §8
+  - External boundary: yes
+  - Acceptance criteria:
+    - Offline: `getVideoFromURL('https://www.youtube.com/shorts/abc')` sends `videos.list` with `id=abc`, `part=id,snippet` and returns the item; no item returns `null` with no further request.
+    - Offline: a non-video URL throws the Video URL Error and sends no request.
+    - Live: `getVideoFromURL('https://www.youtube.com/watch?v=rie-hPVJ7Sw')` returns the video with `id` `rie-hPVJ7Sw`.
+    - Unit tests passing. Live tests passing.
+
+- [ ] T-036 Resolve any channel input without a search fallback
+  - Satisfies: PS §7.1 (`getChannelFromInput`); PS §8; PS §9
+  - External boundary: yes
+  - Acceptance criteria:
+    - A Channel ID returns `getChannelById`; `@handle` returns `getChannelByHandle`; a video URL returns the T-033 path; `/channel/`, `/@`, `/user/` URLs return the matching lookup; each sends at most two requests and only `null` for a missing record.
+    - `/c/name`, a bare name, and any other unsupported input throw the Channel URL Error and send no request.
+    - Live: a Channel ID, `@Google`, a watch URL, and a `/user/Google` URL each return the expected channel.
+    - Unit tests passing. Live tests passing.
