@@ -168,13 +168,13 @@ Video hosts: `youtube.com`, `www.youtube.com`, `m.youtube.com`, `music.youtube.c
 Rules apply in this order; the first matching rule decides:
 
 1. `host` is `youtu.be`: the result is the first segment.
-2. `host` is a video host and the first segment is `embed`: the result is the second segment.
+2. `host` is a video host and the first segment is `embed`, `shorts`, or `live`: the result is the second segment.
 3. `host` is a video host: the result is `v`.
 4. Otherwise: throw the Video URL Error.
 
 After the rule, a result that is not a string, or is `''` or missing, throws the Video URL Error.
 
-Consequences: `youtube.com/shorts/{id}` and `youtube.com/live/{id}` have no `v` parameter and throw. Query strings on embed and `youtu.be` URLs are ignored, so `https://www.youtube.com/watch?v=abc&feature=embed` returns `abc`. A URL whose host is not listed throws even when `youtube.com` appears elsewhere in it.
+Consequences: query strings on embed, shorts, live, and `youtu.be` URLs are ignored, so `https://www.youtube.com/watch?v=abc&feature=embed` returns `abc` and `https://youtu.be/rie-hPVJ7Sw?t=10` returns `rie-hPVJ7Sw`. A URL whose host is not listed throws even when `youtube.com` appears elsewhere in it.
 
 ## 9. Channel URL resolution
 
@@ -198,7 +198,7 @@ In rules 2-4, a URL with no second segment, such as `/channel/`, throws the Chan
 
 Observed: `https://www.youtube.com/@Google` and `https://www.youtube.com/user/Google` both return channel `UCK8sQmJBp8GCxrOtXWBpyEA`.
 
-`getChannelFromVideoURL(string $youtube_url)` returns the channel behind a video URL. It parses the Video ID with §8 (same hosts and rules; `/shorts/{id}` and `/live/{id}` throw the Video URL Error), calls `videos.list` with `part=id,snippet`, and returns `getChannelById(<snippet.channelId>)`. It sends at most two requests. A video lookup with no item, a video without `snippet.channelId`, or a channel lookup with no item returns `null`.
+`getChannelFromVideoURL(string $youtube_url)` returns the channel behind a video URL. It parses the Video ID with §8 (same hosts and rules), calls `videos.list` with `part=id,snippet`, and returns `getChannelById(<snippet.channelId>)`. It sends at most two requests. A video lookup with no item, a video without `snippet.channelId`, or a channel lookup with no item returns `null`.
 
 ## 10. Response caching
 
@@ -276,7 +276,7 @@ Public methods on the Client kept for backward compatibility:
 
 - With a valid API Key, every operation in §7.1 returns its listed result type.
 - `getVideoInfo('rie-hPVJ7Sw')` returns a Resource Object with `id` and `snippet`; a nonexistent Video ID returns `null`.
-- `parseVidFromURL` returns `rie-hPVJ7Sw` for `https://www.youtube.com/watch?v=rie-hPVJ7Sw`, `https://youtu.be/rie-hPVJ7Sw`, and `https://www.youtube.com/embed/rie-hPVJ7Sw`.
+- `parseVidFromURL` returns `rie-hPVJ7Sw` for `https://www.youtube.com/watch?v=rie-hPVJ7Sw`, `https://youtu.be/rie-hPVJ7Sw`, `https://www.youtube.com/embed/rie-hPVJ7Sw`, `https://www.youtube.com/shorts/rie-hPVJ7Sw`, and `https://www.youtube.com/live/rie-hPVJ7Sw`.
 - With caching on, two identical calls send one request; a response matching §12 row 6 or 7 is never served from the cache.
 - An invalid API Key raises §12 row 7 with code `400`.
 - The validation rule produces each outcome in §11.
