@@ -1,5 +1,15 @@
 # Release Notes
 
+## v6.3.0 - 2026-11-07
+
+### What's Changed
+
+* feat: parse shorts and live video URLs by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/47
+* feat: return the video behind a video URL by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/48
+* feat: resolve any channel input without a search fallback by [@replworks-bot](https://github.com/replworks-bot) in https://github.com/cable8mm/Youtube/pull/49
+
+**Full Changelog**: https://github.com/cable8mm/Youtube/compare/v6.2.0...v6.3.0
+
 ## v6.2.0 - 2026-11-07
 
 ### What's Changed
