@@ -118,6 +118,7 @@ class YoutubeChannelsImport implements OnEachRow, SkipsEmptyRows, WithMultipleSh
         $record->fill([
             'handle' => $channel->snippet->customUrl ?? null,
             'title' => $channel->snippet->title ?? $channel->id,
+            'thumbnail_url' => $channel->snippet->thumbnails->default->url ?? null,
             'uploads_playlist_id' => $channel->contentDetails->relatedPlaylists->uploads ?? null,
         ]);
 

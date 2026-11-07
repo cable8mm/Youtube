@@ -15,6 +15,7 @@ class YoutubeChannel extends Model
         'channel_id',
         'handle',
         'title',
+        'thumbnail_url',
         'uploads_playlist_id',
         'is_active',
         'sync_status',
