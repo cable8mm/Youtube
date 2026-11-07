@@ -356,6 +356,19 @@ class Youtube
     }
 
     /**
+     * Get the video object behind a video URL.
+     *
+     * @return \StdClass|null
+     *
+     * @throws YoutubeApiException
+     * @throws \InvalidArgumentException
+     */
+    public function getVideoFromURL(string $youtube_url)
+    {
+        return $this->videos->info(UrlParser::videoId($youtube_url), ['id', 'snippet']);
+    }
+
+    /**
      * Get the channel object behind a video URL.
      *
      * @return \StdClass|null
@@ -365,11 +378,7 @@ class Youtube
      */
     public function getChannelFromVideoURL(string $youtube_url)
     {
-        $video = $this->videos->info(UrlParser::videoId($youtube_url), ['id', 'snippet']);
-
-        if (is_array($video)) {
-            $video = $video[0] ?? null;
-        }
+        $video = $this->getVideoFromURL($youtube_url);
 
         $channelId = $video->snippet->channelId ?? null;
 

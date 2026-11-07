@@ -393,7 +393,7 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - Every T-011 and T-029 example keeps its result.
     - Unit tests passing.
 
-- [ ] T-035 Return the video behind a video URL
+- [x] T-035 Return the video behind a video URL
   - Satisfies: PS §7.1 (`getVideoFromURL`); PS §8
   - External boundary: yes
   - Acceptance criteria:
