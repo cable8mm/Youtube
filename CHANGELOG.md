@@ -1,5 +1,13 @@
 # Release Notes
 
+## v6.4.0 - 2026-11-07
+
+### What's Changed
+
+* feat: classify a video as shorts, live, upcoming, or regular by [@cable8mm](https://github.com/cable8mm) in https://github.com/cable8mm/Youtube/pull/50
+
+**Full Changelog**: https://github.com/cable8mm/Youtube/compare/v6.3.0...v6.4.0
+
 ## v6.3.0 - 2026-11-07
 
 ### What's Changed
