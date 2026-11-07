@@ -1,5 +1,13 @@
 # Release Notes
 
+## v6.6.0 - 2026-11-07
+
+### What's Changed
+
+* feat: store the channel avatar during import and sync by [@cable8mm](https://github.com/cable8mm) in https://github.com/cable8mm/Youtube/pull/54
+
+**Full Changelog**: https://github.com/cable8mm/Youtube/compare/v6.5.2...v6.6.0
+
 ## v6.5.2 - 2026-11-07
 
 ### What's Changed
