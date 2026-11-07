@@ -424,7 +424,7 @@ A request that returns `null` gives the row result `failed: channel not found`.
 `SyncChannelVideos(int $youtubeChannelId, ?int $maxPages = 1)` runs once. It is not retried. Steps:
 
 1. During a Quota Block, end without a request and without changing any record.
-2. When `uploads_playlist_id` is `null`, fetch the channel with `getChannelById` and store `uploads_playlist_id`, `handle`, `thumbnail_url`, and `title`. When the lookup returns `null`, the Sync fails with Failure Reason `channel_not_found` and exception `YoutubeApiException` with message `Channel not found : <channel_id>` and code `0`.
+2. Fetch the channel with `getChannelById` and store `uploads_playlist_id`, `handle`, `thumbnail_url`, and `title`. When the lookup returns `null` or throws and no `uploads_playlist_id` is known, the Sync fails with Failure Reason `channel_not_found` and exception `YoutubeApiException` with message `Channel not found : <channel_id>` and code `0`; when a playlist is already known, the Sync keeps the stored values and continues with it.
 3. Read the uploads playlist with `getPlaylistItemsByPlaylistId(<uploads_playlist_id>, <pageToken>, 50)`: at most `$maxPages` pages, or every page when `$maxPages` is `null`. Collect each item's `contentDetails.videoId`.
 4. Let the check set be the collected Video IDs plus the Video IDs of every Video Record of the channel.
 5. Call `getVideoInfo(<up to 50 IDs>, ['id', 'snippet', 'contentDetails', 'statistics'])` for each batch of the check set.

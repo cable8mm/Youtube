@@ -90,6 +90,16 @@ class SyncChannelVideosTest extends TestCase
         return json_encode(['kind' => 'youtube#videoListResponse', 'etag' => 'e', 'items' => $videos]);
     }
 
+    private static function channelResponse(): string
+    {
+        return json_encode(['kind' => 'youtube#channelListResponse', 'etag' => 'e', 'items' => [[
+            'kind' => 'youtube#channel',
+            'id' => self::CHANNEL_ID,
+            'snippet' => ['title' => 'XDA', 'customUrl' => '@xda', 'thumbnails' => ['default' => ['url' => 'https://example.com/xda.jpg']]],
+            'contentDetails' => ['relatedPlaylists' => ['uploads' => self::UPLOADS]],
+        ]]]);
+    }
+
     private static function errorBody(int $code, string $message, string $reason): string
     {
         return json_encode(['error' => ['code' => $code, 'message' => $message, 'errors' => [['reason' => $reason]]]]);
@@ -131,6 +141,7 @@ class SyncChannelVideosTest extends TestCase
         $channel = $this->channel();
         array_push(
             $this->fake->responses,
+            self::channelResponse(),
             self::playlistPage(['v1', 'v2']),
             self::videoList([self::video('v1'), self::video('v2')]),
         );
@@ -167,8 +178,10 @@ class SyncChannelVideosTest extends TestCase
         $channel = $this->channel();
         array_push(
             $this->fake->responses,
+            self::channelResponse(),
             self::playlistPage(['v1']),
             self::videoList([self::video('v1')]),
+            self::channelResponse(),
             self::playlistPage(['v1']),
             self::videoList([self::video('v1', ['viewCount' => '20'])]),
         );
@@ -186,6 +199,7 @@ class SyncChannelVideosTest extends TestCase
         $channel = $this->channel();
         array_push(
             $this->fake->responses,
+            self::channelResponse(),
             self::playlistPage(['v1']),
             self::videoList([self::video('v1', ['viewCount' => '10', 'commentCount' => '0'])]),
         );
@@ -202,7 +216,7 @@ class SyncChannelVideosTest extends TestCase
         $channel = $this->channel();
         $video = self::video('v1');
         unset($video['snippet']['thumbnails']['high']);
-        array_push($this->fake->responses, self::playlistPage(['v1']), self::videoList([$video]));
+        array_push($this->fake->responses, self::channelResponse(), self::playlistPage(['v1']), self::videoList([$video]));
 
         $this->sync($channel);
 
@@ -221,6 +235,7 @@ class SyncChannelVideosTest extends TestCase
         $channel = $this->channel();
         array_push(
             $this->fake->responses,
+            self::channelResponse(),
             self::playlistPage(['shorts1', 'live1', 'regular1', 'short45']),
             self::videoList([$shorts, $live, self::video('regular1'), $plainShort]),
         );
@@ -241,7 +256,7 @@ class SyncChannelVideosTest extends TestCase
             self::playlistPage(['v3']),
         ];
 
-        array_push($this->fake->responses, ...$pages);
+        array_push($this->fake->responses, self::channelResponse(), ...$pages);
         $this->sync($this->channel(), 2);
 
         $playlistRequests = $this->requestsTo('playlistItems');
@@ -254,6 +269,7 @@ class SyncChannelVideosTest extends TestCase
     {
         array_push(
             $this->fake->responses,
+            self::channelResponse(),
             self::playlistPage(['v1'], 'P2'),
             self::playlistPage(['v2'], 'P3'),
             self::playlistPage(['v3']),
@@ -271,7 +287,7 @@ class SyncChannelVideosTest extends TestCase
         foreach (range(1, 60) as $n) {
             $channel->videos()->create(['video_id' => "known$n", 'title' => 'Known', 'published_at' => '2026-01-01 00:00:00']);
         }
-        $this->fake->responses[] = self::playlistPage(['new1', 'known1']);
+        array_push($this->fake->responses, self::channelResponse(), self::playlistPage(['new1', 'known1']));
 
         $this->sync($channel);
 
@@ -314,6 +330,49 @@ class SyncChannelVideosTest extends TestCase
         $this->assertSame('ok', $channel->sync_status);
     }
 
+    public function test_known_channel_fields_are_refreshed_on_every_sync(): void
+    {
+        $channel = $this->channel(['title' => 'Old title', 'handle' => '@old']);
+        array_push(
+            $this->fake->responses,
+            json_encode(['kind' => 'youtube#channelListResponse', 'etag' => 'e', 'items' => [[
+                'kind' => 'youtube#channel',
+                'id' => self::CHANNEL_ID,
+                'snippet' => ['title' => 'New title', 'customUrl' => '@new', 'thumbnails' => ['default' => ['url' => 'https://example.com/new.jpg']]],
+                'contentDetails' => ['relatedPlaylists' => ['uploads' => self::UPLOADS]],
+            ]]]),
+            self::playlistPage(['v1']),
+            self::videoList([self::video('v1')]),
+        );
+
+        $this->sync($channel);
+
+        $channel->refresh();
+        $this->assertSame('New title', $channel->title);
+        $this->assertSame('@new', $channel->handle);
+        $this->assertSame('https://example.com/new.jpg', $channel->thumbnail_url);
+        $this->assertSame('ok', $channel->sync_status);
+        $this->assertSame(self::CHANNEL_ID, $this->requestsTo('channels')[0]['params']['id']);
+    }
+
+    public function test_failed_channel_lookup_with_known_playlist_keeps_values_and_continues(): void
+    {
+        $channel = $this->channel(['title' => 'Kept title']);
+        array_push(
+            $this->fake->responses,
+            self::errorBody(500, 'Backend error', 'backendError'),
+            self::playlistPage(['v1']),
+            self::videoList([self::video('v1')]),
+        );
+
+        $this->sync($channel);
+
+        $channel->refresh();
+        $this->assertSame('Kept title', $channel->title);
+        $this->assertSame('ok', $channel->sync_status);
+        $this->assertSame(1, YoutubeVideo::count());
+    }
+
     public function test_channel_lookup_without_item_records_channel_not_found(): void
     {
         $channel = $this->channel(['uploads_playlist_id' => null]);
@@ -338,7 +397,7 @@ class SyncChannelVideosTest extends TestCase
     {
         $channel = $this->channel();
         $channel->update(['last_synced_at' => '2026-10-01 00:00:00']);
-        $this->fake->responses[] = self::errorBody(400, 'API key not valid. Please pass a valid API key.', 'badRequest');
+        array_push($this->fake->responses, self::channelResponse(), self::errorBody(400, 'API key not valid. Please pass a valid API key.', 'badRequest'));
 
         $this->sync($channel);
 
@@ -361,6 +420,7 @@ class SyncChannelVideosTest extends TestCase
         $channel = $this->channel();
         array_push(
             $this->fake->responses,
+            self::channelResponse(),
             self::playlistPage(['v1']),
             self::errorBody(403, 'The request cannot be completed because you have exceeded your quota.', 'quotaExceeded'),
         );
@@ -380,6 +440,7 @@ class SyncChannelVideosTest extends TestCase
         $ids = array_map(fn ($n) => "v$n", range(1, 50));
         array_push(
             $this->fake->responses,
+            self::channelResponse(),
             self::playlistPage($ids),
             self::videoList(array_map(fn ($id) => self::video($id), $ids)),
             self::errorBody(500, 'Backend Error', 'backendError'),
@@ -399,6 +460,7 @@ class SyncChannelVideosTest extends TestCase
         $back = $channel->videos()->create(['video_id' => 'back', 'title' => 'Back', 'published_at' => '2026-01-01 00:00:00', 'unavailable_at' => '2026-09-01 00:00:00']);
         array_push(
             $this->fake->responses,
+            self::channelResponse(),
             self::playlistPage(['v1', 'gone']),
             self::videoList([self::video('v1'), self::video('back')]),
         );
@@ -419,8 +481,10 @@ class SyncChannelVideosTest extends TestCase
         $channel->videos()->create(['video_id' => 'gone', 'title' => 'Gone', 'published_at' => '2026-01-01 00:00:00']);
         array_push(
             $this->fake->responses,
+            self::channelResponse(),
             self::playlistPage(['v1']),
             self::videoList([self::video('v1')]),
+            self::channelResponse(),
             self::playlistPage(['v1']),
             self::videoList([self::video('v1')]),
         );
