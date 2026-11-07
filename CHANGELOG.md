@@ -1,5 +1,13 @@
 # Release Notes
 
+## v6.5.2 - 2026-11-07
+
+### What's Changed
+
+* fix: classify 61-to-180-second verticals uploaded since 2024-10-15 as shorts by [@cable8mm](https://github.com/cable8mm) in https://github.com/cable8mm/Youtube/pull/53
+
+**Full Changelog**: https://github.com/cable8mm/Youtube/compare/v6.5.1...v6.5.2
+
 ## v6.5.1 - 2026-11-07
 
 ### What's Changed
