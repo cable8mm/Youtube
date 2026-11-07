@@ -1,5 +1,13 @@
 # Release Notes
 
+## v6.5.3 - 2026-11-07
+
+### What's Changed
+
+* fix: refresh the channel record on every sync by [@cable8mm](https://github.com/cable8mm) in https://github.com/cable8mm/Youtube/pull/55
+
+**Full Changelog**: https://github.com/cable8mm/Youtube/compare/v6.6.0...v6.5.3
+
 ## v6.6.0 - 2026-11-07
 
 ### What's Changed
