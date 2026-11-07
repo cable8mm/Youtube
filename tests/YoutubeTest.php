@@ -251,6 +251,42 @@ class YoutubeTest extends TestCase
         $this->assertCount(2, $fake->requests);
     }
 
+    public function test_get_video_from_url_sends_video_request_with_snippet_part(): void
+    {
+        $fake = new FakeApiClient([
+            $this->listJson([['id' => 'abc', 'snippet' => ['channelId' => 'UC123']]]),
+        ]);
+
+        $video = $this->youtubeWithFake($fake)->getVideoFromURL('https://www.youtube.com/shorts/abc');
+
+        $this->assertSame('abc', $video->id);
+        $this->assertSame('UC123', $video->snippet->channelId);
+        $this->assertCount(1, $fake->requests);
+        $this->assertSame(['id' => 'abc', 'part' => 'id,snippet', 'key' => 'test_key'], $fake->requests[0]['params']);
+    }
+
+    public function test_get_video_from_url_returns_null_when_missing(): void
+    {
+        $fake = new FakeApiClient([$this->listJson([])]);
+
+        $this->assertNull($this->youtubeWithFake($fake)->getVideoFromURL('https://youtu.be/missing'));
+        $this->assertCount(1, $fake->requests);
+    }
+
+    public function test_get_video_from_url_rejects_non_video_urls(): void
+    {
+        $fake = new FakeApiClient([]);
+
+        try {
+            $this->youtubeWithFake($fake)->getVideoFromURL('https://example.com/watch?v=abc');
+            $this->fail('Expected InvalidArgumentException');
+        } catch (\InvalidArgumentException $e) {
+            $this->assertSame('The supplied URL does not look like a Youtube URL', $e->getMessage());
+        }
+
+        $this->assertCount(0, $fake->requests);
+    }
+
     public function test_get_channel_from_video_url_accepts_shorts_urls(): void
     {
         $fake = new FakeApiClient([
