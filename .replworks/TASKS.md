@@ -374,3 +374,12 @@ T-018 onward are new work for release `v6.0.0`: build the code, then test it.
     - It returns `null` for `null`, an empty string, and a string that is not an ISO 8601 duration.
     - `YoutubeVideo::durationLabel()` returns the formatted `duration` of the Video Record.
     - Unit tests passing.
+
+- [x] T-033 Resolve a channel from a video URL
+  - Satisfies: PS §7.1 (`getChannelFromVideoURL`); PS §8; PS §9
+  - External boundary: yes
+  - Acceptance criteria:
+    - Offline: `getChannelFromVideoURL('https://www.youtube.com/watch?v=abc')` sends `videos.list` with `id=abc`, `part=id,snippet`, then `channels.list` with the returned `snippet.channelId`; no item in either step returns `null` and sends no further request.
+    - Offline: a `/shorts/abc` or non-YouTube URL throws the Video URL Error and sends no request.
+    - Live: `getChannelFromVideoURL('https://www.youtube.com/watch?v=rie-hPVJ7Sw')` returns the channel holding that video.
+    - Unit tests passing. Live tests passing.
