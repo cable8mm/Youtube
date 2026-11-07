@@ -167,9 +167,10 @@ Every operation sends one GET request, except `searchChannelByName`, `getChannel
 2. `snippet.liveBroadcastContent` is `live`: `live`.
 3. `snippet.liveBroadcastContent` is `upcoming`: `upcoming`.
 4. `contentDetails.duration` is 60 seconds or less: `shorts`.
-5. Otherwise: `regular`, including a video without a `snippet` or without a duration.
+5. `contentDetails.duration` is 180 seconds or less and `snippet.publishedAt` is on or after 2024-10-15: `shorts`.
+6. Otherwise: `regular`, including a video without a `snippet`, without a duration, or without a parsable publish time.
 
-`shortsAspectRatio` is observed on some Shorts but is not a documented API field and is absent on most Shorts, so rule 4 covers Shorts without it by duration. Rule 4 misclassifies a landscape video of 60 seconds or less as `shorts`, and misses a vertical Short longer than 60 seconds without `shortsAspectRatio`. A finished live broadcast reports `none` and therefore classifies as `shorts` or `regular` by duration.
+`shortsAspectRatio` is observed on some Shorts but is not a documented API field and is absent on most Shorts, so rules 4 and 5 cover Shorts without it. Three-minute Shorts started on 2024-10-15: an older upload between 61 and 180 seconds stays long-form and falls to rule 6. Rule 4 misclassifies a landscape video of 60 seconds or less as `shorts`; rule 5 misclassifies a landscape video of 61 to 180 seconds uploaded on or after 2024-10-15 as `shorts`. A finished live broadcast reports `none` and therefore classifies by duration.
 
 
 ## 8. Video URL parsing
@@ -308,7 +309,7 @@ Public methods on the Client kept for backward compatibility:
 - The validation rule produces each outcome in §11.
 - `getChannelFromVideoURL("https://www.youtube.com/watch?v=rie-hPVJ7Sw")` returns the channel holding that video; a video URL whose video or channel is missing returns `null`.
 - `getVideoFromURL("https://www.youtube.com/shorts/rie-hPVJ7Sw")` returns the video with `id` `rie-hPVJ7Sw`; a video URL whose video is missing returns `null`.
-- `VideoKind::of()` returns `shorts` for a video with `shortsAspectRatio` thumbnails and for a plain body of 60 seconds or less, `live` and `upcoming` for those `liveBroadcastContent` values, and `regular` otherwise.
+- `VideoKind::of()` returns `shorts` for a video with `shortsAspectRatio` thumbnails, for a plain body of 60 seconds or less, and for a plain 61-to-180-second body published on or after 2024-10-15; an older 61-to-180-second body is `regular`.
 - `getChannelFromInput` returns the expected channel for a Channel ID, `@Google`, `https://www.youtube.com/watch?v=rie-hPVJ7Sw`, and `https://www.youtube.com/user/Google`, and throws the Channel URL Error for `https://www.youtube.com/c/Google`.
 
 ## 16. Storage

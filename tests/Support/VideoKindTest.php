@@ -87,6 +87,24 @@ class VideoKindTest extends TestCase
         $this->assertSame(VideoKind::REGULAR, VideoKind::of((object) ['id' => 'abc']));
     }
 
+    public function test_plain_bodies_between_61_and_180_seconds_follow_the_three_minute_cutoff(): void
+    {
+        $body = fn (?string $publishedAt): object => (object) [
+            'snippet' => (object) [
+                'liveBroadcastContent' => 'none',
+                'publishedAt' => $publishedAt,
+                'thumbnails' => (object) [],
+            ],
+            'contentDetails' => (object) ['duration' => 'PT1M3S'],
+        ];
+
+        $this->assertSame(VideoKind::SHORTS, VideoKind::of($body('2024-10-15T00:00:00Z')));
+        $this->assertSame(VideoKind::SHORTS, VideoKind::of($body('2026-01-01T00:00:00Z')));
+        $this->assertSame(VideoKind::REGULAR, VideoKind::of($body('2024-10-14T23:59:59Z')));
+        $this->assertSame(VideoKind::REGULAR, VideoKind::of($body(null)));
+        $this->assertSame(VideoKind::REGULAR, VideoKind::of($body('not a date')));
+    }
+
     public function test_video_without_a_duration_is_regular(): void
     {
         $video = (object) [
